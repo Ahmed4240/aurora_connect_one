@@ -2,9 +2,11 @@ import 'package:aurora_connect_one/domain/get_packages_by_country.dart';
 import 'package:aurora_connect_one/presentation/commons/routes/routes_name.dart';
 import 'package:aurora_connect_one/presentation/screens/plan_details_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_getx_widget.dart';
 import '../../domain/get_packages_model.dart';
+import '../../domain/plans/PlanDetail.dart';
 import '../commons/app_colors.dart';
 import '../commons/app_images.dart';
 import '../controllers/plans_controller.dart';
@@ -111,7 +113,7 @@ class PlansScreen extends StatelessWidget {
                             return GestureDetector(
                               onTap: () {
                                 openPlanDetails(context, controller.countryPlans
-                                    .data?[index] as PlansDatum);
+                                    .data?[index] as PlanDetail);
                               },
                               child: Padding(
                                 padding: const EdgeInsets.only(bottom: 0.0),
@@ -273,7 +275,7 @@ class PlansScreen extends StatelessWidget {
     Navigator.pop(context);
   }
 
-  void openPlanDetails(BuildContext context, PlansDatum model) {
+  void openPlanDetails(BuildContext context, PlanDetail model) {
     // Navigator.pushNamed(context, RoutesName.plan_details);
     Navigator.push(context,
       MaterialPageRoute(builder: (context) => PlanDetailsScreen(model: model),

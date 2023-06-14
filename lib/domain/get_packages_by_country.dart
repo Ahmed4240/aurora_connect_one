@@ -3,6 +3,8 @@
 import 'dart:convert';
 import 'dart:ffi';
 
+import 'package:aurora_connect_one/domain/plans/PlanDetail.dart';
+
 GetPackagesByCountryModel getPackagesByCountryFromJson(String str) => GetPackagesByCountryModel.fromJson(json.decode(str));
 
 String getPackagesByCountryToJson(GetPackagesByCountryModel data) => json.encode(data.toJson());
@@ -54,66 +56,6 @@ class NetworkList {
   }
 }
 
-class PlansDatum {
-  String? slug;
-  String? providerName;
-  String? providerImage;
-  String? planType;
-  List<NetworkList?>? networkList;
-  String? information;
-  String? data;
-  num? price;
-  String? validity;
-  String? id;
-  String? title;
-  List<CountryList?>? countryList;
-
-  PlansDatum({this.slug, this.providerName, this.providerImage, this.data, this.price, this.validity, this.id, this.title, this.countryList});
-
-  PlansDatum.fromJson(Map<String, dynamic> json) {
-    slug = json['slug'];
-    providerName = json['providerName'];
-    providerImage = json['providerImage'];
-    planType = json['planType'];
-    if (json['network'] != null) {
-      networkList = <NetworkList>[];
-      json['network'].forEach((v) {
-        networkList!.add(NetworkList.fromJson(v));
-      });
-    }
-    // network = json['network'];
-    information = json['information'];
-    data = json['data'];
-    price = json['price'];
-    validity = json['validity'];
-    id = json['id'];
-    title = json['title'];
-    if (json['countryList'] != null) {
-      countryList = <CountryList>[];
-      json['countryList'].forEach((v) {
-        countryList!.add(CountryList.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['slug'] = slug;
-    data['providerName'] = providerName;
-    data['providerImage'] = providerImage;
-    data['planType'] = planType;
-    data['network'] = networkList;
-    data['information'] = information;
-    data['data'] = data;
-    data['price'] = price;
-    data['validity'] = validity;
-    data['id'] = id;
-    data['title'] = title;
-    data['countryList'] =countryList != null ? countryList!.map((v) => v?.toJson()).toList() : null;
-    return data;
-  }
-}
-
 class Error {
   int? code;
   String? message;
@@ -135,7 +77,7 @@ class Error {
 
 class GetPackagesByCountryModel {
   bool? isSuccess;
-  List<PlansDatum>? data;
+  List<PlanDetail>? data;
   Error? error;
 
   GetPackagesByCountryModel({this.isSuccess, this.data, this.error});
@@ -143,9 +85,9 @@ class GetPackagesByCountryModel {
   GetPackagesByCountryModel.fromJson(Map<String, dynamic> json) {
     isSuccess = json['isSuccess'];
     if (json['data'] != null) {
-      data = <PlansDatum>[];
+      data = <PlanDetail>[];
       json['data'].forEach((v) {
-        data!.add(PlansDatum.fromJson(v));
+        data!.add(PlanDetail.fromJson(v));
       });
     }
     error = json['error'] != null ? Error?.fromJson(json['error']) : null;

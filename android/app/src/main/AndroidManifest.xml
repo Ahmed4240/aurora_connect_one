@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.aurora_connect_one">
-   <application
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <application
         android:label="aurora_connect_one"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

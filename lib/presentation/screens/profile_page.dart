@@ -1,8 +1,6 @@
-import 'package:aurora_connect_one/presentation/screens/plan_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../domain/get_packages_by_country.dart';
 import '../commons/app_colors.dart';
 import '../commons/app_images.dart';
 import '../commons/routes/routes_name.dart';
@@ -16,6 +14,41 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+
+  static const MethodChannel methodChannel = MethodChannel('example.com/channel');
+  static const EventChannel eventChannel = EventChannel('example.com/channel');
+  String _reportStatus = 'Game status: unknown.';
+
+  Future<void> checkESIMCapability() async {
+    try {
+      eventChannel.receiveBroadcastStream().listen(_onEvent, onError: _onError);
+      await methodChannel.invokeMethod('checkESIMCapability');
+    } on PlatformException catch (e) {
+      debugPrint("Failed to Invoke: '${e.message}'.");
+    }
+  }
+
+  void _onEvent(Object? event) {
+    setState(() {
+      _reportStatus = "Game status: $event";
+    });
+    debugPrint(_reportStatus);
+  }
+
+  void _onError(Object error) {
+    setState(() {
+      _reportStatus = 'Game status: unknown.';
+    });
+  }
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    checkESIMCapability();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
