@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:aurora_connect_one/domain/create_order/create_order_request.dart';
 import 'package:get/get_connect/connect.dart';
 
@@ -7,5 +9,15 @@ class PlansProvider extends GetConnect {
   Future<Response> getCountryAndRegional() => get('https://auroraconnect.absoluit.com/api/api/Package/GetPackages?appToken=0acb027918aa87e13dccf920');
   Future<Response> getGlobalPlans() => get('http://auroraconnect.absoluit.com/api/api/Package/GetPackagesByGlobal?appToken=0acb027918aa87e13dccf920');
 
-  Future<Response> createOrderRequest(CreateOrderRequest request) => post('https://auroraconnect.absoluit.com/api/api/Order/CreateOrder', request);
+  Future<Response> createOrderRequest(CreateOrderRequest request) => post('https://auroraconnect.absoluit.com/api/api/Order/CreateOrder',
+      jsonEncode([{
+    "quantity": request.quantity,
+    "packageId": request.packageId,
+    "userId": request.userId,
+    "planDetail": request.planDetail,
+  }])
+      , headers: {
+        "content-type" : "application/json ; charset=utf-8 ",
+        "Accept": "application/json"
+  });
 }

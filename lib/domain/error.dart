@@ -6,8 +6,8 @@ class Error {
   Error({this.code, this.message});
 
   Error.fromJson(Map<String, dynamic> json) {
-    code = json['code'];
-    message = json['message'];
+    code = 1;                        //json['code']
+    message = "json['message']";       //json['message']
   }
 
   Map<String, dynamic> toJson() {

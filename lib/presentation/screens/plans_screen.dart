@@ -1,11 +1,11 @@
-import 'package:aurora_connect_one/domain/get_packages_by_country.dart';
+import 'package:aurora_connect_one/domain/plans/PlansInCountryResponse.dart';
 import 'package:aurora_connect_one/presentation/commons/routes/routes_name.dart';
 import 'package:aurora_connect_one/presentation/screens/plan_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_getx_widget.dart';
-import '../../domain/get_packages_model.dart';
+import '../../domain/packages/local/LocalPlansResponse.dart';
 import '../../domain/plans/PlanDetail.dart';
 import '../commons/app_colors.dart';
 import '../commons/app_images.dart';
@@ -15,7 +15,7 @@ class PlansScreen extends StatelessWidget {
 
   const PlansScreen({super.key, required this.model});
 
-  final Plan model;
+  final LocalPlan model;
 
   @override
   Widget build(BuildContext context) {
@@ -107,12 +107,12 @@ class PlansScreen extends StatelessWidget {
 
                       child: ListView.builder(
                           shrinkWrap: true,
-                          itemCount: controller.countryPlans.data?.length,
+                          itemCount: controller.localPlansResponse.data?.length,
                           scrollDirection: Axis.vertical,
                           itemBuilder: (BuildContext context, int index) {
                             return GestureDetector(
                               onTap: () {
-                                openPlanDetails(context, controller.countryPlans
+                                openPlanDetails(context, controller.localPlansResponse
                                     .data?[index] as PlanDetail);
                               },
                               child: Padding(
@@ -149,7 +149,7 @@ class PlansScreen extends StatelessWidget {
                                                 CrossAxisAlignment.start,
                                                 children: [
                                                   const SizedBox(height: 10.0),
-                                                  Text((controller.countryPlans
+                                                  Text((controller.localPlansResponse
                                                       .data?[index]
                                                       .providerName as String) ??
                                                       "unknown",
@@ -158,7 +158,7 @@ class PlansScreen extends StatelessWidget {
                                                           fontWeight: FontWeight
                                                               .bold)),
                                                   const SizedBox(height: 2.0),
-                                                  Text(controller.countryPlans
+                                                  Text(controller.localPlansResponse
                                                       .data?[index]
                                                       .slug as String,
                                                       style: const TextStyle(
@@ -186,7 +186,7 @@ class PlansScreen extends StatelessWidget {
                                                 crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                                 children: [
-                                                  Text(controller.countryPlans
+                                                  Text(controller.localPlansResponse
                                                       .data?[index]
                                                       .data as String,
                                                       style: const TextStyle(
@@ -194,7 +194,7 @@ class PlansScreen extends StatelessWidget {
                                                           fontWeight: FontWeight
                                                               .bold)),
                                                   const SizedBox(height: 2.0),
-                                                  Text(controller.countryPlans
+                                                  Text(controller.localPlansResponse
                                                       .data?[index]
                                                       .validity as String,
                                                       style: const TextStyle(
@@ -222,7 +222,7 @@ class PlansScreen extends StatelessWidget {
                                                 CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                      "${controller.countryPlans
+                                                      "${controller.localPlansResponse
                                                           .data?[index]
                                                           .price} \$",
                                                       style: const TextStyle(
@@ -251,7 +251,7 @@ class PlansScreen extends StatelessWidget {
                                           image: DecorationImage(
                                               image: NetworkImage(
                                                   (controller
-                                                      .countryPlans
+                                                      .localPlansResponse
                                                       .data?[index]
                                                       .providerImage
                                                   as String)),

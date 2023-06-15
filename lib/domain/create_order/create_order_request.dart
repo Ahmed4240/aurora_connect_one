@@ -12,6 +12,23 @@ class CreateOrderRequest {
     this.userId,
     this.planDetail,
   });
+
+
+  CreateOrderRequest.fromJson(Map<String, dynamic> json) {
+    quantity = json['quantity'];
+    packageId = json['packageId'];
+    userId = json['userId'];
+    planDetail = json['planDetail'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['quantity'] = quantity;
+    data['packageId'] = packageId;
+    data['userId'] = userId;
+    data['planDetail'] = planDetail;
+    return data;
+  }
 }
 
 class CountryList {

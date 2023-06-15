@@ -8,6 +8,8 @@ class PlanDetail {
   String? information;
   String? data;
   num? price;
+  num? discountPrice;
+  num? discount;
   String? validity;
   String? id;
   String? title;
@@ -22,6 +24,7 @@ class PlanDetail {
     required this.information,
     required this.data,
     required this.price,
+    required this.discountPrice,
     required this.validity,
     required this.id,
     required this.title,
@@ -43,6 +46,8 @@ class PlanDetail {
     information = json['information'];
     data = json['data'];
     price = json['price'];
+    discountPrice = json['discountPrice'];
+    discount = json['discount'];
     validity = json['validity'];
     id = json['id'];
     title = json['title'];
@@ -64,6 +69,8 @@ class PlanDetail {
     data['information'] = information;
     data['data'] = data;
     data['price'] = price;
+    data['discountPrice'] = discountPrice;
+    data['discount'] = discount;
     data['validity'] = validity;
     data['id'] = id;
     data['title'] = title;

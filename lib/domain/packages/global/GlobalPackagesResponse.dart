@@ -1,25 +1,26 @@
 
 
 import 'dart:convert';
+import '../../error.dart';
 
-GetPackagesByGlobal getPackagesByGlobalFromJson(String str) => GetPackagesByGlobal.fromJson(json.decode(str));
+GlobalPackagesResponse getGlobalPackagesResponseFromJson(String str) => GlobalPackagesResponse.fromJson(json.decode(str));
 
-String getPackagesByGlobalToJson(GetPackagesByGlobal data) => json.encode(data.toJson());
+String getGlobalPackagesResponseToJson(GlobalPackagesResponse data) => json.encode(data.toJson());
 
-class GetPackagesByGlobal {
+class GlobalPackagesResponse {
   bool? isSuccess;
-  List<GlobalDatum>? data;
+  List<GlobalPackagesData>? data;
   Error? error;
 
-  GetPackagesByGlobal({
+  GlobalPackagesResponse({
     this.isSuccess,
     this.data,
     this.error,
   });
 
-  factory GetPackagesByGlobal.fromJson(Map<String, dynamic> json) => GetPackagesByGlobal(
+  factory GlobalPackagesResponse.fromJson(Map<String, dynamic> json) => GlobalPackagesResponse(
     isSuccess: json["isSuccess"],
-    data: List<GlobalDatum>.from(json["data"].map((x) => GlobalDatum.fromJson(x))),
+    data: List<GlobalPackagesData>.from(json["data"].map((x) => GlobalPackagesData.fromJson(x))),
     error: Error.fromJson(json["error"]),
   );
 
@@ -30,7 +31,7 @@ class GetPackagesByGlobal {
   };
 }
 
-class GlobalDatum {
+class GlobalPackagesData {
   String providerName;
   String providerImage;
   String data;
@@ -40,7 +41,7 @@ class GlobalDatum {
   String title;
   List<CountryList> countryList;
 
-  GlobalDatum({
+  GlobalPackagesData({
     required this.providerName,
     required this.providerImage,
     required this.data,
@@ -51,7 +52,7 @@ class GlobalDatum {
     required this.countryList,
   });
 
-  factory GlobalDatum.fromJson(Map<String, dynamic> json) => GlobalDatum(
+  factory GlobalPackagesData.fromJson(Map<String, dynamic> json) => GlobalPackagesData(
     providerName: json["providerName"],
     providerImage: json["providerImage"],
     data: json["data"],
@@ -103,25 +104,5 @@ class CountryList {
     "countryCode": countryCode,
     "slug": "slug",
     "totalPlans": totalPlans,
-  };
-}
-
-class Error {
-  int code;
-  String message;
-
-  Error({
-    required this.code,
-    required this.message,
-  });
-
-  factory Error.fromJson(Map<String, dynamic> json) => Error(
-    code: 1,
-    message: 'message',
-  );
-
-  Map<String, dynamic> toJson() => {
-    "code": code,
-    "message": message,
   };
 }

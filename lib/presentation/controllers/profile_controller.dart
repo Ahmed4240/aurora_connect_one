@@ -5,26 +5,24 @@ import '../../domain/plans/PlansInCountryResponse.dart';
 import '../../domain/packages/local/LocalPlansResponse.dart';
 import '../commons/constants.dart';
 
-class PlansController extends GetxController {
-  PlansController(LocalPlan model) {
-    getPlansByCountry(K.appToken, model);
-  }
+class ProfileController extends GetxController {
+  ProfileController() {}
 
   @override
   void onReady() {
     super.onReady();
   }
 
-  var localPlansResponse = PlansInCountryResponse();
+  var localProfileResponse = PlansInCountryResponse();
   var loading = false.obs;
 
   final PlansProvider _provider = PlansProvider();
 
-  getPlansByCountry(String apiToken, LocalPlan model) async {
+  createUser(String apiToken, LocalPlan model) async {
     loading(true);
     var response = await _provider.getPlansByCountry(apiToken, model.slug);
     if (!response.status.hasError) {
-      localPlansResponse =
+      localProfileResponse =
           getPlansInCountryResponseFromJson(response.bodyString.toString());
       print('localPlansResponse => ${PlansInCountryResponse}');
     }

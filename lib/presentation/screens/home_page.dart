@@ -5,7 +5,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_getx_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../domain/get_packages_model.dart';
+import '../../domain/packages/local/LocalPlansResponse.dart';
 import '../commons/app_colors.dart';
 import '../commons/app_images.dart';
 import '../controllers/home_controller.dart';
@@ -29,6 +29,7 @@ class _HomePageState extends State<HomePage>
     const Tab(text: 'Global'),
   ];
 
+  HomeController controller = HomeController();
   @override
   void initState() {
     super.initState();
@@ -41,9 +42,9 @@ class _HomePageState extends State<HomePage>
     double width = MediaQuery.of(context).size.width;
 
     return GetX<HomeController>(
-        init: HomeController(),
+        init: controller,
         builder: (controller) {
-          var localData = controller.countryPlans.value;
+          var localData = controller.localPlansResponse.value;
           if (localData != null) {
             print('Local data model from home');
             print(localData.data?[0].plans.length);
@@ -159,7 +160,7 @@ class _HomePageState extends State<HomePage>
                                       openPlansScreen(
                                           context,
                                           localData.data?[0]
-                                              .plans?[index] as Plan);
+                                              .plans?[index] as LocalPlan);
                                     },
                                     child: Card(
                                       margin: const EdgeInsets.symmetric(
@@ -287,7 +288,7 @@ class _HomePageState extends State<HomePage>
                                       openPlansScreen(
                                           context,
                                           localData.data?[1]
-                                              .plans[index] as Plan);
+                                              .plans[index] as LocalPlan);
                                     },
                                     child: Card(
                                       margin: const EdgeInsets.symmetric(
@@ -600,7 +601,7 @@ class _HomePageState extends State<HomePage>
         });
   }
 
-  openPlansScreen(BuildContext context, Plan model) {
+  openPlansScreen(BuildContext context, LocalPlan model) {
     Navigator.push(
       context,
       MaterialPageRoute(

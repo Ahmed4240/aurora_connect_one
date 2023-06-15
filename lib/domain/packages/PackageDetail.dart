@@ -1,56 +1,4 @@
-
-class PackagesModel {
-  List<Packages>? packages;
-
-  PackagesModel({this.packages});
-
-  PackagesModel.fromJson(Map<String, dynamic> json) {
-    if (json['data'] != null) {
-      packages = <Packages>[];
-      json['data'].forEach((v) { packages!.add(Packages.fromJson(v)); });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-
-    if (packages != null) {
-      data['data'] = packages!.map((v) => v.toJson()).toList();
-    }
-
-    return data;
-  }
-}
-
-class Packages {
-  String? packageType;
-  List<PackageDetail>? packageDetail;
-  int? totalPlans;
-
-  Packages({this.packageType, this.packageDetail, this.totalPlans});
-
-  Packages.fromJson(Map<String, dynamic> json) {
-    packageType = json['packageType'];
-    if (json['packageDetail'] != null) {
-      packageDetail = <PackageDetail>[];
-      json['packageDetail'].forEach((v) {
-        packageDetail!.add(PackageDetail.fromJson(v));
-      });
-    }
-    totalPlans = json['totalPlans'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['packageType'] = packageType;
-    if (packageDetail != null) {
-      data['packageDetail'] =
-          packageDetail!.map((v) => v.toJson()).toList();
-    }
-    data['totalPlans'] = totalPlans;
-    return data;
-  }
-}
+import 'Country.dart';
 
 class PackageDetail {
   String? id;
@@ -139,28 +87,6 @@ class Plans {
     data['validity'] = validity;
     data['data'] = this.data;
     data['price'] = price;
-    return data;
-  }
-}
-
-class Country {
-  String? countryName;
-  String? countryImage;
-  String? countryCode;
-
-  Country({this.countryName, this.countryImage, this.countryCode});
-
-  Country.fromJson(Map<String, dynamic> json) {
-    countryName = json['countryName'];
-    countryImage = json['countryImage'];
-    countryCode = json['countryCode'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['countryName'] = countryName;
-    data['countryImage'] = countryImage;
-    data['countryCode'] = countryCode;
     return data;
   }
 }

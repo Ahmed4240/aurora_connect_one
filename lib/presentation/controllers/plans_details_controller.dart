@@ -2,8 +2,8 @@ import 'package:get/get.dart';
 
 import '../../domain/create_order/create_order_request.dart';
 import '../../domain/create_order/create_order_response.dart';
-import '../../domain/get_package_by_global.dart';
-import '../../domain/get_packages_model.dart';
+import '../../domain/packages/global/GlobalPackagesResponse.dart';
+import '../../domain/packages/local/LocalPlansResponse.dart';
 import '../provider/plans_provider.dart';
 
 class PlanDetailsController extends GetxController {
@@ -18,7 +18,7 @@ class PlanDetailsController extends GetxController {
   final PlansProvider _provider = PlansProvider();
 
   createOrderRequest(CreateOrderRequest request) async {
-    print('calling for createOrderRequest');
+    print('calling for createOrderRequest $request');
     loading(true);
     var response = await _provider.createOrderRequest(request);
     if (!response.status.hasError) {
