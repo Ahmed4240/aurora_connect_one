@@ -1,12 +1,8 @@
 import 'package:aurora_connect_one/domain/create_order/create_order_request.dart';
-import 'package:custom_bottom_sheet/custom_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_getx_widget.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
-
-import '../../domain/plans/PlansInCountryResponse.dart';
 import '../../domain/plans/PlanDetail.dart';
 import '../commons/app_colors.dart';
 import '../commons/app_images.dart';
@@ -183,7 +179,7 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
                                             color: Colors.black),
                                       ),
                                       Text(
-                                        widget.model.data.toString(),
+                                        widget.model.data1.toString(),
                                         style: const TextStyle(
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.normal,
@@ -709,12 +705,7 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
       request.quantity = 1;
       request.packageId = model.id.toString();
       request.planDetail = model;
-      request.userId = "fbf8e2e2-3621-4ad6-96ad-7f43cd043988";
 
-      print('calling before createOrderRequest quantity : ${request.quantity}');
-      print('calling before createOrderRequest packageId : ${request.packageId}');
-      print('calling before createOrderRequest planDetail : ${request.planDetail?.toJson()}');
-      print('calling before createOrderRequest userId : ${request.userId}');
       controller.createOrderRequest(request);
     }
   }

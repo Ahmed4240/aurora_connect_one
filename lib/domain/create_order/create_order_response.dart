@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:aurora_connect_one/domain/error.dart';
 
 CreateOrderResponse getCreateOrderResponse(String str) => CreateOrderResponse.fromJson(json.decode(str));
-
 String getCreateOrderResponseString(CreateOrderResponse data) => json.encode(data.toJson());
 
 class CreateOrderResponse {
@@ -20,7 +19,7 @@ class CreateOrderResponse {
 
   factory CreateOrderResponse.fromJson(Map<String, dynamic> json) => CreateOrderResponse(
     isSuccess: json["isSuccess"],
-    data: json["data"],
+    data: CreateOrderData.fromJson(json["data"]),
     error: Error.fromJson(json["error"]),
   );
 
@@ -33,14 +32,20 @@ class CreateOrderResponse {
 }
 
 class CreateOrderData {
-  String orderId;
-  dynamic simIccId;
-  dynamic userPackageList;
+  String? orderId;
+  dynamic? simIccId;
+  dynamic? userPackageList;
 
   CreateOrderData({
-    required this.orderId,
+    this.orderId,
     this.simIccId,
     this.userPackageList,
   });
+
+  CreateOrderData.fromJson(Map<String, dynamic> json) {
+    orderId = json['orderId'];
+    simIccId = json['simIccId'];
+    userPackageList = json['userPackageList'];
+  }
 
 }

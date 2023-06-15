@@ -1,4 +1,9 @@
 
+import 'dart:convert';
+
+SignUpResponse getSignUpResponse(String str) => SignUpResponse.fromJson(json.decode(str));
+String getSignUpResponseString(SignUpResponse data) => json.encode(data.toJson());
+
 class SignUpResponse {
   bool? isSuccess;
   SignUpResponseData? data;
@@ -13,7 +18,7 @@ class SignUpResponse {
 
   SignUpResponse.fromJson(Map<String, dynamic> json) {
     isSuccess = json['isSuccess'];
-    data = json['data'];
+    data = SignUpResponseData.fromJson(json["data"]);
     error = json['error'];
   }
 

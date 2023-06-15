@@ -6,7 +6,6 @@ import '../../domain/packages/local/LocalPlansResponse.dart';
 import '../commons/constants.dart';
 
 class ProfileController extends GetxController {
-  ProfileController() {}
 
   @override
   void onReady() {

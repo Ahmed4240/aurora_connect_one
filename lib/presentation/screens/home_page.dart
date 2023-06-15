@@ -1,6 +1,8 @@
 import 'package:aurora_connect_one/presentation/commons/routes/routes_name.dart';
 import 'package:aurora_connect_one/presentation/screens/plans_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_getx_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shimmer/shimmer.dart';
@@ -29,7 +31,24 @@ class _HomePageState extends State<HomePage>
     const Tab(text: 'Global'),
   ];
 
-  HomeController controller = HomeController();
+  final controller=Get.put(HomeController());
+  bool localDataLoading = true;
+  bool globalDataLoading = true;
+  bool loading = true;
+
+  @override
+  void didChangeDependencies() async{
+    await controller.getCountryAndRegionalPlans();
+    await controller.getGlobalPlans();
+    setState(() {
+      localDataLoading = false;
+      loading = false;
+      globalDataLoading = false;
+    });
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+  }
+
   @override
   void initState() {
     super.initState();

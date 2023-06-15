@@ -1,8 +1,5 @@
-import 'package:aurora_connect_one/domain/plans/PlansInCountryResponse.dart';
-import 'package:aurora_connect_one/presentation/commons/routes/routes_name.dart';
 import 'package:aurora_connect_one/presentation/screens/plan_details_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_getx_widget.dart';
 import '../../domain/packages/local/LocalPlansResponse.dart';
@@ -188,7 +185,7 @@ class PlansScreen extends StatelessWidget {
                                                 children: [
                                                   Text(controller.localPlansResponse
                                                       .data?[index]
-                                                      .data as String,
+                                                      .data1 as String,
                                                       style: const TextStyle(
                                                           color: Colors.black,
                                                           fontWeight: FontWeight
@@ -276,7 +273,6 @@ class PlansScreen extends StatelessWidget {
   }
 
   void openPlanDetails(BuildContext context, PlanDetail model) {
-    // Navigator.pushNamed(context, RoutesName.plan_details);
     Navigator.push(context,
       MaterialPageRoute(builder: (context) => PlanDetailsScreen(model: model),
       ),

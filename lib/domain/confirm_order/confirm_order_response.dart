@@ -1,4 +1,10 @@
+import 'dart:convert';
+
 import '../plans/PlanDetail.dart';
+
+
+ConfirmOrderResponse getConfirmOrderResponse(String str) => ConfirmOrderResponse.fromJson(json.decode(str));
+String getConfirmOrderResponseString(ConfirmOrderResponse data) => json.encode(data.toJson());
 
 class ConfirmOrderResponse {
   String? orderId;

@@ -8,13 +8,14 @@ class HomeController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    getGlobalPlans();
-    getCountryAndRegionalPlans();
+    // getGlobalPlans();
+    // getCountryAndRegionalPlans();
   }
 
   var localPlansResponse = LocalPackagesResponse().obs;
-  var globalPlans = GlobalPackagesResponse();
   var loading = false.obs;
+  var globalPlans = GlobalPackagesResponse();
+  var loadingGlobalData = false.obs;
 
   final PlansProvider _provider = PlansProvider();
 
@@ -30,6 +31,7 @@ class HomeController extends GetxController {
   getGlobalPlans() async {
     loading(true);
     var response = await _provider.getGlobalPlans();
+    print(("get all packages globaly ${response.body}"));
     if (!response.status.hasError) {
       globalPlans = getGlobalPackagesResponseFromJson(response.bodyString.toString());
     }

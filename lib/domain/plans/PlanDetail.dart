@@ -6,7 +6,7 @@ class PlanDetail {
   String? planType;
   List<NetworkList?>? networkList;
   String? information;
-  String? data;
+  String? data1;
   num? price;
   num? discountPrice;
   num? discount;
@@ -22,7 +22,7 @@ class PlanDetail {
     required this.planType,
     required this.networkList,
     required this.information,
-    required this.data,
+    required this.data1,
     required this.price,
     required this.discountPrice,
     required this.validity,
@@ -42,9 +42,8 @@ class PlanDetail {
         networkList!.add(NetworkList.fromJson(v));
       });
     }
-    // network = json['network'];
     information = json['information'];
-    data = json['data'];
+    data1 = json['data'];
     price = json['price'];
     discountPrice = json['discountPrice'];
     discount = json['discount'];
@@ -67,7 +66,7 @@ class PlanDetail {
     data['planType'] = planType;
     data['network'] = networkList;
     data['information'] = information;
-    data['data'] = data;
+    data['data'] = data1;
     data['price'] = price;
     data['discountPrice'] = discountPrice;
     data['discount'] = discount;
@@ -102,17 +101,13 @@ class CountryList {
   String? countryName;
   String? countryImage;
   String? countryCode;
-  String? slug;
-  int? totalPlans;
 
-  CountryList({this.countryName, this.countryImage, this.countryCode, this.slug, this.totalPlans});
+  CountryList({this.countryName, this.countryImage, this.countryCode});
 
   CountryList.fromJson(Map<String, dynamic> json) {
     countryName = json['countryName'];
     countryImage = json['countryImage'];
     countryCode = json['countryCode'];
-    slug = json['slug'];
-    totalPlans = json['totalPlans'];
   }
 
   Map<String, dynamic> toJson() {
@@ -120,8 +115,6 @@ class CountryList {
     data['countryName'] = countryName;
     data['countryImage'] = countryImage;
     data['countryCode'] = countryCode;
-    data['slug'] = slug;
-    data['totalPlans'] = totalPlans;
     return data;
   }
 }

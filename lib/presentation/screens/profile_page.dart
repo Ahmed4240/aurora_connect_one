@@ -531,18 +531,6 @@ class _ProfilePageState extends State<ProfilePage> {
     } on PlatformException catch (e) {}
   }
 
-  Future<void> callForCreateOrder(BuildContext context, PlanDetailsController controller, PlanDetail model) async {
-    if(model != null){
-      CreateOrderRequest request = CreateOrderRequest();
-      request.quantity = 1;
-      request.packageId = model.id.toString();
-      request.planDetail = model;
-      request.userId = "fbf8e2e2-3621-4ad6-96ad-7f43cd043988";
-
-      print('calling before createOrderRequest request : ${request.toJson()}');
-      controller.createOrderRequest(request);
-    }
-  }
 
   void openAccountInformation(BuildContext context) {
     Navigator.push(context,

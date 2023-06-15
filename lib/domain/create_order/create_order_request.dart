@@ -1,7 +1,7 @@
 import '../plans/PlanDetail.dart';
 
 class CreateOrderRequest {
-  int? quantity;
+  num? quantity;
   String? packageId;
   String? userId;
   PlanDetail? planDetail;

@@ -10,14 +10,14 @@ class PlansProvider extends GetConnect {
   Future<Response> getGlobalPlans() => get('http://auroraconnect.absoluit.com/api/api/Package/GetPackagesByGlobal?appToken=0acb027918aa87e13dccf920');
 
   Future<Response> createOrderRequest(CreateOrderRequest request) => post('https://auroraconnect.absoluit.com/api/api/Order/CreateOrder',
-      jsonEncode([{
+      json.encode(<String, dynamic>{
     "quantity": request.quantity,
     "packageId": request.packageId,
-    "userId": request.userId,
+    "userId": "",
     "planDetail": request.planDetail,
-  }])
-      , headers: {
+  }), headers: {
         "content-type" : "application/json ; charset=utf-8 ",
         "Accept": "application/json"
   });
+
 }
