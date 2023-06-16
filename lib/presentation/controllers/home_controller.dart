@@ -11,7 +11,8 @@ class HomeController extends GetxController {
     // getGlobalPlans();
     // getCountryAndRegionalPlans();
   }
-
+  var model = LocalPackagesResponse().obs;
+  var globalModel = GlobalPackagesResponse().obs;
   var localPlansResponse = LocalPackagesResponse().obs;
   var loading = false.obs;
   var globalPlans = GlobalPackagesResponse();
@@ -19,7 +20,7 @@ class HomeController extends GetxController {
 
   final PlansProvider _provider = PlansProvider();
 
-  getCountryAndRegionalPlans() async {
+  getPackages() async {
     print('calling for getCountryAndRegionalPlans');
     loading(true);
     var response = await _provider.getCountryAndRegional();
@@ -28,7 +29,7 @@ class HomeController extends GetxController {
     }
     loading(false);
   }
-  getGlobalPlans() async {
+  getPackageGlobal() async {
     loading(true);
     var response = await _provider.getGlobalPlans();
     print(("get all packages globaly ${response.body}"));

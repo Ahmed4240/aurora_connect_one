@@ -1,8 +1,7 @@
-import 'package:colorful_iconify_flutter/icons/noto.dart';
+// import 'package:colorful_iconify_flutter/icons/noto.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_navigation/src/snackbar/snackbar_controller.dart';
-import 'package:iconify_flutter/iconify_flutter.dart';
+// import 'package:iconify_flutter/iconify_flutter.dart';
 
 import 'app_colors.dart';
 
@@ -20,7 +19,7 @@ class K{
     return Get.snackbar(
       "Sorry",
       message,
-      icon: const Iconify(Noto.sad_but_relieved_face),
+      // icon: const Iconify(Noto.sad_but_relieved_face),
       snackPosition: SnackPosition.BOTTOM,
       backgroundColor: AppColors.mainColor,
       borderRadius: 20,
@@ -39,7 +38,7 @@ class K{
     return Get.snackbar(
       "Successful",
       message,
-      icon: const Iconify(Noto.beaming_face_with_smiling_eyes),
+      // icon: const Iconify(Noto.beaming_face_with_smiling_eyes),
       snackPosition: SnackPosition.BOTTOM,
       backgroundColor: AppColors.mainColor,
       borderRadius: 20,
