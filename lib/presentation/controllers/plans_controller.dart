@@ -6,7 +6,7 @@ import '../../domain/packages/local/LocalPlansResponse.dart';
 import '../commons/constants.dart';
 
 class PlansController extends GetxController {
-  PlansController(LocalPlan model) {
+  PlansController(Plan model) {
     getPlansByCountry(K.appToken, model);
   }
 
@@ -20,7 +20,7 @@ class PlansController extends GetxController {
 
   final PlansProvider _provider = PlansProvider();
 
-  getPlansByCountry(String apiToken, LocalPlan model) async {
+  getPlansByCountry(String apiToken, Plan model) async {
     loading(true);
     var response = await _provider.getPlansByCountry(apiToken, model.slug);
     if (!response.status.hasError) {

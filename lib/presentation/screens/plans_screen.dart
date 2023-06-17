@@ -12,7 +12,7 @@ class PlansScreen extends StatelessWidget {
 
   const PlansScreen({super.key, required this.model});
 
-  final LocalPlan model;
+  final Plan model;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +61,7 @@ class PlansScreen extends StatelessWidget {
                                 shape: BoxShape.rectangle,
                                 borderRadius: BorderRadius.circular(80.0),
                                 image: DecorationImage(
-                                    image: NetworkImage(model.countryImage), fit: BoxFit.fill),
+                                    image: NetworkImage(model.countryImage.toString()), fit: BoxFit.fill),
                               ),
                             )
                           ],
@@ -268,7 +268,7 @@ class PlansScreen extends StatelessWidget {
         });
   }
 
-  moveBack(BuildContext context) {
+  void moveBack(BuildContext context) {
     Navigator.pop(context);
   }
 

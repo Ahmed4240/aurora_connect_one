@@ -1,4 +1,5 @@
 import 'package:aurora_connect_one/domain/create_order/create_order_request.dart';
+import 'package:aurora_connect_one/presentation/screens/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -708,5 +709,12 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
 
       controller.createOrderRequest(request);
     }
+  }
+
+  void openPlanDetails(BuildContext context, int index) {
+    Navigator.push(context,
+      MaterialPageRoute(builder: (context) => HomePage(),
+      ),
+    );
   }
 }

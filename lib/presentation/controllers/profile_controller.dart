@@ -17,14 +17,14 @@ class ProfileController extends GetxController {
 
   final PlansProvider _provider = PlansProvider();
 
-  createUser(String apiToken, LocalPlan model) async {
-    loading(true);
-    var response = await _provider.getPlansByCountry(apiToken, model.slug);
-    if (!response.status.hasError) {
-      localProfileResponse =
-          getPlansInCountryResponseFromJson(response.bodyString.toString());
-      print('localPlansResponse => ${PlansInCountryResponse}');
-    }
-    loading(false);
-  }
+  // createUser(String apiToken, LocalPlan model) async {
+  //   loading(true);
+  //   var response = await _provider.getPlansByCountry(apiToken, model.slug);
+  //   if (!response.status.hasError) {
+  //     localProfileResponse =
+  //         getPlansInCountryResponseFromJson(response.bodyString.toString());
+  //     print('localPlansResponse => ${PlansInCountryResponse}');
+  //   }
+  //   loading(false);
+  // }
 }

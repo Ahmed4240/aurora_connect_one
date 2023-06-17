@@ -127,5 +127,4 @@ class PlanDetailsController extends GetxController {
 
     loading(false);
   }
-
 }

@@ -1,108 +1,86 @@
-
-
 import 'dart:convert';
-import '../../error.dart';
 
-GlobalPackagesResponse getGlobalPackagesResponseFromJson(String str) => GlobalPackagesResponse.fromJson(json.decode(str));
+import 'package:aurora_connect_one/domain/plans/PlanDetail.dart';
 
-String getGlobalPackagesResponseToJson(GlobalPackagesResponse data) => json.encode(data.toJson());
+GetPackagesGlobal getPackagesGlobalFromJson(String str) => GetPackagesGlobal.fromJson(json.decode(str));
 
-class GlobalPackagesResponse {
-  bool? isSuccess;
-  List<GlobalPackagesData>? data;
-  Error? error;
+String getPackagesGlobalToJson(GetPackagesGlobal data) => json.encode(data.toJson());
 
-  GlobalPackagesResponse({
+class GetPackagesGlobal {
+  bool ?isSuccess;
+  List<PlanDetail> ?data;
+  dynamic error;
+
+  GetPackagesGlobal({
     this.isSuccess,
     this.data,
     this.error,
   });
 
-  factory GlobalPackagesResponse.fromJson(Map<String, dynamic> json) => GlobalPackagesResponse(
+  factory GetPackagesGlobal.fromJson(Map<String, dynamic> json) => GetPackagesGlobal(
     isSuccess: json["isSuccess"],
-    data: List<GlobalPackagesData>.from(json["data"].map((x) => GlobalPackagesData.fromJson(x))),
-    error: Error.fromJson(json["error"]),
+    data: List<PlanDetail>.from(json["data"].map((x) => PlanDetail.fromJson(x))),
+    error: json["error"],
   );
 
   Map<String, dynamic> toJson() => {
     "isSuccess": isSuccess,
-    "data": List<dynamic>.from(data!.map((x) => x!.toJson())),
-    "error": error?.toJson(),
+    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
+    "error": error,
   };
 }
 
-class GlobalPackagesData {
-  String providerName;
-  String providerImage;
-  String data;
-  int price;
-  String validity;
-  String id;
-  String title;
-  List<CountryList> countryList;
+enum Information { EMPTY, THIS_E_SIM_DOESN_T_COME_WITH_A_NUMBER, THIS_E_SIM_DOESN_T_COME_WITH_A_PHONE_NUMBER }
 
-  GlobalPackagesData({
-    required this.providerName,
-    required this.providerImage,
-    required this.data,
-    required this.price,
-    required this.validity,
-    required this.id,
-    required this.title,
-    required this.countryList,
+final informationValues = EnumValues({
+  "": Information.EMPTY,
+  "This eSIM doesn't come with a number.": Information.THIS_E_SIM_DOESN_T_COME_WITH_A_NUMBER,
+  "This eSIM doesn't come with a phone number.": Information.THIS_E_SIM_DOESN_T_COME_WITH_A_PHONE_NUMBER
+});
+
+class Network {
+  String ? name;
+  Types ?types;
+
+  Network({
+    this.name,
+    this.types,
   });
 
-  factory GlobalPackagesData.fromJson(Map<String, dynamic> json) => GlobalPackagesData(
-    providerName: json["providerName"],
-    providerImage: json["providerImage"],
-    data: json["data"],
-    price: json["price"],
-    validity: json["validity"],
-    id: json["id"],
-    title: json["title"],
-    countryList: List<CountryList>.from(json["countryList"].map((x) => CountryList.fromJson(x))),
+  factory Network.fromJson(Map<String, dynamic> json) => Network(
+    name: json["name"],
+    types: typesValues.map[json["types"]]!,
   );
 
   Map<String, dynamic> toJson() => {
-    "providerName": providerName,
-    "providerImage": providerImage,
-    "data": data,
-    "price": price,
-    "validity": validity,
-    "id": id,
-    "title": title,
-    "countryList": List<dynamic>.from(countryList.map((x) => x.toJson())),
+    "name": name,
+    "types": typesValues.reverse[types],
   };
 }
 
-class CountryList {
-  String countryName;
-  String countryImage;
-  String countryCode;
-  String? slug;
-  int totalPlans;
+enum Types { THE_5_G, LTE, THE_3_G, THE_4_G }
 
-  CountryList({
-    required this.countryName,
-    required this.countryImage,
-    required this.countryCode,
-    this.slug,
-    required this.totalPlans,
-  });
+final typesValues = EnumValues({
+  "LTE": Types.LTE,
+  "3G": Types.THE_3_G,
+  "4G": Types.THE_4_G,
+  "5G": Types.THE_5_G
+});
 
-  factory CountryList.fromJson(Map<String, dynamic> json) => CountryList(
-    countryName: json["countryName"],
-    countryImage: json["countryImage"],
-    countryCode: json["countryCode"],
-    slug: json["slug"],
-    totalPlans: json["totalPlans"],
-  );
+enum PlanType { DATA }
 
-  Map<String, dynamic> toJson() => {
-    "countryName": countryName,
-    "countryImage": countryImage,
-    "countryCode": countryCode,
-    "slug": "slug",
-    "totalPlans": totalPlans,
-  };
+final planTypeValues = EnumValues({
+  "data": PlanType.DATA
+});
+
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
+  }
 }

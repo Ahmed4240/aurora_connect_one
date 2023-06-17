@@ -1,78 +1,84 @@
+// To parse this JSON data, do
+//
+//     final getPackagesModel = getPackagesModelFromJson(jsonString);
 
 import 'dart:convert';
-import '../../error.dart';
 
-LocalPackagesResponse getLocalPackagesResponseFromJson(String str) => LocalPackagesResponse.fromJson(json.decode(str));
+GetPackagesModel getPackagesModelFromJson(String str) => GetPackagesModel.fromJson(json.decode(str));
 
-String getPackagesToJson(LocalPackagesResponse data) => json.encode(data.toJson());
+String getPackagesModelToJson(GetPackagesModel data) => json.encode(data.toJson());
 
-class LocalPackagesResponse {
+class GetPackagesModel {
   bool? isSuccess;
-  List<LocalPackagesResponseData>? data;
-  Error? error;
+  List<Datum>? data;
+  dynamic error;
 
-  LocalPackagesResponse({
+  GetPackagesModel({
     this.isSuccess,
     this.data,
     this.error,
   });
 
-  factory LocalPackagesResponse.fromJson(Map<String, dynamic> json) => LocalPackagesResponse(
+  factory GetPackagesModel.fromJson(Map<String, dynamic> json) => GetPackagesModel(
     isSuccess: json["isSuccess"],
-    data: List<LocalPackagesResponseData>.from(json["data"].map((x) => LocalPackagesResponseData.fromJson(x))),
-    error: Error.fromJson(json["error"]),
+    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    error: json["error"],
   );
 
   Map<String, dynamic> toJson() => {
     "isSuccess": isSuccess,
-    "data": List<dynamic>.from(data!.map((x) => x!.toJson())),
-    "error": error?.toJson(),
+    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
+    "error": error,
   };
 }
 
-class LocalPackagesResponseData {
-  String planType;
-  List<LocalPlan> plans;
+class Datum {
+  String? planType;
+  List<Plan>? plans;
 
-  LocalPackagesResponseData({
-    required this.planType,
-    required this.plans,
+  Datum({
+    this.planType,
+    this.plans,
   });
 
-  factory LocalPackagesResponseData.fromJson(Map<String, dynamic> json) => LocalPackagesResponseData(
+  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     planType: json["planType"],
-    plans: List<LocalPlan>.from(json["plans"].map((x) => LocalPlan.fromJson(x))),
+    plans: List<Plan>.from(json["plans"].map((x) => Plan.fromJson(x))) ,
   );
 
   Map<String, dynamic> toJson() => {
     "planType": planType,
-    "plans": List<dynamic>.from(plans.map((x) => x.toJson())),
+    "plans": List<dynamic>.from(plans!.map((x) => x.toJson())),
   };
 }
 
-class LocalPlan {
-  String countryName;
-  String countryImage;
-  String slug;
-  int totalPlans;
+class Plan {
+  String? countryName;
+  String? countryImage;
+  String? countryCode;
+  String? slug;
+  int? totalPlans;
 
-  LocalPlan({
-    required this.countryName,
-    required this.countryImage,
-    required this.slug,
-    required this.totalPlans,
+  Plan({
+    this.countryName,
+    this.countryImage,
+    this.countryCode,
+    this.slug,
+    this.totalPlans,
   });
 
-  factory LocalPlan.fromJson(Map<String, dynamic> json) => LocalPlan(
-    countryName: json["countryName"],
-    countryImage: json["countryImage"],
-    slug: json["slug"],
-    totalPlans: json["totalPlans"],
+  factory Plan.fromJson(Map<String, dynamic> json) => Plan(
+    countryName: json["countryName"] ?? "",
+    countryImage: json["countryImage"] ?? "",
+    countryCode: json["countryCode"] ?? "",
+    slug: json["slug"] ?? "",
+    totalPlans: json["totalPlans"] ?? 0,
   );
 
   Map<String, dynamic> toJson() => {
     "countryName": countryName,
     "countryImage": countryImage,
+    "countryCode": countryCode,
     "slug": slug,
     "totalPlans": totalPlans,
   };
