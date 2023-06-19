@@ -5,12 +5,14 @@ import 'package:aurora_connect_one/domain/signup/SignUpResponse.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
+import '../../application/services/secure_storage.dart';
 import '../../domain/confirm_order/ConfirmOrderRequest.dart';
 import '../../domain/create_order/create_order_request.dart';
 import '../../domain/create_order/create_order_response.dart';
 import '../../domain/signup/SignUpRequest.dart';
 import '../provider/plans_provider.dart';
 import '../screens/main_screen.dart';
+import '../widgets/constants.dart';
 
 class PlanDetailsController extends GetxController {
   @override
@@ -18,6 +20,7 @@ class PlanDetailsController extends GetxController {
     super.onReady();
   }
 
+  final SecureStorage secureStorage = SecureStorage();
   var createOrderResponse = CreateOrderResponse().obs;
   var signUpResponse = SignUpResponse().obs;
   var confirmOrderResponse = ConfirmOrderResponse().obs;
@@ -52,11 +55,40 @@ class PlanDetailsController extends GetxController {
       print("=====================================================");
       print("Preparing Request for sign-up");
       SignUpRequest signUpRequest = SignUpRequest();
+
       signUpRequest.username = "Ahmed Rehman";
       signUpRequest.email = "ahmedrehman123@gmail.com";
       signUpRequest.phone = "+923127113699";
+      secureStorage.writeSecureData(
+          "requestUserName", signUpRequest.username.toString());
+      secureStorage.writeSecureData(
+          "requestUserEmail", signUpRequest.email.toString());
+      secureStorage.writeSecureData(
+          "requestUserPhone", signUpRequest.phone.toString());
+
+      /// Assigning Storage data to variable to use checks
+      await secureStorage
+          .readSecureData('requestUserName')
+          .then((value) => {flutterSecureLoginUserName = value});
+      await secureStorage
+          .readSecureData('requestUserEmail')
+          .then((value) => {flutterSecureLoginUserName = value});
+      await secureStorage
+          .readSecureData('requestUserPhone')
+          .then((value) => {flutterSecureLoginUserName = value});
+      print("Storage Data");
+      print(flutterSecureLoginUserName! + flutterSecureClientEmail! + flutterSecureClientPhone!);
+     if(flutterSecureLoginUserName != null ){
+       print("Storage Data for api");
+       signUpRequest.username = flutterSecureLoginUserName;
+       signUpRequest.email = flutterSecureClientEmail;
+       signUpRequest.phone = flutterSecureClientPhone;
+       signUpUserRequest(
+           signUpRequest, createOrderResponse.value.data?.orderId ?? "");
+     }else{
+       print("hard code data for api");
       signUpUserRequest(
-          signUpRequest, createOrderResponse.value.data?.orderId ?? "");
+          signUpRequest, createOrderResponse.value.data?.orderId ?? "");}
     } else {
       printError(info: "Response Error: ${response_1.body}");
     }

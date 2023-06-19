@@ -53,6 +53,7 @@ dependencies:
   external_app_launcher: ^2.0.2
   url_launcher: ^5.2.5
   shimmer: ^2.0.0
+  flutter_secure_storage: ^8.0.0
 
 
   # The following adds the Cupertino Icons font to your application.

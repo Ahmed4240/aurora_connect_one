@@ -450,8 +450,8 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
                                               crossAxisAlignment: CrossAxisAlignment
                                                   .start,
                                               mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                const Text(
+                                              children: const [
+                                                Text(
                                                   'Network',
                                                   style: TextStyle(
                                                       fontSize: 14.0,
@@ -461,7 +461,7 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
                                                 )
                                                 , Text(
                                                   "",
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       fontSize: 16.0,
                                                       fontWeight: FontWeight.w500,
                                                       color: AppColors.blackColor),
@@ -609,7 +609,7 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
                                                 });
                                               },
                                             ),
-                                            Container(
+                                            SizedBox(
                                                 width: screenSize.width * .8,
                                                 child: Text(Utils.terms_and_condition))
                                           ],
@@ -626,7 +626,7 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
                                               });
                                             },
                                           ),
-                                          Container(
+                                          SizedBox(
                                               width: screenSize.width * .8,
                                               child: Text(Utils.terms_and_condition1))
                                         ],
@@ -686,7 +686,7 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
                   ),
                 );
           } else {
-            return Text("Data not found!");
+            return const Text("Data not found!");
           }
         });
 
