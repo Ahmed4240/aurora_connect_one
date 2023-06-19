@@ -1,12 +1,14 @@
-import 'package:aurora_connect_one/presentation/commons/routes/routes.dart';
 import 'package:aurora_connect_one/presentation/commons/routes/routes_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
 import '../../domain/my_esim_model.dart';
 import '../../domain/region_model.dart';
 import '../commons/app_colors.dart';
 import '../commons/app_images.dart';
+import '../controllers/plans_details_controller.dart';
 import '../custom_views/MaterialDesignIndicator.dart';
 
 class MyE_SimsPage extends StatefulWidget {
@@ -18,6 +20,7 @@ class MyE_SimsPage extends StatefulWidget {
 
 class _MyE_SimsPageState extends State<MyE_SimsPage>
     with SingleTickerProviderStateMixin {
+  var controller = Get.put(PlanDetailsController());
   final _controller = PageController();
   late TabController _tabController;
   final _tabs = [
@@ -96,18 +99,183 @@ class _MyE_SimsPageState extends State<MyE_SimsPage>
           child: PageView(
             controller: _controller, // assign it to PageView
             children: <Widget>[
-              ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: currentList.length,
-                  scrollDirection: Axis.vertical,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(
-                          left: 14.0, right: 14.0, bottom: 14.0),
-                      child: Stack(children: [
-                        Card(
-                          margin: const EdgeInsets.only(
-                              top: 35, bottom: 5, left: 10, right: 10),
+              controller.confirmOrderResponse.value.data != null
+                  ? ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: controller.confirmOrderResponse.value.data
+                          ?.userPackageList?.length,
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(
+                              left: 14.0, right: 14.0, bottom: 14.0),
+                          child: Stack(children: [
+                            Card(
+                              margin: const EdgeInsets.only(
+                                  top: 35, bottom: 5, left: 10, right: 10),
+                              shadowColor: Colors.transparent,
+                              shape: const RoundedRectangleBorder(
+                                  side:
+                                      BorderSide(color: Colors.white, width: 3),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15))),
+                              child: Container(
+                                margin: const EdgeInsets.all(10),
+                                padding: const EdgeInsets.all(5),
+                                alignment: Alignment.center,
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                                controller
+                                                    .confirmOrderResponse
+                                                    .value
+                                                    .data
+                                                    ?.userPackageList?[0]
+                                                    .slug
+                                                    .toString() as String,
+                                                style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            const SizedBox(height: 2.0),
+                                            Text(currentList[index].country,
+                                                style: const TextStyle(
+                                                    color: Colors.grey,
+                                                    fontWeight:
+                                                        FontWeight.normal)),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 24.0),
+                                          child: SizedBox(
+                                            height: 45.0,
+                                            width: 1.0,
+                                            child: Container(
+                                              width: 1.0,
+                                              color: AppColors.lightGreyColor,
+                                            ),
+                                          ),
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(currentList[index].remaining,
+                                                style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            const SizedBox(height: 2.0),
+                                            const Text('Remaining',
+                                                style: TextStyle(
+                                                    color: Colors.grey,
+                                                    fontWeight:
+                                                        FontWeight.normal)),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 18.0, left: 12.0, right: 12.0),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Container(
+                                            height: 35.0,
+                                            width: 120.0,
+                                            decoration: const BoxDecoration(
+                                                color: AppColors.mainColor,
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(80.0))),
+                                            child: const Center(
+                                                child: Text('Top up',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight: FontWeight
+                                                            .normal))),
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              openDetails(context);
+                                            },
+                                            child: Container(
+                                              height: 35.0,
+                                              width: 120.0,
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                    color: AppColors.mainColor,
+                                                    width: 1,
+                                                  ),
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                    Radius.circular(80.0),
+                                                  )),
+                                              child: const Center(
+                                                  child: Text('Details',
+                                                      style: TextStyle(
+                                                          color: AppColors
+                                                              .mainColor,
+                                                          fontWeight: FontWeight
+                                                              .normal))),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                                top: 5,
+                                left: 20,
+                                child: Image.asset(AppImages.marhaba_icon))
+                          ]),
+                        );
+                      })
+                  : Column(
+                      children: [
+                        const SizedBox(
+                          height: 50,
+                        ),
+                        SvgPicture.asset(
+                          AppImages.empty_data_icon,
+                          width: width * 0.5,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Text(
+                          "No Current ESim found!",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w600),
+                        )
+                      ],
+                    ),
+              controller.confirmOrderResponse.value.data != null
+                  ? ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: archivedList.length,
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Card(
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 10),
                           shadowColor: Colors.transparent,
                           shape: const RoundedRectangleBorder(
                               side: BorderSide(color: Colors.white, width: 3),
@@ -117,188 +285,101 @@ class _MyE_SimsPageState extends State<MyE_SimsPage>
                             margin: const EdgeInsets.all(10),
                             padding: const EdgeInsets.all(5),
                             alignment: Alignment.center,
-                            child: Column(
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
                                   children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(currentList[index].name,
-                                            style: const TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold)),
-                                        const SizedBox(height: 2.0),
-                                        Text(currentList[index].country,
-                                            style: const TextStyle(
-                                                color: Colors.grey,
-                                                fontWeight: FontWeight.normal)),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 24.0),
-                                      child: SizedBox(
-                                        height: 45.0,
-                                        width: 1.0,
-                                        child: Container(
-                                          width: 1.0,
-                                          color: AppColors.lightGreyColor,
-                                        ),
+                                    Container(
+                                      width: 45,
+                                      height: 45,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: SvgPicture.asset(
+                                        archivedList[index].imagePath,
                                       ),
                                     ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(currentList[index].remaining,
-                                            style: const TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold)),
-                                        const SizedBox(height: 2.0),
-                                        const Text('Remaining',
-                                            style: TextStyle(
-                                                color: Colors.grey,
-                                                fontWeight: FontWeight.normal)),
-                                      ],
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 18.0),
+                                      child: SizedBox(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(archivedList[index].name,
+                                                style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            Text(
+                                                '${archivedList[index].numberOfPlans} plans',
+                                                style: const TextStyle(
+                                                    color: Colors.grey,
+                                                    fontWeight:
+                                                        FontWeight.normal))
+                                          ],
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 18.0, left: 12.0, right: 12.0),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        height: 35.0,
-                                        width: 120.0,
-                                        decoration: const BoxDecoration(
-                                            color: AppColors.mainColor,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(80.0))),
-                                        child: const Center(
-                                            child: Text('Top up',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.normal))),
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          openDetails(context);
-                                        },
-                                        child: Container(
-                                          height: 35.0,
-                                          width: 120.0,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                color: AppColors.mainColor,
-                                                width: 1,
-                                              ),
-                                              borderRadius: const BorderRadius.all(
-                                                Radius.circular(80.0),
-                                              )),
-                                          child: const Center(
-                                              child: Text(
-                                                  'Details',
-                                                  style: TextStyle(
-                                                      color: AppColors.mainColor,
-                                                      fontWeight:
-                                                          FontWeight.normal))),
-
-                                        ),
-                                      ),
-                                    ],
+                                const CircleAvatar(
+                                  radius: 15,
+                                  backgroundColor: AppColors.transparentColor,
+                                  child: Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: AppColors.activeColorPrimary,
+                                    size: 18.0,
                                   ),
-                                ),
+                                )
                               ],
                             ),
                           ),
+                        );
+                      })
+                  : Column(
+                      children: [
+                        const SizedBox(
+                          height: 50,
                         ),
-                        Positioned(
-                            top: 5,
-                            left: 20,
-                            child: Image.asset(AppImages.marhaba_icon))
-                      ]),
-                    );
-                  }),
-              ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: archivedList.length,
-                  scrollDirection: Axis.vertical,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: 10),
-                      shadowColor: Colors.transparent,
-                      shape: const RoundedRectangleBorder(
-                          side: BorderSide(color: Colors.white, width: 3),
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      child: Container(
-                        margin: const EdgeInsets.all(10),
-                        padding: const EdgeInsets.all(5),
-                        alignment: Alignment.center,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  width: 45,
-                                  height: 45,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    archivedList[index].imagePath,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 18.0),
-                                  child: SizedBox(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(archivedList[index].name,
-                                            style: const TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold)),
-                                        Text(
-                                            '${archivedList[index].numberOfPlans} plans',
-                                            style: const TextStyle(
-                                                color: Colors.grey,
-                                                fontWeight: FontWeight.normal))
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const CircleAvatar(
-                              radius: 15,
-                              backgroundColor: AppColors.transparentColor,
-                              child: Icon(
-                                Icons.arrow_forward_ios,
-                                color: AppColors.activeColorPrimary,
-                                size: 18.0,
-                              ),
-                            )
-                          ],
+                        SvgPicture.asset(
+                          AppImages.empty_data_icon,
+                          width: width * 0.55,
                         ),
-                      ),
-                    );
-                  }), // page2
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Text(
+                          "No archived SIMs found!",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w400),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        InkWell(
+                          onTap: () async {},
+                          child: Container(
+                            height: 35.0,
+                            width: 120.0,
+                            decoration: const BoxDecoration(
+                                color: AppColors.mainColor,
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(80.0))),
+                            child: const Center(
+                                child: Text('Browse plans',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight:
+                                        FontWeight.normal))),
+                          ),
+                        ),
+                      ],
+                    ), // page2
             ],
           ),
         ),

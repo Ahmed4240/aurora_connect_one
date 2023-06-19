@@ -20,7 +20,7 @@ class CreateOrderResponse {
   factory CreateOrderResponse.fromJson(Map<String, dynamic> json) => CreateOrderResponse(
     isSuccess: json["isSuccess"],
     data: CreateOrderData.fromJson(json["data"]),
-    error: Error.fromJson(json["error"]),
+    error: Error?.fromJson(json["error"]),
   );
 
   Map<String, dynamic> toJson() => {

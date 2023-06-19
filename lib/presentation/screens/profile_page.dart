@@ -52,470 +52,466 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     // TODO: implement initState
-    checkESIMCapability();
+    // checkESIMCapability();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    return GetX<ProfileController>(
-        init: ProfileController(),
-        builder: (controller) {
-          return Scaffold(
-            body: SingleChildScrollView(
-              child: Container(
-                width: screenSize.width,
-                color: AppColors.backGroundColor,
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Container(
+          width: screenSize.width,
+          color: AppColors.backGroundColor,
+          child: Column(
+            children: [
+              Card(
+                elevation: 8,
+                shadowColor: Colors.white30,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 34.0, bottom: 24.0, left: 24.0, right: 24.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: const [
+                          Text(
+                            'Profile',
+                            style: TextStyle(
+                                fontFamily: 'Metropolis',
+                                fontWeight: FontWeight.w600,
+                                fontSize: 27),
+                          ),
+                          Text(
+                            'Emma Dahl',
+                            style: TextStyle(
+                                fontFamily: 'Metropolis',
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16),
+                          ),
+                        ],
+                      ),
+                      Image.asset(
+                        AppImages.my_profile_filled_icon,
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.fill,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: (){
+                  // openVippsApp(context);
+                  // callForCreateOrder(context);
+                },
+                child: Card(
+                  margin: const EdgeInsets.only(
+                      top: 30, bottom: 5, left: 20, right: 20),
+                  elevation: 8,
+                  shadowColor: Colors.white30,
+                  shape: const RoundedRectangleBorder(
+                      side: BorderSide(color: Colors.white, width: 3),
+                      borderRadius: BorderRadius.all(Radius.circular(15))),
+                  child: Container(
+                    margin: const EdgeInsets.all(10),
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                    alignment: Alignment.center,
+                    color: AppColors.whiteColor,
+                    width: screenSize.width,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Login/Signup',
+                          style: TextStyle(
+                              fontFamily: 'Metropolis',
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16),
+                        ),
+                        Image.asset(
+                          AppImages.my_profile_filled_icon,
+                          width: 50,
+                          height: 50,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Card(
+                margin: const EdgeInsets.only(
+                    top: 30, bottom: 5, left: 20, right: 20),
+                elevation: 8,
+                shadowColor: Colors.white30,
+                shape: const RoundedRectangleBorder(
+                    side: BorderSide(color: Colors.white, width: 3),
+                    borderRadius: BorderRadius.all(Radius.circular(15))),
                 child: Column(
                   children: [
-                    Card(
-                      elevation: 8,
-                      shadowColor: Colors.white30,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 34.0, bottom: 24.0, left: 24.0, right: 24.0),
+                    InkWell(
+                      onTap: (){
+                        openAccountInformation(context);
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 10),
+                        alignment: Alignment.center,
+                        color: AppColors.whiteColor,
+                        width: screenSize.width,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
-                              children: const [
-                                Text(
-                                  'Profile',
+                            Row(children: [
+                              SvgPicture.asset(AppImages.account_information_profile_icon),
+                              const Padding(
+                                padding: EdgeInsets.only(left: 16.0),
+                                child: Text(
+                                  'Account information',
                                   style: TextStyle(
                                       fontFamily: 'Metropolis',
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 27),
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 14),
                                 ),
-                                Text(
-                                  'Emma Dahl',
-                                  style: TextStyle(
-                                      fontFamily: 'Metropolis',
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16),
-                                ),
-                              ],
-                            ),
-                            Image.asset(
-                              AppImages.my_profile_filled_icon,
-                              width: 50,
-                              height: 50,
-                              fit: BoxFit.fill,
-                            ),
+                              ),
+                            ]),
+                            const Icon(
+                              Icons.arrow_forward_ios,
+                              color: AppColors.inActiveColorPrimary,
+                              size: 18.0,
+                            )
                           ],
                         ),
                       ),
                     ),
-                    InkWell(
-                      onTap: (){
-                        // openVippsApp(context);
-                        // callForCreateOrder(context);
-                      },
-                      child: Card(
-                        margin: const EdgeInsets.only(
-                            top: 30, bottom: 5, left: 20, right: 20),
-                        elevation: 8,
-                        shadowColor: Colors.white30,
-                        shape: const RoundedRectangleBorder(
-                            side: BorderSide(color: Colors.white, width: 3),
-                            borderRadius: BorderRadius.all(Radius.circular(15))),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 28.0),
+                      child: SizedBox(
+                        width: screenSize.width,
+                        height: 1,
                         child: Container(
-                          margin: const EdgeInsets.all(10),
-                          padding:
-                          const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                          alignment: Alignment.center,
-                          color: AppColors.whiteColor,
-                          width: screenSize.width,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                'Login/Signup',
-                                style: TextStyle(
-                                    fontFamily: 'Metropolis',
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16),
-                              ),
-                              Image.asset(
-                                AppImages.my_profile_filled_icon,
-                                width: 50,
-                                height: 50,
-                              )
-                            ],
-                          ),
+                          color: AppColors.lightGreyColor,
                         ),
                       ),
                     ),
-                    Card(
-                      margin: const EdgeInsets.only(
-                          top: 30, bottom: 5, left: 20, right: 20),
-                      elevation: 8,
-                      shadowColor: Colors.white30,
-                      shape: const RoundedRectangleBorder(
-                          side: BorderSide(color: Colors.white, width: 3),
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      child: Column(
+                    InkWell(
+                      onTap: () {
+                        openWebView(context);
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 10),
+                        alignment: Alignment.center,
+                        color: AppColors.whiteColor,
+                        width: screenSize.width,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(children: [
+                              SvgPicture.asset(AppImages.my_orders_icon),
+                              const Padding(
+                                padding: EdgeInsets.only(left: 16.0),
+                                child: Text(
+                                  'My orders',
+                                  style: TextStyle(
+                                      fontFamily: 'Metropolis',
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 14),
+                                ),
+                              ),
+                            ]),
+                            const Icon(
+                              Icons.arrow_forward_ios,
+                              color: AppColors.inActiveColorPrimary,
+                              size: 18.0,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 28.0),
+                      child: SizedBox(
+                        width: screenSize.width,
+                        height: 1,
+                        child: Container(
+                          color: AppColors.lightGreyColor,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                      alignment: Alignment.center,
+                      color: AppColors.whiteColor,
+                      width: screenSize.width,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          InkWell(
-                            onTap: (){
-                              openAccountInformation(context);
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.all(10),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 10),
-                              alignment: Alignment.center,
-                              color: AppColors.whiteColor,
-                              width: screenSize.width,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(children: [
-                                    SvgPicture.asset(AppImages.account_information_profile_icon),
-                                    const Padding(
-                                      padding: EdgeInsets.only(left: 16.0),
-                                      child: Text(
-                                        'Account information',
-                                        style: TextStyle(
-                                            fontFamily: 'Metropolis',
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 14),
-                                      ),
-                                    ),
-                                  ]),
-                                  const Icon(
-                                    Icons.arrow_forward_ios,
-                                    color: AppColors.inActiveColorPrimary,
-                                    size: 18.0,
-                                  )
-                                ],
+                          Row(children: [
+                            SvgPicture.asset(AppImages.languages_icon),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 16.0),
+                              child: Text(
+                                'Languages',
+                                style: TextStyle(
+                                    fontFamily: 'Metropolis',
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 14),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 28.0),
-                            child: SizedBox(
-                              width: screenSize.width,
-                              height: 1,
-                              child: Container(
-                                color: AppColors.lightGreyColor,
-                              ),
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              openWebView(context);
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.all(10),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 10),
-                              alignment: Alignment.center,
-                              color: AppColors.whiteColor,
-                              width: screenSize.width,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(children: [
-                                    SvgPicture.asset(AppImages.my_orders_icon),
-                                    const Padding(
-                                      padding: EdgeInsets.only(left: 16.0),
-                                      child: Text(
-                                        'My orders',
-                                        style: TextStyle(
-                                            fontFamily: 'Metropolis',
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 14),
-                                      ),
-                                    ),
-                                  ]),
-                                  const Icon(
-                                    Icons.arrow_forward_ios,
-                                    color: AppColors.inActiveColorPrimary,
-                                    size: 18.0,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 28.0),
-                            child: SizedBox(
-                              width: screenSize.width,
-                              height: 1,
-                              child: Container(
-                                color: AppColors.lightGreyColor,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.all(10),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 10),
-                            alignment: Alignment.center,
-                            color: AppColors.whiteColor,
-                            width: screenSize.width,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(children: [
-                                  SvgPicture.asset(AppImages.languages_icon),
-                                  const Padding(
-                                    padding: EdgeInsets.only(left: 16.0),
-                                    child: Text(
-                                      'Languages',
-                                      style: TextStyle(
-                                          fontFamily: 'Metropolis',
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 14),
-                                    ),
-                                  ),
-                                ]),
-                                const Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: AppColors.inActiveColorPrimary,
-                                  size: 18.0,
-                                )
-                              ],
-                            ),
+                          ]),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            color: AppColors.inActiveColorPrimary,
+                            size: 18.0,
                           )
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 5,),
-                    Card(
-                      margin: const EdgeInsets.only(
-                          top: 30, bottom: 5, left: 20, right: 20),
-                      elevation: 8,
-                      shadowColor: Colors.white30,
-                      shape: const RoundedRectangleBorder(
-                          side: BorderSide(color: Colors.white, width: 3),
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      child: Column(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.all(10),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 10),
-                            alignment: Alignment.center,
-                            color: AppColors.whiteColor,
-                            width: screenSize.width,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(children: [
-                                  SvgPicture.asset(AppImages.privacy_policy_icon),
-                                  const Padding(
-                                    padding: EdgeInsets.only(left: 16.0),
-                                    child: Text(
-                                      'Privacy policy',
-                                      style: TextStyle(
-                                          fontFamily: 'Metropolis',
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 14),
-                                    ),
-                                  ),
-                                ]),
-                                const Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: AppColors.inActiveColorPrimary,
-                                  size: 18.0,
-                                )
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 28.0),
-                            child: SizedBox(
-                              width: screenSize.width,
-                              height: 1,
-                              child: Container(
-                                color: AppColors.lightGreyColor,
-                              ),
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              openWebView(context);
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.all(10),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 10),
-                              alignment: Alignment.center,
-                              color: AppColors.whiteColor,
-                              width: screenSize.width,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(children: [
-                                    SvgPicture.asset(AppImages.term_of_use_icon),
-                                    const Padding(
-                                      padding: EdgeInsets.only(left: 16.0),
-                                      child: Text(
-                                        'Terms of use',
-                                        style: TextStyle(
-                                            fontFamily: 'Metropolis',
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 14),
-                                      ),
-                                    ),
-                                  ]),
-                                  const Icon(
-                                    Icons.arrow_forward_ios,
-                                    color: AppColors.inActiveColorPrimary,
-                                    size: 18.0,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 28.0),
-                            child: SizedBox(
-                              width: screenSize.width,
-                              height: 1,
-                              child: Container(
-                                color: AppColors.lightGreyColor,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.all(10),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 10),
-                            alignment: Alignment.center,
-                            color: AppColors.whiteColor,
-                            width: screenSize.width,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(children: [
-                                  SvgPicture.asset(AppImages.contact_help_center_icon),
-                                  const Padding(
-                                    padding: EdgeInsets.only(left: 16.0),
-                                    child: Text(
-                                      'Contact help center',
-                                      style: TextStyle(
-                                          fontFamily: 'Metropolis',
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 14),
-                                    ),
-                                  ),
-                                ]),
-                                const Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: AppColors.inActiveColorPrimary,
-                                  size: 18.0,
-                                )
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 28.0),
-                            child: SizedBox(
-                              width: screenSize.width,
-                              height: 1,
-                              child: Container(
-                                color: AppColors.lightGreyColor,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.all(10),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 10),
-                            alignment: Alignment.center,
-                            color: AppColors.whiteColor,
-                            width: screenSize.width,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(children: [
-                                  SvgPicture.asset(AppImages.rate_us_icon),
-                                  const Padding(
-                                    padding: EdgeInsets.only(left: 16.0),
-                                    child: Text(
-                                      'Rate Aurora Connect',
-                                      style: TextStyle(
-                                          fontFamily: 'Metropolis',
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 14),
-                                    ),
-                                  ),
-                                ]),
-                                const Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: AppColors.inActiveColorPrimary,
-                                  size: 18.0,
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 5,),
-                    Card(
-                      margin: const EdgeInsets.only(
-                          top: 30, bottom: 5, left: 20, right: 20),
-                      elevation: 8,
-                      shadowColor: Colors.white30,
-                      shape: const RoundedRectangleBorder(
-                          side: BorderSide(color: Colors.white, width: 3),
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      child: Column(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.all(10),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 10),
-                            alignment: Alignment.center,
-                            color: AppColors.whiteColor,
-                            width: screenSize.width,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(children: [
-                                  SvgPicture.asset(AppImages.logout_icon),
-                                  const Padding(
-                                    padding: EdgeInsets.only(left: 16.0),
-                                    child: Text(
-                                      'Logout',
-                                      style: TextStyle(
-                                          fontFamily: 'Metropolis',
-                                          fontWeight: FontWeight.normal,
-                                          color: Colors.red,
-                                          fontSize: 18),
-                                    ),
-                                  ),
-                                ]),
-                                const Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: AppColors.inActiveColorPrimary,
-                                  size: 18.0,
-                                )
-                              ],
-                            ),
-                          ),
                         ],
                       ),
                     )
                   ],
                 ),
               ),
-            ),
-          );
-        });
+              const SizedBox(height: 5,),
+              Card(
+                margin: const EdgeInsets.only(
+                    top: 30, bottom: 5, left: 20, right: 20),
+                elevation: 8,
+                shadowColor: Colors.white30,
+                shape: const RoundedRectangleBorder(
+                    side: BorderSide(color: Colors.white, width: 3),
+                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                child: Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                      alignment: Alignment.center,
+                      color: AppColors.whiteColor,
+                      width: screenSize.width,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(children: [
+                            SvgPicture.asset(AppImages.privacy_policy_icon),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 16.0),
+                              child: Text(
+                                'Privacy policy',
+                                style: TextStyle(
+                                    fontFamily: 'Metropolis',
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 14),
+                              ),
+                            ),
+                          ]),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            color: AppColors.inActiveColorPrimary,
+                            size: 18.0,
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 28.0),
+                      child: SizedBox(
+                        width: screenSize.width,
+                        height: 1,
+                        child: Container(
+                          color: AppColors.lightGreyColor,
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        openWebView(context);
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 10),
+                        alignment: Alignment.center,
+                        color: AppColors.whiteColor,
+                        width: screenSize.width,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(children: [
+                              SvgPicture.asset(AppImages.term_of_use_icon),
+                              const Padding(
+                                padding: EdgeInsets.only(left: 16.0),
+                                child: Text(
+                                  'Terms of use',
+                                  style: TextStyle(
+                                      fontFamily: 'Metropolis',
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 14),
+                                ),
+                              ),
+                            ]),
+                            const Icon(
+                              Icons.arrow_forward_ios,
+                              color: AppColors.inActiveColorPrimary,
+                              size: 18.0,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 28.0),
+                      child: SizedBox(
+                        width: screenSize.width,
+                        height: 1,
+                        child: Container(
+                          color: AppColors.lightGreyColor,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                      alignment: Alignment.center,
+                      color: AppColors.whiteColor,
+                      width: screenSize.width,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(children: [
+                            SvgPicture.asset(AppImages.contact_help_center_icon),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 16.0),
+                              child: Text(
+                                'Contact help center',
+                                style: TextStyle(
+                                    fontFamily: 'Metropolis',
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 14),
+                              ),
+                            ),
+                          ]),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            color: AppColors.inActiveColorPrimary,
+                            size: 18.0,
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 28.0),
+                      child: SizedBox(
+                        width: screenSize.width,
+                        height: 1,
+                        child: Container(
+                          color: AppColors.lightGreyColor,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                      alignment: Alignment.center,
+                      color: AppColors.whiteColor,
+                      width: screenSize.width,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(children: [
+                            SvgPicture.asset(AppImages.rate_us_icon),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 16.0),
+                              child: Text(
+                                'Rate Aurora Connect',
+                                style: TextStyle(
+                                    fontFamily: 'Metropolis',
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 14),
+                              ),
+                            ),
+                          ]),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            color: AppColors.inActiveColorPrimary,
+                            size: 18.0,
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 5,),
+              Card(
+                margin: const EdgeInsets.only(
+                    top: 30, bottom: 5, left: 20, right: 20),
+                elevation: 8,
+                shadowColor: Colors.white30,
+                shape: const RoundedRectangleBorder(
+                    side: BorderSide(color: Colors.white, width: 3),
+                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                child: Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                      alignment: Alignment.center,
+                      color: AppColors.whiteColor,
+                      width: screenSize.width,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(children: [
+                            SvgPicture.asset(AppImages.logout_icon),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 16.0),
+                              child: Text(
+                                'Logout',
+                                style: TextStyle(
+                                    fontFamily: 'Metropolis',
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.red,
+                                    fontSize: 18),
+                              ),
+                            ),
+                          ]),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            color: AppColors.inActiveColorPrimary,
+                            size: 18.0,
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   openWebView(BuildContext context) {

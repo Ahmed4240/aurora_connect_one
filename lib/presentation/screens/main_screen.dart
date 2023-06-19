@@ -1,7 +1,10 @@
 import 'package:aurora_connect_one/presentation/screens/profile_page.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 import '../commons/app_colors.dart';
 import '../commons/app_images.dart';
+import '../controllers/plans_details_controller.dart';
 import '../widgets/main_bottom_bar.dart';
 import 'home_page.dart';
 import 'my_e_sims_page.dart';
@@ -15,9 +18,8 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen>
     with SingleTickerProviderStateMixin {
-
   late TabController _tabController;
-
+  var controllerMyESin = Get.put(PlanDetailsController());
   int _currentIndex = 0;
   final _inactiveColor = Colors.grey;
 
@@ -25,6 +27,10 @@ class _MainScreenState extends State<MainScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    if (controllerMyESin.confirmOrderResponse.value.data != null) {
+      _currentIndex = 1;
+      _buildBottomBar();
+    }
   }
 
   static const List<Widget> _widgetOptions = <Widget>[
@@ -37,16 +43,15 @@ class _MainScreenState extends State<MainScreen>
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: AppColors.whiteColor,
-        resizeToAvoidBottomInset: false,
-        drawer: const Drawer(),
-        body: _widgetOptions.elementAt(_currentIndex),
-          bottomNavigationBar: _buildBottomBar()
-      ),
+          backgroundColor: AppColors.whiteColor,
+          resizeToAvoidBottomInset: false,
+          drawer: const Drawer(),
+          body: _widgetOptions.elementAt(_currentIndex),
+          bottomNavigationBar: _buildBottomBar()),
     );
   }
 
-  Widget _buildBottomBar(){
+  Widget _buildBottomBar() {
     return MainBottomBar(
       containerHeight: 70,
       backgroundColor: Colors.white,
@@ -72,7 +77,9 @@ class _MainScreenState extends State<MainScreen>
         ),
         BottomNavyBarItem(
           icon: AppImages.my_profile_filled_icon,
-          title: const Text('Profile',),
+          title: const Text(
+            'Profile',
+          ),
           activeColor: AppColors.activeColorPrimary,
           inactiveColor: _inactiveColor,
           textAlign: TextAlign.center,

@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:aurora_connect_one/domain/confirm_order/confirm_order_response.dart';
 import 'package:aurora_connect_one/domain/signup/SignUpResponse.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+
 import '../../domain/confirm_order/ConfirmOrderRequest.dart';
 import '../../domain/create_order/create_order_request.dart';
 import '../../domain/create_order/create_order_response.dart';
 import '../../domain/signup/SignUpRequest.dart';
 import '../provider/plans_provider.dart';
-import 'package:http/http.dart' as http;
+import '../screens/main_screen.dart';
 
 class PlanDetailsController extends GetxController {
   @override
@@ -35,13 +37,14 @@ class PlanDetailsController extends GetxController {
     };
     const url = 'https://auroraconnect.absoluit.com/api/api/Order/CreateOrder';
     var response_1 = await http.post(Uri.parse(url),
-        headers: {"Accept": "application/json",
-          "content-type":"application/json"},
+        headers: {
+          "Accept": "application/json",
+          "content-type": "application/json"
+        },
         body: jsonEncode(map));
 
     print("Request: ${jsonEncode(map)}");
     if (response_1.statusCode == 200) {
-
       createOrderResponse.value = getCreateOrderResponse(response_1.body);
 
       String responseString = response_1.body;
@@ -52,9 +55,9 @@ class PlanDetailsController extends GetxController {
       signUpRequest.username = "Ahmed Rehman";
       signUpRequest.email = "ahmedrehman123@gmail.com";
       signUpRequest.phone = "+923127113699";
-      signUpUserRequest(signUpRequest, createOrderResponse.value.data?.orderId ?? "");
-
-    } else{
+      signUpUserRequest(
+          signUpRequest, createOrderResponse.value.data?.orderId ?? "");
+    } else {
       printError(info: "Response Error: ${response_1.body}");
     }
 
@@ -71,13 +74,14 @@ class PlanDetailsController extends GetxController {
     };
     const url = 'https://auroraconnect.absoluit.com/api/api/UserSignup';
     var response_1 = await http.post(Uri.parse(url),
-        headers: {"Accept": "application/json",
-          "content-type":"application/json"},
+        headers: {
+          "Accept": "application/json",
+          "content-type": "application/json"
+        },
         body: jsonEncode(map));
 
     print("Request: ${jsonEncode(map)}");
     if (response_1.statusCode == 200) {
-
       signUpResponse.value = getSignUpResponse(response_1.body);
 
       String responseString = response_1.body;
@@ -89,9 +93,9 @@ class PlanDetailsController extends GetxController {
       confirmOrderRequest.userId = signUpResponse.value.data?.userId;
       confirmOrderRequest.orderId = "${orderId}";
 
-      orderConfirmationRequest(confirmOrderRequest, signUpResponse.value.data?.token ?? "");
-
-    } else{
+      orderConfirmationRequest(
+          confirmOrderRequest, signUpResponse.value.data?.token ?? "");
+    } else {
       printError(info: "Response Error: ${response_1.body}");
     }
 
@@ -100,31 +104,28 @@ class PlanDetailsController extends GetxController {
 
   orderConfirmationRequest(ConfirmOrderRequest request, String token) async {
     print('calling for orderConfirmationRequest ');
-    loading(true);
-    final map = {
-      "userId": request.userId,
-      "orderId": request.orderId
-    };
-    const url = 'https://auroraconnect.absoluit.com/api/api/Order/ConfirmOrder';
+    final map = {"userId": request.userId, "orderId": request.orderId};
+    var url =
+        "https://auroraconnect.absoluit.com/api/api/Order/ConfirmOrder?userId=${request.userId}&orderId=${request.orderId}";
     var response_1 = await http.post(Uri.parse(url),
-        headers: {"Accept": "application/json",
-          "content-type":"application/json",
-          'Authorization': 'Bearer $token'},
+        headers: {
+          "Accept": "application/json",
+          "content-type": "application/json",
+          'Authorization': 'Bearer $token'
+        },
         body: jsonEncode(map));
 
     print("Request: ${jsonEncode(map)}");
     print("Request Bearer-token : ${token}");
     if (response_1.statusCode == 200) {
-
-      confirmOrderResponse.value = getConfirmOrderResponse(response_1.body);
-
+      print("success msg  ${response_1.statusCode}");
+      confirmOrderResponse.value =
+          confirmOrderResponseFromJson(response_1.body);
       String responseString = response_1.body;
-      print("Response Data: $responseString");
-
-    } else{
+      print("Response Data1: $responseString");
+      Get.to(const MainScreen());
+    } else {
       printError(info: "Response Error: ${response_1.statusCode}");
     }
-
-    loading(false);
   }
 }

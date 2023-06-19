@@ -8,6 +8,8 @@ class AppImages {
   static const String region_asia_icon = 'assets/svgs/region_asia_icon.svg';
   static const String region_africa_icon = 'assets/svgs/region_africa_icon.svg';
 
+  static const String empty_data_icon = 'assets/svgs/empty_data_icon.svg';
+
   static const String merhaba_sim_icon = 'assets/svgs/merhaba_sim_icon.svg';
   static const String home_icon = 'assets/svgs/home_icon.svg';
   static const String my_esim_icon = 'assets/svgs/my_esim_icon.svg';
