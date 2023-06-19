@@ -642,26 +642,25 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
                                         // openVippsApp(context);
                                         setState(() => _isLoading = true);
                                         callForCreateOrder(context, controller, widget.model);
+                                        Future.delayed(
+                                          const Duration(seconds: 5),
+                                              () => setState(() => _isLoading = false),
+                                        );
+                                        moveBack(context);
                                       },
                                       child: Card(
                                         color: AppColors.activeColorPrimary,
-                                        margin: const EdgeInsets.symmetric(
-                                            vertical: 0, horizontal: 10),
+                                        margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                                         elevation: 5.0,
                                         shadowColor: Colors.white30,
                                         shape: const RoundedRectangleBorder(
-                                            side: BorderSide(
-                                                color: Colors.white, width: 1),
+                                            side: BorderSide(color: Colors.white, width: 1),
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(45))),
-                                        child: Center(child: _isLoading ?
-                                        const Text(
-                                          'creating order...',
-                                          style: TextStyle(color: Colors.white),)
+                                        child: Center(child: _isLoading == true ?
+                                        const Text('creating order...', style: TextStyle(color: Colors.white),)
                                         :
-                                        const Text(
-                                          '\$ 20.00 - Pay with vipps',
-                                          style: TextStyle(color: Colors.white),) ),
+                                        const Text('\$ 20.00 - Pay with vipps', style: TextStyle(color: Colors.white),) ),
                                       ),
                                     ),
                                   ),
@@ -686,10 +685,9 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
                   ),
                 );
           } else {
-            return Text("Data not found!");
+            return const Text("Data not found!");
           }
         });
-
   }
 
   moveBack(BuildContext context) {
@@ -719,7 +717,7 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
 
   void openPlanDetails(BuildContext context, int index) {
     Navigator.push(context,
-      MaterialPageRoute(builder: (context) => HomePage(),
+      MaterialPageRoute(builder: (context) => const HomePage(),
       ),
     );
   }

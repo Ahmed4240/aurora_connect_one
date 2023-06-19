@@ -1,5 +1,8 @@
 
 import 'dart:convert';
+import 'dart:math';
+
+// import 'package:floor/floor.dart';
 
 SignUpResponse getSignUpResponse(String str) => SignUpResponse.fromJson(json.decode(str));
 String getSignUpResponseString(SignUpResponse data) => json.encode(data.toJson());
@@ -31,7 +34,9 @@ class SignUpResponse {
   }
 }
 
+// @entity
 class SignUpResponseData {
+  // @primaryKey
   int? id;
   String? userId;
   String? token;

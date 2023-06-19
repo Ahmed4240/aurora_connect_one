@@ -7,11 +7,11 @@ class Error {
 
   Error.fromJson(Map<String, dynamic> json) {
     code = 1;                        //json['code']
-    message = "json['message']";       //json['message']
+    message = "";                    //json['message']
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['code'] = code;
     data['message'] = message;
     return data;

@@ -10,8 +10,9 @@ class SizeConfig {
   late final double _safeAreaVertical;
   late final double safeBlockHorizontal;
   late final double safeBlockVertical;
+  late final double screenTitleSize;
 
-  void init(BuildContext context){
+  init(BuildContext context){
     _mediaQueryData = MediaQuery.of(context);
     screenWidth = _mediaQueryData.size.width;
     screenHeight = _mediaQueryData.size.height;
@@ -23,5 +24,6 @@ class SizeConfig {
         _mediaQueryData.padding.bottom;
     safeBlockHorizontal = (screenWidth - _safeAreaHorizontal)/100;
     safeBlockVertical = (screenHeight - _safeAreaVertical)/100;
+    screenTitleSize = 18.0;
   }
 }

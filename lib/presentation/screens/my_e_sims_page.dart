@@ -267,7 +267,7 @@ class _MyE_SimsPageState extends State<MyE_SimsPage>
                         )
                       ],
                     ),
-              controller.confirmOrderResponse.value.data != null
+              archivedList.length >= 10
                   ? ListView.builder(
                       shrinkWrap: true,
                       itemCount: archivedList.length,
