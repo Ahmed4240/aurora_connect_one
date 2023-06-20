@@ -54,4 +54,5 @@ class Utils {
   static var terms_and_condition = "By completing the order, you agree to our Terms & conditions and Privacy policy.";
   static var terms_and_condition1 = "Before completing this order, please confirm that your device is eSIM compatible and network-unlocked.";
   static var reasons_info = "You can delete your account permanently after choosing a reason a giving more details to tell us why you’re deleting your account. (optional).";
+  static var requesting_personal_data = "We will send an email to your registered email address with a file containing your personal data stored in Aurora Connect app.\n\nTap button to continue.";
 }

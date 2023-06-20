@@ -6,25 +6,15 @@ import '../commons/app_colors.dart';
 import '../commons/app_images.dart';
 import '../commons/utils.dart';
 
-class DeleteMyAccountPage extends StatefulWidget {
-  const DeleteMyAccountPage({Key? key}) : super(key: key);
+class DownloadMyAccountPage extends StatefulWidget {
+  const DownloadMyAccountPage({Key? key}) : super(key: key);
 
   @override
-  State<DeleteMyAccountPage> createState() => _DeleteMyAccountPageState();
+  State<DownloadMyAccountPage> createState() => _DownloadMyAccountPageState();
 }
 
-enum SingingCharacter {
-  IncompatibleDevice,
-  DigitalFootPrint,
-  NoLongerNeed,
-  PoorCustomerService,
-  BadUserExperience,
-  Other
-}
-
-class _DeleteMyAccountPageState extends State<DeleteMyAccountPage> {
+class _DownloadMyAccountPageState extends State<DownloadMyAccountPage> {
   late SizeConfig configSize;
-  SingingCharacter? _character = SingingCharacter.IncompatibleDevice;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +59,7 @@ class _DeleteMyAccountPageState extends State<DeleteMyAccountPage> {
                           width: screenSize.width,
                           child: const Center(
                             child: Text(
-                              'Delete my account',
+                              'Download my data',
                               style: TextStyle(
                                   fontFamily: 'Metropolis',
                                   fontWeight: FontWeight.w600,
@@ -92,7 +82,7 @@ class _DeleteMyAccountPageState extends State<DeleteMyAccountPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Choose a reason',
+                      'Requesting personal data',
                       style: TextStyle(
                           fontFamily: 'Metropolis',
                           fontWeight: FontWeight.w600,
@@ -102,7 +92,7 @@ class _DeleteMyAccountPageState extends State<DeleteMyAccountPage> {
                       height: 5.0,
                     ),
                     Text(
-                      Utils.reasons_info,
+                      Utils.requesting_personal_data,
                       style: const TextStyle(
                           fontFamily: 'Metropolis',
                           color: Colors.grey,
@@ -113,86 +103,7 @@ class _DeleteMyAccountPageState extends State<DeleteMyAccountPage> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
-                          children: <Widget>[
-                            RadioListTile<SingingCharacter>(
-                              title: const Text('Incompatible device'),
-                              value: SingingCharacter.IncompatibleDevice,
-                              groupValue: _character,
-                              onChanged: (SingingCharacter? value) {
-                                setState(() {
-                                  _character = value;
-                                });
-                              },
-                            ),
-                            RadioListTile<SingingCharacter>(
-                              title: const Text('Digital footprint'),
-                              value: SingingCharacter.DigitalFootPrint,
-                              groupValue: _character,
-                              onChanged: (SingingCharacter? value) {
-                                setState(() {
-                                  _character = value;
-                                });
-                              },
-                            ),
-                            RadioListTile<SingingCharacter>(
-                              title: const Text('No longer in need'),
-                              value: SingingCharacter.NoLongerNeed,
-                              groupValue: _character,
-                              onChanged: (SingingCharacter? value) {
-                                setState(() {
-                                  _character = value;
-                                });
-                              },
-                            ),
-                            RadioListTile<SingingCharacter>(
-                              title: const Text('Poor customer service'),
-                              value: SingingCharacter.PoorCustomerService,
-                              groupValue: _character,
-                              onChanged: (SingingCharacter? value) {
-                                setState(() {
-                                  _character = value;
-                                });
-                              },
-                            ),
-                            RadioListTile<SingingCharacter>(
-                              title: const Text('Bad user experience'),
-                              value: SingingCharacter.BadUserExperience,
-                              groupValue: _character,
-                              onChanged: (SingingCharacter? value) {
-                                setState(() {
-                                  _character = value;
-                                });
-                              },
-                            ),
-                            RadioListTile<SingingCharacter>(
-                              title: const Text('Other'),
-                              value: SingingCharacter.Other,
-                              groupValue: _character,
-                              onChanged: (SingingCharacter? value) {
-                                setState(() {
-                                  _character = value;
-                                });
-                              },
-                            ),
-                            Card(
-                              child: Container(
-                                width: screenSize.width,
-                                padding: const EdgeInsets.all(8.0),
-                                child: const TextField(
-                                  obscureText: true,
-                                  textAlign: TextAlign.start,
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    focusedBorder: InputBorder.none,
-                                    enabledBorder: InputBorder.none,
-                                    labelText: 'Other comments (optional)',
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
+                        const SizedBox(height: 30.0,),
                         Container(
                           color: AppColors.transparentColor,
                           width: screenSize.width,
@@ -202,7 +113,7 @@ class _DeleteMyAccountPageState extends State<DeleteMyAccountPage> {
                               // _showAddWorkEmailBottomSheet(context, screenSize);
                             },
                             child: Card(
-                              color: AppColors.redColor,
+                              color: AppColors.activeColorPrimary,
                               margin: const EdgeInsets.symmetric(
                                   vertical: 0, horizontal: 15),
                               elevation: 5.0,
@@ -218,7 +129,7 @@ class _DeleteMyAccountPageState extends State<DeleteMyAccountPage> {
                                 children: const [
                                   Center(
                                       child: Text(
-                                    'Delete account',
+                                    'Download my data',
                                     style: TextStyle(color: Colors.white),
                                   )),
                                 ],

@@ -42,7 +42,7 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   flutter_svg: ^1.1.4
   salomon_bottom_bar: ^3.3.2
-  webview_flutter: ^2.0.14
+  webview_flutter: ^4.2.2
   fluttertoast: ^8.0.9
   another_flushbar: ^1.12.29
   http: ^0.13.5
