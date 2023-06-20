@@ -13,8 +13,18 @@ class DeleteMyAccountPage extends StatefulWidget {
   State<DeleteMyAccountPage> createState() => _DeleteMyAccountPageState();
 }
 
+enum SingingCharacter {
+  IncompatibleDevice,
+  DigitalFootPrint,
+  NoLongerNeed,
+  PoorCustomerService,
+  BadUserExperience,
+  Other
+}
+
 class _DeleteMyAccountPageState extends State<DeleteMyAccountPage> {
   late SizeConfig configSize;
+  SingingCharacter? _character = SingingCharacter.IncompatibleDevice;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +82,8 @@ class _DeleteMyAccountPageState extends State<DeleteMyAccountPage> {
                 height: 5,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 15.0),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 12.0, horizontal: 15.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -83,7 +94,9 @@ class _DeleteMyAccountPageState extends State<DeleteMyAccountPage> {
                           fontWeight: FontWeight.w600,
                           fontSize: 20.0),
                     ),
-                    const SizedBox(height: 5.0,),
+                    const SizedBox(
+                      height: 5.0,
+                    ),
                     Text(
                       Utils.reasons_info,
                       style: const TextStyle(
@@ -92,7 +105,125 @@ class _DeleteMyAccountPageState extends State<DeleteMyAccountPage> {
                           fontWeight: FontWeight.w400,
                           fontSize: 14.0),
                     ),
-
+                    const SizedBox(height: 10.0,),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: <Widget>[
+                            RadioListTile<SingingCharacter>(
+                              title: const Text('Incompatible device'),
+                              value: SingingCharacter.IncompatibleDevice,
+                              groupValue: _character,
+                              onChanged: (SingingCharacter? value) {
+                                setState(() {
+                                  _character = value;
+                                });
+                              },
+                            ),
+                            RadioListTile<SingingCharacter>(
+                              title: const Text('Digital footprint'),
+                              value: SingingCharacter.DigitalFootPrint,
+                              groupValue: _character,
+                              onChanged: (SingingCharacter? value) {
+                                setState(() {
+                                  _character = value;
+                                });
+                              },
+                            ),
+                            RadioListTile<SingingCharacter>(
+                              title: const Text('No longer in need'),
+                              value: SingingCharacter.NoLongerNeed,
+                              groupValue: _character,
+                              onChanged: (SingingCharacter? value) {
+                                setState(() {
+                                  _character = value;
+                                });
+                              },
+                            ),
+                            RadioListTile<SingingCharacter>(
+                              title: const Text('Poor customer service'),
+                              value: SingingCharacter.PoorCustomerService,
+                              groupValue: _character,
+                              onChanged: (SingingCharacter? value) {
+                                setState(() {
+                                  _character = value;
+                                });
+                              },
+                            ),
+                            RadioListTile<SingingCharacter>(
+                              title: const Text('Bad user experience'),
+                              value: SingingCharacter.BadUserExperience,
+                              groupValue: _character,
+                              onChanged: (SingingCharacter? value) {
+                                setState(() {
+                                  _character = value;
+                                });
+                              },
+                            ),
+                            RadioListTile<SingingCharacter>(
+                              title: const Text('Other'),
+                              value: SingingCharacter.Other,
+                              groupValue: _character,
+                              onChanged: (SingingCharacter? value) {
+                                setState(() {
+                                  _character = value;
+                                });
+                              },
+                            ),
+                            Card(
+                              child: Container(
+                                width: screenSize.width,
+                                padding: const EdgeInsets.all(8.0),
+                                child: const TextField(
+                                  obscureText: true,
+                                  textAlign: TextAlign.start,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    focusedBorder: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    labelText: 'Other comments (optional)',
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        Container(
+                          color: AppColors.transparentColor,
+                          width: screenSize.width,
+                          height: screenSize.height * .06,
+                          child: GestureDetector(
+                            onTap: () {
+                              // _showAddWorkEmailBottomSheet(context, screenSize);
+                            },
+                            child: Card(
+                              color: AppColors.redColor,
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 0, horizontal: 15),
+                              elevation: 5.0,
+                              shadowColor: Colors.white30,
+                              shape: const RoundedRectangleBorder(
+                                  side:
+                                      BorderSide(color: Colors.white, width: 1),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(45))),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Center(
+                                      child: Text(
+                                    'Delete account',
+                                    style: TextStyle(color: Colors.white),
+                                  )),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),
