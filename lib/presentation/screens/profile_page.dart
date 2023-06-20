@@ -1,19 +1,15 @@
-import 'package:aurora_connect_one/presentation/controllers/profile_controller.dart';
 import 'package:aurora_connect_one/presentation/screens/my_orders_page.dart';
 import 'package:aurora_connect_one/presentation/screens/privacy_policy_page.dart';
 import 'package:aurora_connect_one/presentation/screens/terms_and_conditions_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_getx_widget.dart';
-import '../../domain/create_order/create_order_request.dart';
-import '../../domain/packages/local/LocalPlansResponse.dart';
-import '../../domain/plans/PlanDetail.dart';
+
+import '../../application/services/secure_storage.dart';
 import '../commons/app_colors.dart';
 import '../commons/app_images.dart';
 import '../commons/routes/routes_name.dart';
-import '../controllers/plans_controller.dart';
-import '../controllers/plans_details_controller.dart';
+import '../widgets/constants.dart';
 import 'Contact_page.dart';
 import 'account_information_page.dart';
 
@@ -26,31 +22,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
 
-  static const MethodChannel methodChannel = MethodChannel('example.com/channel');
-  static const EventChannel eventChannel = EventChannel('example.com/channel');
-  String _reportStatus = 'Game status: unknown.';
-
-  Future<void> checkESIMCapability() async {
-    try {
-      eventChannel.receiveBroadcastStream().listen(_onEvent, onError: _onError);
-      await methodChannel.invokeMethod('checkESIMCapability');
-    } on PlatformException catch (e) {
-      debugPrint("Failed to Invoke: '${e.message}'.");
-    }
-  }
-
-  void _onEvent(Object? event) {
-    setState(() {
-      _reportStatus = "Game status: $event";
-    });
-    debugPrint(_reportStatus);
-  }
-
-  void _onError(Object error) {
-    setState(() {
-      _reportStatus = 'Game status: unknown.';
-    });
-  }
+  final SecureStorage localDb = SecureStorage();
 
 
   @override
@@ -58,7 +30,14 @@ class _ProfilePageState extends State<ProfilePage> {
     // TODO: implement initState
     // checkESIMCapability();
     super.initState();
+    getData();
   }
+  void getData() async {
+    await localDb.readSecureData('requestUserName')
+        .then((value) => {flutterSecureLoginUserName = value});
+    print('user name : $flutterSecureLoginUserName');
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +53,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 elevation: 8,
                 shadowColor: Colors.white30,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 34.0, bottom: 24.0, left: 24.0, right: 24.0),
+                  padding: const EdgeInsets.only(
+                      top: 34.0, bottom: 24.0, left: 24.0, right: 24.0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -108,7 +88,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               InkWell(
-                onTap: (){
+                onTap: () {
                   // openVippsApp(context);
                   // callForCreateOrder(context);
                 },
@@ -123,7 +103,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Container(
                     margin: const EdgeInsets.all(10),
                     padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                        const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                     alignment: Alignment.center,
                     color: AppColors.whiteColor,
                     width: screenSize.width,
@@ -159,7 +139,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   children: [
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         openAccountInformation(context);
                       },
                       child: Container(
@@ -174,7 +154,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Row(children: [
-                              SvgPicture.asset(AppImages.account_information_profile_icon),
+                              SvgPicture.asset(
+                                  AppImages.account_information_profile_icon),
                               const Padding(
                                 padding: EdgeInsets.only(left: 16.0),
                                 child: Text(
@@ -287,7 +268,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
               ),
-              const SizedBox(height: 5,),
+              const SizedBox(
+                height: 5,
+              ),
               Card(
                 margin: const EdgeInsets.only(
                     top: 30, bottom: 5, left: 20, right: 20),
@@ -299,7 +282,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   children: [
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         openPrivacyPolicy(context);
                       },
                       child: Container(
@@ -393,7 +376,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         openContactUsPage(context);
                       },
                       child: Container(
@@ -408,7 +391,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Row(children: [
-                              SvgPicture.asset(AppImages.contact_help_center_icon),
+                              SvgPicture.asset(
+                                  AppImages.contact_help_center_icon),
                               const Padding(
                                 padding: EdgeInsets.only(left: 16.0),
                                 child: Text(
@@ -440,7 +424,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         _showRateUsBottomSheet(context, screenSize);
                       },
                       child: Container(
@@ -479,9 +463,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
               ),
-              const SizedBox(height: 5,),
+              const SizedBox(
+                height: 5,
+              ),
               InkWell(
-                onTap: (){
+                onTap: () {
                   _showLogoutBottomSheet(context, screenSize);
                 },
                 child: Card(
@@ -551,34 +537,48 @@ class _ProfilePageState extends State<ProfilePage> {
     } on PlatformException catch (e) {}
   }
 
-
   void openAccountInformation(BuildContext context) {
-    Navigator.push(context,
-      MaterialPageRoute(builder: (context) => const AccountInformationPage(),),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AccountInformationPage(),
+      ),
     );
   }
 
   void openMyOrdersPage(BuildContext context) {
-    Navigator.push(context,
-      MaterialPageRoute(builder: (context) => const MyOrdersPage(),),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const MyOrdersPage(),
+      ),
     );
   }
 
   void openPrivacyPolicy(BuildContext context) {
-    Navigator.push(context,
-      MaterialPageRoute(builder: (context) => const PrivacyPolicyPage(),),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const PrivacyPolicyPage(),
+      ),
     );
   }
 
   void openTermsAndConditions(BuildContext context) {
-    Navigator.push(context,
-      MaterialPageRoute(builder: (context) => const TermsAndConditionsPage(),),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const TermsAndConditionsPage(),
+      ),
     );
   }
 
   void openContactUsPage(BuildContext context) {
-    Navigator.push(context,
-      MaterialPageRoute(builder: (context) => const ContactUsPage(),),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ContactUsPage(),
+      ),
     );
   }
 
@@ -622,7 +622,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           shape: const RoundedRectangleBorder(
                               side: BorderSide(color: Colors.white, width: 1),
                               borderRadius:
-                              BorderRadius.all(Radius.circular(45))),
+                                  BorderRadius.all(Radius.circular(45))),
                           child: Padding(
                               padding: const EdgeInsets.all(6.0),
                               child: SvgPicture.asset(AppImages.cross_icon)),
@@ -631,7 +631,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                 ),
-
                 Column(
                   children: [
                     Padding(
@@ -640,7 +639,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: const [
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Text("Are you sure you want to Logout?", style: TextStyle(fontWeight: FontWeight.w300),),
+                            child: Text(
+                              "Are you sure you want to Logout?",
+                              style: TextStyle(fontWeight: FontWeight.w300),
+                            ),
                           )
                         ],
                       ),
@@ -668,9 +670,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           borderRadius: BorderRadius.all(Radius.circular(45))),
                       child: Center(
                           child: Text(
-                            'Logout',
-                            style: TextStyle(color: Colors.white, fontSize: 16.0),
-                          )),
+                        'Logout',
+                        style: TextStyle(color: Colors.white, fontSize: 16.0),
+                      )),
                     ),
                   ),
                 ),
@@ -722,7 +724,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           shape: const RoundedRectangleBorder(
                               side: BorderSide(color: Colors.white, width: 1),
                               borderRadius:
-                              BorderRadius.all(Radius.circular(45))),
+                                  BorderRadius.all(Radius.circular(45))),
                           child: Padding(
                               padding: const EdgeInsets.all(6.0),
                               child: SvgPicture.asset(AppImages.cross_icon)),
@@ -731,14 +733,17 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                 ),
-
                 Column(
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Row(
                         children: const [
-                          Center(child: Text("If you enjoy using this app, would you \nmind to taking a moment to rate it? Thank \nyou for your support!", style: TextStyle(fontWeight: FontWeight.w300),))
+                          Center(
+                              child: Text(
+                            "If you enjoy using this app, would you \nmind to taking a moment to rate it? Thank \nyou for your support!",
+                            style: TextStyle(fontWeight: FontWeight.w300),
+                          ))
                         ],
                       ),
                     )
@@ -765,9 +770,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           borderRadius: BorderRadius.all(Radius.circular(45))),
                       child: Center(
                           child: Text(
-                            'Rate us',
-                            style: TextStyle(color: Colors.white, fontSize: 16.0),
-                          )),
+                        'Rate us',
+                        style: TextStyle(color: Colors.white, fontSize: 16.0),
+                      )),
                     ),
                   ),
                 ),
@@ -778,4 +783,5 @@ class _ProfilePageState extends State<ProfilePage> {
       },
     );
   }
+
 }

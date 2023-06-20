@@ -115,78 +115,98 @@ class _DeleteMyAccountPageState extends State<DeleteMyAccountPage> {
                       children: [
                         Column(
                           children: <Widget>[
-                            RadioListTile<SingingCharacter>(
-                              title: const Text('Incompatible device'),
-                              value: SingingCharacter.IncompatibleDevice,
-                              groupValue: _character,
-                              onChanged: (SingingCharacter? value) {
-                                setState(() {
-                                  _character = value;
-                                });
-                              },
+                            SizedBox(
+                              height: screenSize.height * 0.05,
+                              child: RadioListTile<SingingCharacter>(
+                                title: const Text('Incompatible device'),
+                                value: SingingCharacter.IncompatibleDevice,
+                                groupValue: _character,
+                                onChanged: (SingingCharacter? value) {
+                                  setState(() {
+                                    _character = value;
+                                  });
+                                },
+                              ),
                             ),
-                            RadioListTile<SingingCharacter>(
-                              title: const Text('Digital footprint'),
-                              value: SingingCharacter.DigitalFootPrint,
-                              groupValue: _character,
-                              onChanged: (SingingCharacter? value) {
-                                setState(() {
-                                  _character = value;
-                                });
-                              },
+                            SizedBox(
+                              height: screenSize.height * 0.05,
+                              child: RadioListTile<SingingCharacter>(
+                                title: const Text('Digital footprint'),
+                                value: SingingCharacter.DigitalFootPrint,
+                                groupValue: _character,
+                                onChanged: (SingingCharacter? value) {
+                                  setState(() {
+                                    _character = value;
+                                  });
+                                },
+                              ),
                             ),
-                            RadioListTile<SingingCharacter>(
-                              title: const Text('No longer in need'),
-                              value: SingingCharacter.NoLongerNeed,
-                              groupValue: _character,
-                              onChanged: (SingingCharacter? value) {
-                                setState(() {
-                                  _character = value;
-                                });
-                              },
+                            SizedBox(
+                              height: screenSize.height * 0.05,
+                              child: RadioListTile<SingingCharacter>(
+                                title: const Text('No longer in need'),
+                                value: SingingCharacter.NoLongerNeed,
+                                groupValue: _character,
+                                onChanged: (SingingCharacter? value) {
+                                  setState(() {
+                                    _character = value;
+                                  });
+                                },
+                              ),
                             ),
-                            RadioListTile<SingingCharacter>(
-                              title: const Text('Poor customer service'),
-                              value: SingingCharacter.PoorCustomerService,
-                              groupValue: _character,
-                              onChanged: (SingingCharacter? value) {
-                                setState(() {
-                                  _character = value;
-                                });
-                              },
+                            SizedBox(
+                              height: screenSize.height * 0.05,
+                              child: RadioListTile<SingingCharacter>(
+                                title: const Text('Poor customer service'),
+                                value: SingingCharacter.PoorCustomerService,
+                                groupValue: _character,
+                                onChanged: (SingingCharacter? value) {
+                                  setState(() {
+                                    _character = value;
+                                  });
+                                },
+                              ),
                             ),
-                            RadioListTile<SingingCharacter>(
-                              title: const Text('Bad user experience'),
-                              value: SingingCharacter.BadUserExperience,
-                              groupValue: _character,
-                              onChanged: (SingingCharacter? value) {
-                                setState(() {
-                                  _character = value;
-                                });
-                              },
+                            SizedBox(
+                              height: screenSize.height * 0.05,
+                              child: RadioListTile<SingingCharacter>(
+                                title: const Text('Bad user experience'),
+                                value: SingingCharacter.BadUserExperience,
+                                groupValue: _character,
+                                onChanged: (SingingCharacter? value) {
+                                  setState(() {
+                                    _character = value;
+                                  });
+                                },
+                              ),
                             ),
-                            RadioListTile<SingingCharacter>(
-                              title: const Text('Other'),
-                              value: SingingCharacter.Other,
-                              groupValue: _character,
-                              onChanged: (SingingCharacter? value) {
-                                setState(() {
-                                  _character = value;
-                                });
-                              },
+                            SizedBox(
+                              height: screenSize.height * 0.05,
+                              child: RadioListTile<SingingCharacter>(
+                                title: const Text('Other'),
+                                value: SingingCharacter.Other,
+                                groupValue: _character,
+                                onChanged: (SingingCharacter? value) {
+                                  setState(() {
+                                    _character = value;
+                                  });
+                                },
+                              ),
                             ),
-                            Card(
-                              child: Container(
-                                width: screenSize.width,
-                                padding: const EdgeInsets.all(8.0),
-                                child: const TextField(
-                                  obscureText: true,
-                                  textAlign: TextAlign.start,
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    focusedBorder: InputBorder.none,
-                                    enabledBorder: InputBorder.none,
-                                    labelText: 'Other comments (optional)',
+                            const Card(
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Expanded(
+                                  child: TextField(
+                                    keyboardType: TextInputType.multiline,
+                                    maxLines: 7,
+                                    textAlign: TextAlign.start,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      focusedBorder: InputBorder.none,
+                                      enabledBorder: InputBorder.none,
+                                      labelText: 'Other comments (optional)',
+                                    ),
                                   ),
                                 ),
                               ),
@@ -194,9 +214,10 @@ class _DeleteMyAccountPageState extends State<DeleteMyAccountPage> {
                           ],
                         ),
                         Container(
+                          padding: const EdgeInsets.only(top: 10.0),
                           color: AppColors.transparentColor,
                           width: screenSize.width,
-                          height: screenSize.height * .06,
+                          height: screenSize.height * .08,
                           child: GestureDetector(
                             onTap: () {
                               // _showAddWorkEmailBottomSheet(context, screenSize);

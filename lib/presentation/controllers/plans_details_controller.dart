@@ -27,8 +27,6 @@ class PlanDetailsController extends GetxController {
 
   var loading = false.obs;
 
-  final PlansProvider _provider = PlansProvider();
-
   createOrderRequest(CreateOrderRequest request) async {
     print('calling for createOrderRequest ');
     loading(true);
