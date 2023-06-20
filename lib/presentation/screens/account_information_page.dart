@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../commons/app_colors.dart';
 import '../commons/app_images.dart';
 import '../commons/utils.dart';
+import 'delete_my_account_page.dart';
 
 class AccountInformationPage extends StatefulWidget {
   const AccountInformationPage({Key? key}) : super(key: key);
@@ -238,11 +239,11 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                     fontSize: 16),
                               ),
                               Card(
-                                elevation: 2,
+                                elevation: 1,
+                                color: Colors.red.shade100,
                                 shape: const RoundedRectangleBorder(
                                     borderRadius: BorderRadius.all(Radius.circular(4))),
                                 child: Container(
-                                    color: Colors.red.shade100,
                                   padding: const EdgeInsets.all(2.0),
                                     child: SvgPicture.asset(AppImages.delete_icon, color: Colors.red,)),
                               ),
@@ -308,50 +309,55 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                           color: Colors.grey),
                     ),
                   ),
-                  Card(
-                    margin: const EdgeInsets.only(
-                        top: 10, bottom: 5, left: 20, right: 20),
-                    elevation: 8,
-                    shadowColor: Colors.white30,
-                    shape: const RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.white, width: 3),
-                        borderRadius: BorderRadius.all(Radius.circular(15))),
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.all(10),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 10),
-                          alignment: Alignment.center,
-                          color: AppColors.whiteColor,
-                          width: screenSize.width,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(children: [
-                                SvgPicture.asset(AppImages.delete_icon),
-                                const Padding(
-                                  padding: EdgeInsets.only(left: 16.0),
-                                  child: Text(
-                                    'Delete my account',
-                                    style: TextStyle(
-                                        fontFamily: 'Metropolis',
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 14,
-                                        color: Colors.red),
+                  InkWell(
+                    onTap: (){
+                      openDeleteMyAccountPage(context);
+                    },
+                    child: Card(
+                      margin: const EdgeInsets.only(
+                          top: 10, bottom: 5, left: 20, right: 20),
+                      elevation: 8,
+                      shadowColor: Colors.white30,
+                      shape: const RoundedRectangleBorder(
+                          side: BorderSide(color: Colors.white, width: 3),
+                          borderRadius: BorderRadius.all(Radius.circular(15))),
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 10),
+                            alignment: Alignment.center,
+                            color: AppColors.whiteColor,
+                            width: screenSize.width,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(children: [
+                                  SvgPicture.asset(AppImages.delete_icon),
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 16.0),
+                                    child: Text(
+                                      'Delete my account',
+                                      style: TextStyle(
+                                          fontFamily: 'Metropolis',
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 14,
+                                          color: Colors.red),
+                                    ),
                                   ),
-                                ),
-                              ]),
-                              const Icon(
-                                Icons.arrow_forward_ios,
-                                color: AppColors.inActiveColorPrimary,
-                                size: 18.0,
-                              )
-                            ],
+                                ]),
+                                const Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: AppColors.inActiveColorPrimary,
+                                  size: 18.0,
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   Card(
@@ -410,13 +416,13 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
     );
   }
 
-// void openPlanDetails(BuildContext context, PlansDatum model) {
-//   // Navigator.pushNamed(context, RoutesName.plan_details);
-//   Navigator.push(context,
-//     MaterialPageRoute(builder: (context) => PlanDetailsScreen(model: model),
-//     ),
-//   );
-// }
+void openDeleteMyAccountPage(BuildContext context) {
+  // Navigator.pushNamed(context, RoutesName.plan_details);
+  Navigator.push(context,
+    MaterialPageRoute(builder: (context) => const DeleteMyAccountPage(),
+    ),
+  );
+}
 
   void _showAddWorkEmailBottomSheet(BuildContext context, Size screenSize) {
     bool _value = false;
