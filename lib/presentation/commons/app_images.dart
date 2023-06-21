@@ -19,6 +19,8 @@ class AppImages {
   static const String plan_type_icon = 'assets/svgs/plan_type_icon.svg';
   static const String information_icon = 'assets/svgs/information_icon.svg';
   static const String cross_icon = 'assets/svgs/cross_icon.svg';
+  static const String language_globe_icon = 'assets/svgs/language_globe_icon.svg';
+  static const String tick_icon = 'assets/svgs/tick_icon.svg';
 
   static const String marhaba_card_image = 'assets/images/marhaba_card_image.png';
 

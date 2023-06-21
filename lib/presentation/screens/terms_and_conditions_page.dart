@@ -1,11 +1,10 @@
-import 'package:aurora_connect_one/presentation/commons/SizeConfig.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../commons/app_colors.dart';
 import '../commons/app_images.dart';
-import '../commons/utils.dart';
 
 class TermsAndConditionsPage extends StatefulWidget {
   const TermsAndConditionsPage({Key? key}) : super(key: key);
@@ -15,11 +14,13 @@ class TermsAndConditionsPage extends StatefulWidget {
 }
 
 class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
-  late SizeConfig configSize;
+  final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers = {
+    Factory(() => EagerGestureRecognizer())
+  };
+  final UniqueKey _key = UniqueKey();
 
   @override
   Widget build(BuildContext context) {
-    configSize = SizeConfig().init(context);
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       body: Column(
@@ -36,7 +37,7 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
                 child: Stack(
                   children: [
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         Navigator.pop(context);
                       },
                       child: Padding(
@@ -73,10 +74,11 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
             width: screenSize.width,
             height: screenSize.height * 0.9,
             child: Center(
-              child:  WebViewWidget(
-                controller: _controller,
-              )
-            ),
+                child: WebViewWidget(
+              key: _key,
+              gestureRecognizers: gestureRecognizers,
+              controller: _controller,
+            )),
           ),
         ],
       ),

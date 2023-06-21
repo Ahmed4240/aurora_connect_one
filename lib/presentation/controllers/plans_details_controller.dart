@@ -65,31 +65,31 @@ class PlanDetailsController extends GetxController {
           "requestUserPhone", signUpRequest.phone.toString());
 
       /// Assigning Storage data to variable to use checks
-      await secureStorage
-          .readSecureData('requestUserName')
-          .then((value) => {flutterSecureLoginUserName = value});
-      await secureStorage
-          .readSecureData('requestUserEmail')
-          .then((value) => {flutterSecureLoginUserName = value});
-      await secureStorage
-          .readSecureData('requestUserPhone')
-          .then((value) => {flutterSecureLoginUserName = value});
+      // await secureStorage
+      //     .readSecureData('requestUserName')
+      //     .then((value) => {flutterSecureLoginUserName = value});
+      // await secureStorage
+      //     .readSecureData('requestUserEmail')
+      //     .then((value) => {flutterSecureLoginUserName = value});
+      // await secureStorage
+      //     .readSecureData('requestUserPhone')
+      //     .then((value) => {flutterSecureLoginUserName = value});
       print("Storage Data");
-      print(flutterSecureLoginUserName! + flutterSecureClientEmail! + flutterSecureClientPhone!);
-     if(flutterSecureLoginUserName != null ){
-       print("Storage Data for api");
-       signUpRequest.username = flutterSecureLoginUserName;
-       signUpRequest.email = flutterSecureClientEmail;
-       signUpRequest.phone = flutterSecureClientPhone;
-       signUpUserRequest(
-           signUpRequest, createOrderResponse.value.data?.orderId ?? "");
-     }else{
-       print("hard code data for api");
+      // print(flutterSecureLoginUserName! + flutterSecureClientEmail! + flutterSecureClientPhone!);
+     // if(flutterSecureLoginUserName != null ){
+       // print("Storage Data for api");
+       // signUpRequest.username = flutterSecureLoginUserName;
+       // signUpRequest.email = flutterSecureClientEmail;
+       // signUpRequest.phone = flutterSecureClientPhone;
+     //   signUpUserRequest(
+     //       signUpRequest, createOrderResponse.value.data?.orderId ?? "");
+     // }else{
+     //   print("hard code data for api");
       signUpUserRequest(
           signUpRequest, createOrderResponse.value.data?.orderId ?? "");}
-    } else {
-      printError(info: "Response Error: ${response_1.body}");
-    }
+    // } else {
+    //   printError(info: "Response Error: ${response_1.body}");
+    // }
 
     loading(false);
   }
@@ -122,6 +122,11 @@ class PlanDetailsController extends GetxController {
       ConfirmOrderRequest confirmOrderRequest = ConfirmOrderRequest();
       confirmOrderRequest.userId = signUpResponse.value.data?.userId;
       confirmOrderRequest.orderId = "${orderId}";
+
+      // user id and token stored into db
+
+      secureStorage.writeSecureData("requestUserId", signUpResponse.value.data?.userId ?? "");
+      secureStorage.writeSecureData("requestUserToken", signUpResponse.value.data?.token ?? "");
 
       orderConfirmationRequest(
           confirmOrderRequest, signUpResponse.value.data?.token ?? "");

@@ -1,4 +1,5 @@
-import 'package:aurora_connect_one/presentation/commons/SizeConfig.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -15,11 +16,13 @@ class ContactUsPage extends StatefulWidget {
 }
 
 class _ContactUsPageState extends State<ContactUsPage> {
-  late SizeConfig configSize;
 
+  final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers = {
+    Factory(() => EagerGestureRecognizer())
+  };
+  final UniqueKey _key = UniqueKey();
   @override
   Widget build(BuildContext context) {
-    configSize = SizeConfig().init(context);
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       body: Column(
@@ -74,6 +77,8 @@ class _ContactUsPageState extends State<ContactUsPage> {
             height: screenSize.height * 0.9,
             child: Center(
               child:  WebViewWidget(
+                key: _key,
+                gestureRecognizers: gestureRecognizers,
                 controller: _controller,
               )
             ),

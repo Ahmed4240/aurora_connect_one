@@ -1,4 +1,3 @@
-import 'package:aurora_connect_one/presentation/commons/SizeConfig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -23,12 +22,10 @@ enum SingingCharacter {
 }
 
 class _DeleteMyAccountPageState extends State<DeleteMyAccountPage> {
-  late SizeConfig configSize;
   SingingCharacter? _character = SingingCharacter.IncompatibleDevice;
 
   @override
   Widget build(BuildContext context) {
-    configSize = SizeConfig().init(context);
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(

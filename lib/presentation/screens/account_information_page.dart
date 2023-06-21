@@ -1,4 +1,3 @@
-import 'package:aurora_connect_one/presentation/commons/SizeConfig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -16,11 +15,9 @@ class AccountInformationPage extends StatefulWidget {
 }
 
 class _AccountInformationPageState extends State<AccountInformationPage> {
-  late SizeConfig configSize;
 
   @override
   Widget build(BuildContext context) {
-    configSize = SizeConfig().init(context);
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(

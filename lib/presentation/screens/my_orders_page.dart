@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import '../../application/services/secure_storage.dart';
 import '../../domain/plans/PlanDetail.dart';
 import '../commons/app_colors.dart';
 import '../commons/app_images.dart';
 import '../controllers/my_orders_controller.dart';
+import '../widgets/constants.dart';
 
 class MyOrdersPage extends StatefulWidget {
   const MyOrdersPage({super.key});
@@ -19,12 +21,36 @@ class MyOrdersPage extends StatefulWidget {
 class _MyOrdersPageState extends State<MyOrdersPage> {
   final controller = Get.put(MyOrdersController());
 
+  final SecureStorage localDb = SecureStorage();
+
+
   @override
   void didChangeDependencies() async {
-    await controller.getMyOrders();
+    if(flutterSecureClientUserId != null && flutterSecureClientToken != null){
+      await controller.getMyOrders(flutterSecureClientUserId!, flutterSecureClientToken!);
+    }
     setState(() {});
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    // checkESIMCapability();
+    super.initState();
+    getData();
+  }
+  void getData() async {
+    await localDb.readSecureData('requestUserName')
+        .then((value) => {flutterSecureLoginUserName = value});
+    await localDb.readSecureData('requestUserId')
+        .then((value) => {flutterSecureClientUserId = value});
+    await localDb.readSecureData('requestUserToken')
+        .then((value) => {flutterSecureClientToken = value});
+    print('order requestUserName : $flutterSecureLoginUserName');
+    print('order requestUserId : $flutterSecureClientUserId');
+    print('order requestUserToken : $flutterSecureClientToken');
   }
 
   @override
