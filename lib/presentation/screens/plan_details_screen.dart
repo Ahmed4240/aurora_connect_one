@@ -1,8 +1,10 @@
 import 'package:aurora_connect_one/domain/create_order/create_order_request.dart';
 import 'package:aurora_connect_one/presentation/screens/home_page.dart';
+import 'package:aurora_connect_one/presentation/widgets/progressIndicator_mixins.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_getx_widget.dart';
 import '../../domain/plans/PlanDetail.dart';
 import '../commons/app_colors.dart';
@@ -10,6 +12,7 @@ import '../commons/app_images.dart';
 import '../commons/utils.dart';
 import '../controllers/plans_details_controller.dart';
 import '../widgets/payment_bottom_sheet.dart';
+import 'main_screen.dart';
 
 class PlanDetailsScreen extends StatefulWidget {
 
@@ -21,7 +24,7 @@ class PlanDetailsScreen extends StatefulWidget {
   State<PlanDetailsScreen> createState() => _PlanDetailsScreenState();
 }
 
-class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
+class _PlanDetailsScreenState extends State<PlanDetailsScreen>  with CustomProgressIndicator{
   var loadingPercentage = 0;
 
   String getCoverage(PlanDetail model) {
@@ -638,15 +641,14 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
                                     width: screenSize.width,
                                     height: screenSize.height * .06,
                                     child: GestureDetector(
-                                      onTap: _isLoading ? null :  () {
-                                        // openVippsApp(context);
-                                        setState(() => _isLoading = true);
+                                      onTap: (){
+                                        print("this working");
                                         callForCreateOrder(context, controller, widget.model);
-                                        Future.delayed(
-                                          const Duration(seconds: 5),
-                                              () => setState(() => _isLoading = false),
-                                        );
-                                        moveBack(context);
+                                        // Future.delayed(
+                                        //   const Duration(seconds: 5),
+                                        //       () => setState(() => _isLoading = false),
+                                        // );
+                                        // moveBack(context);
                                       },
                                       child: Card(
                                         color: AppColors.activeColorPrimary,
@@ -710,9 +712,12 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
       request.quantity = 1;
       request.packageId = model.id.toString();
       request.planDetail = model;
-
-      controller.createOrderRequest(request);
+      getCircularProgressIndicator(context);
+     await controller.createOrderRequest(request);
+      stopCircularProgressIndicator(context);
+      Get.to(const MainScreen());
     }
+    stopCircularProgressIndicator(context);
   }
 
   void openPlanDetails(BuildContext context, int index) {

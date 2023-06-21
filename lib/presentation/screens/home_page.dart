@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:aurora_connect_one/domain/plans/PlanDetail.dart';
 import 'package:aurora_connect_one/presentation/controllers/home_controller.dart';
 import 'package:aurora_connect_one/presentation/screens/plan_details_screen.dart';
@@ -19,6 +21,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
+
   final _controller = PageController();
   late TabController _tabController;
 
@@ -70,7 +73,9 @@ class _HomePageState extends State<HomePage>
                 borderRadius: BorderRadius.all(Radius.circular(50.0))),
             child: TextFormField(
               textAlign: TextAlign.left,
-              onChanged: (value) {},
+              onChanged: (value) {
+    },
+
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.only(left: 16.0, top: 15),
                 prefixIcon: const Icon(
@@ -89,6 +94,7 @@ class _HomePageState extends State<HomePage>
                 ),
                 hintText: 'Search country',
               ),
+
             ),
           ),
         ),
@@ -215,12 +221,22 @@ class _HomePageState extends State<HomePage>
                                         const SizedBox(
                                           height: 50,
                                         ),
-                                        SvgPicture.asset(AppImages.empty_data_icon, width: width * 0.5,),
-                                        const SizedBox(height: 20,),
-                                        const Text("No Data found please try again!",
-                                          style: TextStyle(fontSize: 16,
-                                              fontWeight: FontWeight.w400),),
-                                        const SizedBox(height: 15,),
+                                        SvgPicture.asset(
+                                          AppImages.empty_data_icon,
+                                          width: width * 0.5,
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        const Text(
+                                          "No Data found please try again!",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
                                         InkWell(
                                           onTap: () async {
                                             await controller.getPackages();
@@ -236,8 +252,8 @@ class _HomePageState extends State<HomePage>
                                                 child: Text('Try again',
                                                     style: TextStyle(
                                                         color: Colors.white,
-                                                        fontWeight:
-                                                        FontWeight.normal))),
+                                                        fontWeight: FontWeight
+                                                            .normal))),
                                           ),
                                         ),
                                       ],
@@ -335,7 +351,9 @@ class _HomePageState extends State<HomePage>
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400),
                                       ),
-                                      const SizedBox(height: 15,),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
                                       InkWell(
                                         onTap: () async {
                                           await controller.getPackages();
@@ -352,7 +370,7 @@ class _HomePageState extends State<HomePage>
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
-                                                      FontWeight.normal))),
+                                                          FontWeight.normal))),
                                         ),
                                       ),
                                     ],
@@ -606,7 +624,9 @@ class _HomePageState extends State<HomePage>
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400),
                                       ),
-                                      const SizedBox(height: 15,),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
                                       InkWell(
                                         onTap: () async {
                                           controller.loadingGlobalData(true);
@@ -624,7 +644,7 @@ class _HomePageState extends State<HomePage>
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
-                                                      FontWeight.normal))),
+                                                          FontWeight.normal))),
                                         ),
                                       ),
                                     ],
@@ -711,3 +731,5 @@ class _MaterialDesignPainter extends BoxPainter {
     );
   }
 }
+
+

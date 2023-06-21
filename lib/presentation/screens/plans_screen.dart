@@ -44,9 +44,10 @@ class PlansScreen extends StatelessWidget {
                           children: [
                             GestureDetector(
                                 onTap: () {
+                                  print("printing");
                                   moveBack(context);
                                 },
-                                child: const Icon(Icons.arrow_back_ios_new,
+                                child: const Icon(Icons.arrow_back_ios_new,size: 30,
                                   color: Colors.white,)),
                             Text(model.countryName ?? "Unknown",
                               style: const TextStyle(color: Colors.white,
