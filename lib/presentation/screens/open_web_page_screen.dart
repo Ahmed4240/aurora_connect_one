@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-
 import '../commons/app_colors.dart';
 import '../commons/app_images.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewScreen extends StatefulWidget {
   const WebViewScreen({Key? key}) : super(key: key);
@@ -59,11 +58,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 ),
               ),
             ),
-            Expanded(
-                child: WebView(
-                    key: _key,
-                    javascriptMode: JavascriptMode.unrestricted,
-                    initialUrl: _url))
           ],
         ));
   }

@@ -5,6 +5,12 @@ import '../provider/plans_provider.dart';
 
 class HomeController extends GetxController {
 
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+  }
+
   var model = GetPackagesModel().obs;
   var loadingLocalData = false.obs;
 

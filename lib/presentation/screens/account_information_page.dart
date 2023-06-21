@@ -1,10 +1,11 @@
-import 'package:aurora_connect_one/presentation/commons/SizeConfig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../commons/app_colors.dart';
 import '../commons/app_images.dart';
 import '../commons/utils.dart';
+import 'delete_my_account_page.dart';
+import 'download_my_data_page.dart';
 
 class AccountInformationPage extends StatefulWidget {
   const AccountInformationPage({Key? key}) : super(key: key);
@@ -14,11 +15,9 @@ class AccountInformationPage extends StatefulWidget {
 }
 
 class _AccountInformationPageState extends State<AccountInformationPage> {
-  late SizeConfig configSize;
 
   @override
   Widget build(BuildContext context) {
-    configSize = SizeConfig().init(context);
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
@@ -28,6 +27,7 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
           child: Column(
             children: [
               SizedBox(
+                width: screenSize.width,
                 height: screenSize.height * 0.1,
                 child: Card(
                   elevation: 8,
@@ -35,33 +35,36 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                   child: Padding(
                     padding: const EdgeInsets.only(
                         top: 25.0, bottom: 2.0, left: 24.0, right: 24.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                    child: Stack(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 55.0),
-                          child: Container(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SvgPicture.asset(
-                              AppImages.back_arrow_icon,
-                              width: 20,
-                              height: 20,
-                              fit: BoxFit.fill,
+                        InkWell(
+                          onTap: (){
+                            Navigator.pop(context);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 55.0),
+                            child: Container(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SvgPicture.asset(
+                                AppImages.back_arrow_icon,
+                                width: 20,
+                                height: 20,
+                                fit: BoxFit.fill,
+                              ),
                             ),
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: const [
-                            Text(
-                              'Account Information',
+                        SizedBox(
+                          width: screenSize.width,
+                          child: const Center(
+                            child: Text(
+                              'Account information',
                               style: TextStyle(
                                   fontFamily: 'Metropolis',
                                   fontWeight: FontWeight.w600,
                                   fontSize: 18.0),
-                            )
-                          ],
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -237,14 +240,19 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                     fontWeight: FontWeight.w400,
                                     fontSize: 16),
                               ),
-                              Card(
-                                elevation: 2,
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(4))),
-                                child: Container(
-                                    color: Colors.red.shade100,
-                                  padding: const EdgeInsets.all(2.0),
-                                    child: SvgPicture.asset(AppImages.delete_icon, color: Colors.red,)),
+                              InkWell(
+                                onTap: (){
+                                  _showRemoveEmailBottomSheet(context, screenSize);
+                                },
+                                child: Card(
+                                  elevation: 1,
+                                  color: Colors.red.shade100,
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(4))),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(2.0),
+                                      child: SvgPicture.asset(AppImages.delete_icon, color: Colors.red,)),
+                                ),
                               ),
                             ],
                           ),
@@ -308,97 +316,107 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                           color: Colors.grey),
                     ),
                   ),
-                  Card(
-                    margin: const EdgeInsets.only(
-                        top: 10, bottom: 5, left: 20, right: 20),
-                    elevation: 8,
-                    shadowColor: Colors.white30,
-                    shape: const RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.white, width: 3),
-                        borderRadius: BorderRadius.all(Radius.circular(15))),
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.all(10),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 10),
-                          alignment: Alignment.center,
-                          color: AppColors.whiteColor,
-                          width: screenSize.width,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(children: [
-                                SvgPicture.asset(AppImages.delete_icon),
-                                const Padding(
-                                  padding: EdgeInsets.only(left: 16.0),
-                                  child: Text(
-                                    'Delete my account',
-                                    style: TextStyle(
-                                        fontFamily: 'Metropolis',
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 14,
-                                        color: Colors.red),
+                  InkWell(
+                    onTap: (){
+                      openDeleteMyAccountPage(context);
+                    },
+                    child: Card(
+                      margin: const EdgeInsets.only(
+                          top: 10, bottom: 5, left: 20, right: 20),
+                      elevation: 8,
+                      shadowColor: Colors.white30,
+                      shape: const RoundedRectangleBorder(
+                          side: BorderSide(color: Colors.white, width: 3),
+                          borderRadius: BorderRadius.all(Radius.circular(15))),
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 10),
+                            alignment: Alignment.center,
+                            color: AppColors.whiteColor,
+                            width: screenSize.width,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(children: [
+                                  SvgPicture.asset(AppImages.delete_icon),
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 16.0),
+                                    child: Text(
+                                      'Delete my account',
+                                      style: TextStyle(
+                                          fontFamily: 'Metropolis',
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 14,
+                                          color: Colors.red),
+                                    ),
                                   ),
-                                ),
-                              ]),
-                              const Icon(
-                                Icons.arrow_forward_ios,
-                                color: AppColors.inActiveColorPrimary,
-                                size: 18.0,
-                              )
-                            ],
+                                ]),
+                                const Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: AppColors.inActiveColorPrimary,
+                                  size: 18.0,
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                  Card(
-                    margin: const EdgeInsets.only(
-                        top: 8, bottom: 5, left: 20, right: 20),
-                    elevation: 8,
-                    shadowColor: Colors.white30,
-                    shape: const RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.white, width: 3),
-                        borderRadius: BorderRadius.all(Radius.circular(15))),
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.all(10),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 10),
-                          alignment: Alignment.center,
-                          color: AppColors.whiteColor,
-                          width: screenSize.width,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(children: [
-                                SvgPicture.asset(
-                                    AppImages.download_my_data_icon),
-                                const Padding(
-                                  padding: EdgeInsets.only(left: 16.0),
-                                  child: Text(
-                                    'Download my data',
-                                    style: TextStyle(
-                                        fontFamily: 'Metropolis',
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 14,
-                                        color: Colors.black),
+                  InkWell(
+                    onTap: (){
+                      openDownloadMyAccountPage(context);
+                    },
+                    child: Card(
+                      margin: const EdgeInsets.only(
+                          top: 8, bottom: 5, left: 20, right: 20),
+                      elevation: 8,
+                      shadowColor: Colors.white30,
+                      shape: const RoundedRectangleBorder(
+                          side: BorderSide(color: Colors.white, width: 3),
+                          borderRadius: BorderRadius.all(Radius.circular(15))),
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 10),
+                            alignment: Alignment.center,
+                            color: AppColors.whiteColor,
+                            width: screenSize.width,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(children: [
+                                  SvgPicture.asset(
+                                      AppImages.download_my_data_icon),
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 16.0),
+                                    child: Text(
+                                      'Download my data',
+                                      style: TextStyle(
+                                          fontFamily: 'Metropolis',
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 14,
+                                          color: Colors.black),
+                                    ),
                                   ),
-                                ),
-                              ]),
-                              const Icon(
-                                Icons.arrow_forward_ios,
-                                color: AppColors.inActiveColorPrimary,
-                                size: 18.0,
-                              )
-                            ],
+                                ]),
+                                const Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: AppColors.inActiveColorPrimary,
+                                  size: 18.0,
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -410,13 +428,21 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
     );
   }
 
-// void openPlanDetails(BuildContext context, PlansDatum model) {
-//   // Navigator.pushNamed(context, RoutesName.plan_details);
-//   Navigator.push(context,
-//     MaterialPageRoute(builder: (context) => PlanDetailsScreen(model: model),
-//     ),
-//   );
-// }
+void openDeleteMyAccountPage(BuildContext context) {
+  // Navigator.pushNamed(context, RoutesName.plan_details);
+  Navigator.push(context,
+    MaterialPageRoute(builder: (context) => const DeleteMyAccountPage(),
+    ),
+  );
+}
+
+void openDownloadMyAccountPage(BuildContext context) {
+  // Navigator.pushNamed(context, RoutesName.plan_details);
+  Navigator.push(context,
+    MaterialPageRoute(builder: (context) => const DownloadMyAccountPage(),
+    ),
+  );
+}
 
   void _showAddWorkEmailBottomSheet(BuildContext context, Size screenSize) {
     bool _value = false;
@@ -558,6 +584,103 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                         'Add email',
                         style: TextStyle(color: Colors.white),
                       )),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showRemoveEmailBottomSheet(BuildContext context, Size screenSize) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(25.0),
+        ),
+      ),
+      backgroundColor: Colors.white,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: screenSize.height * 0.30,
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Remove work email',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 16),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Card(
+                          color: AppColors.whiteColor,
+                          elevation: 2.0,
+                          shadowColor: Colors.white54,
+                          shape: const RoundedRectangleBorder(
+                              side: BorderSide(color: Colors.white, width: 1),
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(45))),
+                          child: Padding(
+                              padding: const EdgeInsets.all(6.0),
+                              child: SvgPicture.asset(AppImages.cross_icon)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        children: const [
+                          Center(child: Text("Are you sure you want to remove your work \nemail yourmail@yourdomain.com ?", style: TextStyle(fontWeight: FontWeight.w400),))
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 15.0,
+                ),
+                Container(
+                  color: AppColors.transparentColor,
+                  width: screenSize.width,
+                  height: screenSize.height * .075,
+                  child: GestureDetector(
+                    onTap: () {
+                      // openVippsApp(context);
+                    },
+                    child: const Card(
+                      color: AppColors.redColor,
+                      margin: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                      elevation: 5.0,
+                      shadowColor: Colors.white30,
+                      shape: RoundedRectangleBorder(
+                          side: BorderSide(color: Colors.white, width: 1),
+                          borderRadius: BorderRadius.all(Radius.circular(45))),
+                      child: Center(
+                          child: Text(
+                            'Remove email',
+                            style: TextStyle(color: Colors.white, fontSize: 16.0),
+                          )),
                     ),
                   ),
                 ),
