@@ -713,9 +713,15 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen>  with CustomProgr
       request.packageId = model.id.toString();
       request.planDetail = model;
       getCircularProgressIndicator(context);
-     await controller.createOrderRequest(request);
-      stopCircularProgressIndicator(context);
-      Get.to(const MainScreen());
+      await controller.createOrderRequest(request);
+     print("Stoping circuller bar");
+      // stopCircularProgressIndicator(context);
+      // print("Navigate to main");
+      // Navigator.push(context,
+      //   MaterialPageRoute(builder: (context) => const MainScreen(),
+      //   ),
+      // );
+      // Get.to(const MainScreen());
     }
     stopCircularProgressIndicator(context);
   }

@@ -638,7 +638,8 @@ class _ProfilePageState extends State<ProfilePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 12.0, horizontal: 20.0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -649,6 +650,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       GestureDetector(
                         onTap: () {
+                          print("this is");
+                          clearSecureStorageData();
+                          print( "username is"+flutterSecureLoginUserName.toString());
                           Navigator.pop(context);
                         },
                         child: Card(
@@ -739,15 +743,14 @@ class _ProfilePageState extends State<ProfilePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 12.0, horizontal: 20.0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Rate this app',
-                        style: AppStyles.largeTextStyle
-                      ),
+                      const Text('Rate this app',
+                          style: AppStyles.largeTextStyle),
                       GestureDetector(
                         onTap: () {
                           Navigator.pop(context);
@@ -776,9 +779,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: const [
                           Center(
                               child: Text(
-                            "If you enjoy using this app, would you \nmind to taking a moment to rate it? Thank \nyou for your support!",
-                            style: AppStyles.smallTextStyle
-                          ))
+                                  "If you enjoy using this app, would you \nmind to taking a moment to rate it? Thank \nyou for your support!",
+                                  style: AppStyles.smallTextStyle))
                         ],
                       ),
                     )
@@ -804,10 +806,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           side: BorderSide(color: Colors.white, width: 1),
                           borderRadius: BorderRadius.all(Radius.circular(45))),
                       child: Center(
-                          child: Text(
-                        'Rate us',
-                        style: AppStyles.smallTextStyleOnError
-                      )),
+                          child: Text('Rate us',
+                              style: AppStyles.smallTextStyleOnError)),
                     ),
                   ),
                 ),
@@ -838,7 +838,8 @@ class _ProfilePageState extends State<ProfilePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 12.0, horizontal: 20.0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -920,18 +921,20 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(children: [
-                              SvgPicture.asset(AppImages.language_globe_icon),
-                              const SizedBox(
-                                width: 8.0,
-                              ),
-                              const Center(
-                                child: Text(
-                                  "Norwegian",
-                                  style: AppStyles.smallTextStyle,
+                            Row(
+                              children: [
+                                SvgPicture.asset(AppImages.language_globe_icon),
+                                const SizedBox(
+                                  width: 8.0,
                                 ),
-                              ),
-                            ],),
+                                const Center(
+                                  child: Text(
+                                    "Norwegian",
+                                    style: AppStyles.smallTextStyle,
+                                  ),
+                                ),
+                              ],
+                            ),
                             // SvgPicture.asset(AppImages.tick_icon)
                           ],
                         ),
@@ -948,5 +951,16 @@ class _ProfilePageState extends State<ProfilePage> {
         );
       },
     );
+  }
+
+  clearSecureStorageData() {
+    setState(() {
+      flutterSecureClientEmail = null;
+      flutterSecureClientResponse = null;
+      flutterSecureLoginUserName = null;
+      flutterSecureClientPhone = null;
+      flutterSecureClientUserId = null;
+      flutterSecureClientToken = null;
+    });
   }
 }

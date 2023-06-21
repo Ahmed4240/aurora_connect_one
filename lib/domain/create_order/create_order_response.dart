@@ -1,13 +1,16 @@
+// To parse this JSON data, do
+//
+//     final createOrderResponse = createOrderResponseFromJson(jsonString);
 
 import 'dart:convert';
-import 'package:aurora_connect_one/domain/error.dart';
 
-CreateOrderResponse getCreateOrderResponse(String str) => CreateOrderResponse.fromJson(json.decode(str));
-String getCreateOrderResponseString(CreateOrderResponse data) => json.encode(data.toJson());
+CreateOrderResponse createOrderResponseFromJson(String str) => CreateOrderResponse.fromJson(json.decode(str));
+
+String createOrderResponseToJson(CreateOrderResponse data) => json.encode(data.toJson());
 
 class CreateOrderResponse {
-  bool? isSuccess;
-  CreateOrderData? data;
+  bool ? isSuccess;
+  Data ?data;
   dynamic error;
 
   CreateOrderResponse({
@@ -16,36 +19,61 @@ class CreateOrderResponse {
     this.error,
   });
 
+  CreateOrderResponse copyWith({
+    bool? isSuccess,
+    Data? data,
+    dynamic error,
+  }) =>
+      CreateOrderResponse(
+        isSuccess: isSuccess ?? this.isSuccess,
+        data: data ?? this.data,
+        error: error ?? this.error,
+      );
 
   factory CreateOrderResponse.fromJson(Map<String, dynamic> json) => CreateOrderResponse(
     isSuccess: json["isSuccess"],
-    data: CreateOrderData.fromJson(json["data"]),
-    error: Error?.fromJson(json["error"]),
+    data: Data.fromJson(json["data"]),
+    error: json["error"],
   );
 
   Map<String, dynamic> toJson() => {
     "isSuccess": isSuccess,
-    "data": data,
-    "error": error?.toJson(),
+    "data": data!.toJson(),
+    "error": error,
   };
-
 }
 
-class CreateOrderData {
-  String? orderId;
-  dynamic? simIccId;
-  dynamic? userPackageList;
+class Data {
+  String ?orderId;
+  dynamic simIccId;
+  dynamic userPackageList;
 
-  CreateOrderData({
+  Data({
     this.orderId,
     this.simIccId,
     this.userPackageList,
   });
 
-  CreateOrderData.fromJson(Map<String, dynamic> json) {
-    orderId = json['orderId'];
-    simIccId = json['simIccId'];
-    userPackageList = json['userPackageList'];
-  }
+  Data copyWith({
+    String? orderId,
+    dynamic simIccId,
+    dynamic userPackageList,
+  }) =>
+      Data(
+        orderId: orderId ?? this.orderId,
+        simIccId: simIccId ?? this.simIccId,
+        userPackageList: userPackageList ?? this.userPackageList,
+      );
 
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
+    orderId: json["orderId"],
+    simIccId: json["simIccId"],
+    userPackageList: json["userPackageList"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "orderId": orderId,
+    "simIccId": simIccId,
+    "userPackageList": userPackageList,
+  };
 }
