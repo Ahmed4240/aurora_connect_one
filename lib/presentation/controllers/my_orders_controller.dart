@@ -12,7 +12,9 @@ class MyOrdersController extends GetxController {
 
   // getMyOrders(MyOrdersRequest request) async {
   getMyOrders(String clientUserId, String clientToken) async {
-    print('calling for createOrderRequest ');
+    print('calling for createOrderRequest clientUserId $clientUserId ');
+    print('calling for createOrderRequest clientToken $clientToken ');
+
     loading(true);
     final map = {
       "userId": clientUserId,
@@ -20,7 +22,7 @@ class MyOrdersController extends GetxController {
     const url = 'https://auroraconnect.absoluit.com/api/api/Order/GetAllOrdersByCustomer';
     var response_1 = await http.post(Uri.parse(url),
         headers: {
-          "Accept": "application/json",
+          "Accept": "text/plain",
           "content-type": "application/json",
           'Authorization': 'Bearer $clientToken'
         },
@@ -34,7 +36,7 @@ class MyOrdersController extends GetxController {
       print("Response Data: $responseString");
       print("=====================================================");
     } else {
-      printError(info: "Response Error: ${response_1.body}");
+      printError(info: "Response Error: ${response_1.statusCode}");
     }
 
     loading(false);

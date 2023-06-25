@@ -37,13 +37,13 @@ class MyOrdersResponse {
 }
 
 class MyOrdersDataResponse {
-  int? orderId;
+  num? orderId;
   String? providerName;
-  DateTime? orderDate;
+  String? orderDate;
   String? data;
   String? price;
   String? paymentMethod;
-  int? discount;
+  num? discount;
   PlanDetail? orderDetail;
 
   MyOrdersDataResponse({

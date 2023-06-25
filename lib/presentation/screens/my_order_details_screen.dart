@@ -1,19 +1,15 @@
-import 'package:aurora_connect_one/domain/create_order/create_order_request.dart';
-import 'package:aurora_connect_one/presentation/screens/home_page.dart';
+import 'package:aurora_connect_one/domain/my_orders/my_orders_response.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_getx_widget.dart';
+
 import '../../domain/plans/PlanDetail.dart';
 import '../commons/app_colors.dart';
 import '../commons/app_images.dart';
-import '../commons/utils.dart';
-import '../controllers/plans_details_controller.dart';
-import '../widgets/payment_bottom_sheet.dart';
 
 class MyOrderDetailsScreen extends StatefulWidget {
+  const MyOrderDetailsScreen({super.key, required this.ordersDataResponse});
 
-  const MyOrderDetailsScreen({super.key});
+  final MyOrdersDataResponse ordersDataResponse;
 
   @override
   State<MyOrderDetailsScreen> createState() => _MyOrderDetailsScreenState();
@@ -22,27 +18,24 @@ class MyOrderDetailsScreen extends StatefulWidget {
 class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
   var loadingPercentage = 0;
 
-  String getCoverage(PlanDetail model) {
+  String getCoverage(PlanDetail? model) {
     String countries = "";
-    if (model.countryList != null) {
-      if (model.countryList!.length > 1) {
-        countries = "${model.countryList!.length} countries";
+    if (model?.countryList != null) {
+      int? length = 0;
+      length = model?.countryList!.length;
+      if (length! > 1) {
+        countries = "${model?.countryList!.length} countries";
       } else {
-        countries = model.countryList![0]?.countryName as String;
+        countries = model?.countryList![0]?.countryName as String;
       }
     }
 
     return countries;
   }
 
-  bool value = false;
-  var _isLoading = false;
-
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery
-        .of(context)
-        .size;
+    Size screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: AppColors.backGroundColor,
@@ -62,7 +55,7 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                 child: Stack(
                   children: [
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         Navigator.pop(context);
                       },
                       child: Padding(
@@ -80,10 +73,10 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                     ),
                     SizedBox(
                       width: screenSize.width,
-                      child: const Center(
+                      child: Center(
                         child: Text(
-                          'ID #677890',
-                          style: TextStyle(
+                          'ID #${widget.ordersDataResponse.orderId}',
+                          style: const TextStyle(
                               fontFamily: 'Metropolis',
                               fontWeight: FontWeight.w600,
                               fontSize: 18.0),
@@ -102,8 +95,8 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
+                children: [
+                  const Text(
                     'Date',
                     style: TextStyle(
                         fontSize: 16.0,
@@ -111,8 +104,8 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                         color: Colors.black),
                   ),
                   Text(
-                    '20.02.2022  16:36',
-                    style: TextStyle(
+                    widget.ordersDataResponse.orderDate as String,
+                    style: const TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.normal,
                         color: AppColors.inActiveColorPrimary),
@@ -122,8 +115,8 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(
-                vertical: 10.0, horizontal: 24.0),
+            padding:
+                const EdgeInsets.symmetric(vertical: 10.0, horizontal: 24.0),
             child: SizedBox(
               height: screenSize.height * .783,
               child: ListView(
@@ -137,8 +130,8 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             'Plan',
                             style: TextStyle(
                                 fontSize: 16.0,
@@ -146,8 +139,9 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                                 color: Colors.black),
                           ),
                           Text(
-                            'Merhaba',
-                            style: TextStyle(
+                            widget.ordersDataResponse.orderDetail?.providerName
+                                as String,
+                            style: const TextStyle(
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.normal,
                                 color: AppColors.inActiveColorPrimary),
@@ -160,8 +154,8 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             'Coverage',
                             style: TextStyle(
                                 fontSize: 16.0,
@@ -169,8 +163,9 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                                 color: Colors.black),
                           ),
                           Text(
-                            '100 countries',
-                            style: TextStyle(
+                            getCoverage(widget.ordersDataResponse.orderDetail)
+                                .toString(),
+                            style: const TextStyle(
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.normal,
                                 color: AppColors.inActiveColorPrimary),
@@ -183,8 +178,8 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             'Data',
                             style: TextStyle(
                                 fontSize: 16.0,
@@ -192,8 +187,9 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                                 color: Colors.black),
                           ),
                           Text(
-                            '7 GB',
-                            style: TextStyle(
+                            widget.ordersDataResponse.orderDetail?.data1
+                                as String,
+                            style: const TextStyle(
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.normal,
                                 color: AppColors.inActiveColorPrimary),
@@ -206,8 +202,8 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             'Validity',
                             style: TextStyle(
                                 fontSize: 16.0,
@@ -215,8 +211,9 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                                 color: Colors.black),
                           ),
                           Text(
-                            '15 days',
-                            style: TextStyle(
+                            widget.ordersDataResponse.orderDetail?.data1
+                                as String,
+                            style: const TextStyle(
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.normal,
                                 color: AppColors.inActiveColorPrimary),
@@ -370,7 +367,9 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 15,),
+                  const SizedBox(
+                    height: 15,
+                  ),
                   Card(
                     color: AppColors.whiteColor,
                     elevation: 2.0,
@@ -417,33 +416,5 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
 
   moveBack(BuildContext context) {
     Navigator.pop(context);
-  }
-
-  Future<void> openVippsApp(BuildContext context) async {
-    const platform = MethodChannel('example.com/channel');
-    int random;
-    try {
-      await platform.invokeMethod('getRandomNumber');
-    } on PlatformException catch (e) {
-      random = 0;
-    }
-  }
-
-  Future<void> callForCreateOrder(BuildContext context, PlanDetailsController controller, PlanDetail model) async {
-    if(model != null){
-      CreateOrderRequest request = CreateOrderRequest();
-      request.quantity = 1;
-      request.packageId = model.id.toString();
-      request.planDetail = model;
-
-      controller.createOrderRequest(request);
-    }
-  }
-
-  void openPlanDetails(BuildContext context, int index) {
-    Navigator.push(context,
-      MaterialPageRoute(builder: (context) => const HomePage(),
-      ),
-    );
   }
 }

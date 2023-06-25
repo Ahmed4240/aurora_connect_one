@@ -1,11 +1,10 @@
+import 'package:aurora_connect_one/domain/my_orders/my_orders_response.dart';
 import 'package:aurora_connect_one/presentation/screens/my_order_details_screen.dart';
-import 'package:aurora_connect_one/presentation/screens/plan_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../application/services/secure_storage.dart';
-import '../../domain/plans/PlanDetail.dart';
 import '../commons/app_colors.dart';
 import '../commons/app_images.dart';
 import '../controllers/my_orders_controller.dart';
@@ -48,9 +47,9 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
         .then((value) => {flutterSecureClientUserId = value});
     await localDb.readSecureData('requestUserToken')
         .then((value) => {flutterSecureClientToken = value});
-    print('order requestUserName : $flutterSecureLoginUserName');
-    print('order requestUserId : $flutterSecureClientUserId');
-    print('order requestUserToken : $flutterSecureClientToken');
+    // print('order requestUserName : $flutterSecureLoginUserName');
+    // print('order requestUserId : $flutterSecureClientUserId');
+    // print('order requestUserToken : $flutterSecureClientToken');
   }
 
   @override
@@ -120,14 +119,14 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                       height: screenSize.height * .87,
                       child: ListView.builder(
                           shrinkWrap: true,
-                          itemCount:
-                              // controller.myOrdersResponse.value.data?.length,
-                              10,
+                          itemCount: controller.myOrdersResponse.value.data?.length,
                           scrollDirection: Axis.vertical,
                           itemBuilder: (BuildContext context, int index) {
                             return GestureDetector(
                               onTap: () {
-                                openMyOrderDetails(context);
+                                if(controller.myOrdersResponse.value.data != null){
+                                  openMyOrderDetails(context, controller.myOrdersResponse.value.data![index]);
+                                }else{}
                               },
                               child: Padding(
                                 padding: const EdgeInsets.only(bottom: 0.0),
@@ -150,19 +149,19 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                       children: [
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: const [
+                                          children: [
                                             Text(
-                                                // (controller.myOrdersResponse.value.data?[index].providerName as String) ?? "unknown",
-                                                'Marhaba',
-                                                style: TextStyle(
+                                                (controller.myOrdersResponse.value.data?[index].providerName as String) ?? "unknown",
+                                                // 'Marhaba',
+                                                style: const TextStyle(
                                                     color: Colors.black,
                                                     fontWeight:
                                                         FontWeight.bold)),
-                                            SizedBox(height: 2.0),
+                                            const SizedBox(height: 2.0),
                                             Text(
-                                                // controller.myOrdersResponse.value.data?[index].orderDetail?.slug as String,
-                                                'ID #677980',
-                                                style: TextStyle(
+                                                controller.myOrdersResponse.value.data?[index].orderDetail?.id as String,
+                                                // 'ID #677980',
+                                                style: const TextStyle(
                                                     color: Colors.grey,
                                                     fontWeight:
                                                         FontWeight.normal)),
@@ -175,11 +174,11 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                             Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
-                                              children: const [
+                                              children: [
                                                 Text(
-                                                    // controller.myOrdersResponse.value.data?[index].orderDetail?.slug as String,
-                                                    '20.02.2022  16:36',
-                                                    style: TextStyle(
+                                                    controller.myOrdersResponse.value.data?[index].orderDate as String,
+                                                    // '20.02.2022  16:36',
+                                                    style: const TextStyle(
                                                         color: Colors.grey,
                                                         fontWeight:
                                                             FontWeight.normal)),
@@ -202,18 +201,17 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                             Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
-                                              children: const [
-                                                // Text(controller.myOrdersResponse.value.data?[index].orderDetail?.data1
-                                                Text('7 GB',
-                                                    style: TextStyle(
+                                              children: [
+                                                Text(controller.myOrdersResponse.value.data?[index].orderDetail?.data1 as String,
+                                                    style: const TextStyle(
                                                         color: Colors.black,
                                                         fontWeight:
                                                             FontWeight.bold)),
-                                                SizedBox(height: 2.0),
+                                                const SizedBox(height: 2.0),
                                                 Text(
-                                                    // controller.myOrdersResponse.value.data?[index].orderDetail?.validity
-                                                    '10 days',
-                                                    style: TextStyle(
+                                                    controller.myOrdersResponse.value.data?[index].orderDetail?.validity as String,
+                                                    // '10 days',
+                                                    style: const TextStyle(
                                                         color: Colors.grey,
                                                         fontWeight:
                                                             FontWeight.normal)),
@@ -236,11 +234,11 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                             Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
-                                              children: const [
+                                              children: [
                                                 Text(
-                                                    // "${controller.myOrdersResponse.value.data?[index].orderDetail?.price} \$",
-                                                    "20 \$",
-                                                    style: TextStyle(
+                                                    "${controller.myOrdersResponse.value.data?[index].orderDetail?.price} \$",
+                                                    // "20 \$",
+                                                    style: const TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 18.0,
                                                         fontWeight:
@@ -268,11 +266,11 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
     Navigator.pop(context);
   }
 
-  void openMyOrderDetails(BuildContext context) {
+  void openMyOrderDetails(BuildContext context, MyOrdersDataResponse ordersDataResponse) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const MyOrderDetailsScreen(),
+        builder: (context) => MyOrderDetailsScreen(ordersDataResponse: ordersDataResponse)
       ),
     );
   }
