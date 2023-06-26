@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:aurora_connect_one/domain/confirm_order/confirm_order_response.dart';
 import 'package:aurora_connect_one/domain/signup/SignUpResponse.dart';
+import 'package:aurora_connect_one/presentation/commons/utils.dart';
 import 'package:aurora_connect_one/presentation/widgets/progressIndicator_mixins.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -71,7 +72,8 @@ class PlanDetailsController extends GetxController
           prefs.setString(USER_NAME, signUpRequest.username.toString());
           prefs.setString(USER_EMAIL, signUpRequest.email.toString());
           prefs.setString(USER_PHONE, signUpRequest.phone.toString());
-          prefs.setString(ORDER_ID, createOrderResponse.value.data?.orderId ?? "");
+          prefs.setString(
+              ORDER_ID, createOrderResponse.value.data?.orderId ?? "");
 
           String? userNameString = prefs.getString(USER_NAME);
           String? userEmailString = prefs.getString(USER_EMAIL);
@@ -82,20 +84,24 @@ class PlanDetailsController extends GetxController
           String? userTokenString = prefs.getString(USER_TOKEN);
 
           if (userIdString == null) {
-            print("User is not available in local storage so we are going to signup first");
+            print(
+                "User is not available in local storage so we are going to signup first");
             signUpUserRequest(
                 signUpRequest, createOrderResponse.value.data?.orderId ?? "");
           } else {
-            print("User information is available in local storage so we are going to confirm order directly");
+            print(
+                "User information is available in local storage so we are going to confirm order directly");
             ConfirmOrderRequest confirmOrderRequest = ConfirmOrderRequest();
             confirmOrderRequest.userId = userIdString;
             confirmOrderRequest.orderId = userOrderIdString;
 
-            await orderConfirmationRequest(confirmOrderRequest, userTokenString ?? "");
+            await orderConfirmationRequest(
+                confirmOrderRequest, userTokenString ?? "");
           }
         }
       }
     } catch (e) {
+      Utils.toastMessage(e.toString());
       rethrow;
     }
   }
@@ -135,11 +141,13 @@ class PlanDetailsController extends GetxController
           prefs.setString(USER_TOKEN, signUpResponse.value.data?.token ?? "");
         }
 
-        await orderConfirmationRequest(confirmOrderRequest, signUpResponse.value.data?.token ?? "");
+        await orderConfirmationRequest(
+            confirmOrderRequest, signUpResponse.value.data?.token ?? "");
       } else {
         printError(info: "Response Error: ${response_1.body}");
       }
     } catch (e) {
+      Utils.toastMessage(e.toString());
       rethrow;
     }
 
@@ -153,7 +161,8 @@ class PlanDetailsController extends GetxController
       final map = {"userId": request.userId, "orderId": request.orderId};
       print("Request: ${jsonEncode(map)}");
       print("Request Bearer-token : ${token}");
-      var url = "https://auroraconnect.absoluit.com/api/api/Order/ConfirmOrder?userId=${request.userId}&orderId=${request.orderId}";
+      var url =
+          "https://auroraconnect.absoluit.com/api/api/Order/ConfirmOrder?userId=${request.userId}&orderId=${request.orderId}";
       var response_1 = await http.post(Uri.parse(url),
           headers: {
             "Accept": "application/json",
@@ -162,16 +171,20 @@ class PlanDetailsController extends GetxController
           },
           body: jsonEncode(map));
       if (response_1.statusCode == 200) {
-        confirmOrderResponse.value = confirmOrderResponseFromJson(response_1.body);
+        confirmOrderResponse.value =
+            confirmOrderResponseFromJson(response_1.body);
         String responseString = response_1.body;
         print("Response Data1: $responseString");
         stopCircularProgressIndicator(context);
         print("Your order is confirmed from server side");
-        Get.to(() => const MainScreen());
+        Get.to(() => MainScreen(
+              defaultIndex: 0,
+            ));
       } else {
         printError(info: "Response Error: ${response_1.statusCode}");
       }
     } catch (e) {
+      Utils.toastMessage(e.toString());
       rethrow;
     }
   }

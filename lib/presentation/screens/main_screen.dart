@@ -10,7 +10,8 @@ import 'home_page.dart';
 import 'my_e_sims_page.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  int defaultIndex = 0;
+  MainScreen({super.key, required this.defaultIndex});
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -27,6 +28,7 @@ class _MainScreenState extends State<MainScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    _currentIndex = widget.defaultIndex;
     if (controllerMyESin.confirmOrderResponse.value.data != null) {
       _currentIndex = 1;
       _buildBottomBar();

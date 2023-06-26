@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_overrides, unused_import, unused_field
+
 import 'package:aurora_connect_one/presentation/provider/plans_provider.dart';
 import 'package:get/get.dart';
 
@@ -6,7 +8,6 @@ import '../../domain/packages/local/LocalPlansResponse.dart';
 import '../commons/constants.dart';
 
 class ProfileController extends GetxController {
-
   @override
   void onReady() {
     super.onReady();

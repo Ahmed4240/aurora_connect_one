@@ -9,8 +9,9 @@ class SplashController extends GetxController {
     super.onInit();
     await GetStorage.init();
     Future.delayed(const Duration(seconds: 3), () async {
-      Get.offAll(() =>  const MainScreen());
-      }
-    );
+      Get.to(() => MainScreen(
+            defaultIndex: 0,
+          ));
+    });
   }
 }

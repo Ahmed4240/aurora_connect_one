@@ -11,44 +11,45 @@ import '../../screens/profile_page.dart';
 import '../../screens/splash_screen.dart';
 
 class Routes {
-
   //settings accept string parameter
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case RoutesName.home:
         return MaterialPageRoute(
-            builder: (BuildContext context) =>  const MainScreen());
+            builder: (BuildContext context) => MainScreen(
+                  defaultIndex: 0,
+                ));
       case RoutesName.profile:
         return MaterialPageRoute(
-            builder: (BuildContext context) =>  const ProfilePage());
+            builder: (BuildContext context) => const ProfilePage());
       case RoutesName.splash:
         return MaterialPageRoute(
-            builder: (BuildContext context) =>  const SplashScreen());
+            builder: (BuildContext context) => const SplashScreen());
       case RoutesName.my_esim:
         return MaterialPageRoute(
-            builder: (BuildContext context) =>  const MyE_SimsPage());
+            builder: (BuildContext context) => const MyE_SimsPage());
       // case RoutesName.plans:
       //   return MaterialPageRoute(
       //       builder: (BuildContext context) =>  const PlansScreen());
       case RoutesName.webview:
         return MaterialPageRoute(
-            builder: (BuildContext context) =>  const WebViewScreen());
+            builder: (BuildContext context) => const WebViewScreen());
       case RoutesName.my_esim_details:
         return MaterialPageRoute(
-            builder: (BuildContext context) =>  const MyESIMDetailsScreen());
+            builder: (BuildContext context) => const MyESIMDetailsScreen());
       case RoutesName.plan_details:
-        // return MaterialPageRoute(
-        //     builder: (BuildContext context) =>  const PlanDetailsScreen());
+      // return MaterialPageRoute(
+      //     builder: (BuildContext context) =>  const PlanDetailsScreen());
       // case RoutesName.sample_screen:
       //   return MaterialPageRoute(
       //       builder: (BuildContext context) =>  SampleScreen());
       default:
         return MaterialPageRoute(
             builder: (BuildContext context) => const Scaffold(
-              body: Center(
-                child: Text("No route defined"),
-              ),
-            ));
+                  body: Center(
+                    child: Text("No route defined"),
+                  ),
+                ));
     }
   }
 }
