@@ -22,8 +22,8 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    return Scaffold(
-      body: Column(
+    return SafeArea(
+      child: Column(
         children: [
           SizedBox(
             width: screenSize.width,

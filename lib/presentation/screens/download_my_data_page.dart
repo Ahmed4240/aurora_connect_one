@@ -17,8 +17,8 @@ class _DownloadMyAccountPageState extends State<DownloadMyAccountPage> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    return Scaffold(
-      body: SingleChildScrollView(
+    return SafeArea(
+      child: SingleChildScrollView(
         child: Container(
           width: screenSize.width,
           color: AppColors.backGroundColor,

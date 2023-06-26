@@ -24,8 +24,8 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    return Scaffold(
-      body: Column(
+    return SafeArea(
+      child: Column(
         children: [
           SizedBox(
             width: screenSize.width,

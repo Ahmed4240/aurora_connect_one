@@ -21,8 +21,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
 
     Size screenSize = MediaQuery.of(context).size;
 
-    return Scaffold(
-        body: Column(
+    return SafeArea(
+        child: Column(
           children: [
             Card(
               elevation: 8,

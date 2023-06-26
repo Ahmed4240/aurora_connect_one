@@ -174,8 +174,7 @@ class _MyE_SimsPageState extends State<MyE_SimsPage>
                                             Text(currentList[index].remaining,
                                                 style: const TextStyle(
                                                     color: Colors.black,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
+                                                    fontWeight: FontWeight.bold)),
                                             const SizedBox(height: 2.0),
                                             const Text('Remaining',
                                                 style: TextStyle(

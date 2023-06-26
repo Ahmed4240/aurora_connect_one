@@ -60,13 +60,13 @@ class _HomePageState extends State<HomePage>
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      body: ListView(physics: const NeverScrollableScrollPhysics(), children: [
+    return SafeArea(
+      child: ListView(physics: const NeverScrollableScrollPhysics(), children: [
         Padding(
-          padding: const EdgeInsets.only(top: 28, left: 8, right: 8),
+          padding: const EdgeInsets.only(top: 48, left: 26, right: 26),
           child: Container(
             width: width,
-            height: height * 0.07,
+            height: height * 0.065,
             decoration: const BoxDecoration(
                 color: AppColors.backGroundColor,
                 borderRadius: BorderRadius.all(Radius.circular(50.0))),
@@ -95,14 +95,15 @@ class _HomePageState extends State<HomePage>
           ),
         ),
         const Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: 8,
-            horizontal: 20,
+          padding: EdgeInsets.only(
+            top: 45,
+            left: 26,
+            right: 26,
           ),
           child: Text(
             "eSIM plans",
             style: TextStyle(
-              fontSize: 30,
+              fontSize: 25,
               color: AppColors.lightBlackColor,
               fontWeight: FontWeight.w600,
               fontFamily: 'Manrope',
@@ -153,8 +154,7 @@ class _HomePageState extends State<HomePage>
                           Center(child: CircularProgressIndicator()),
                         ],
                       )
-                    : Obx(
-                        () => Column(
+                    : Obx(() => Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Expanded(

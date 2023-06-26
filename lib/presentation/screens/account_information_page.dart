@@ -51,209 +51,124 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    return FutureBuilder(
-      future: getData(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          // While waiting for data, display a loading spinner or any other loading indicator
-          return const Center(
-              child: SizedBox(
-                  height: 50.0,
-                  width: 50.0,
-                  child: CircularProgressIndicator()));
-        } else if (snapshot.hasError) {
-          // If an error occurred during data fetching, display an error message
-          return Text('Error: ${snapshot.error}');
-        } else {
-          // If data fetching is successful, build your widget tree using the retrieved data
-          // Access the retrieved data through snapshot.data
-          return Scaffold(
-            body: SingleChildScrollView(
-              child: Container(
-                width: screenSize.width,
-                color: AppColors.backGroundColor,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: screenSize.width,
-                      height: screenSize.height * 0.1,
-                      child: Card(
-                        elevation: 8,
-                        shadowColor: Colors.white30,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 25.0, bottom: 2.0, left: 24.0, right: 24.0),
-                          child: Stack(
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 55.0),
-                                  child: Container(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: SvgPicture.asset(
-                                      AppImages.back_arrow_icon,
-                                      width: 20,
-                                      height: 20,
-                                      fit: BoxFit.fill,
+    return SafeArea(
+      child: FutureBuilder(
+        future: getData(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // While waiting for data, display a loading spinner or any other loading indicator
+            return const Center(
+                child: SizedBox(
+                    height: 50.0,
+                    width: 50.0,
+                    child: CircularProgressIndicator()));
+          } else if (snapshot.hasError) {
+            // If an error occurred during data fetching, display an error message
+            return Text('Error: ${snapshot.error}');
+          } else {
+            // If data fetching is successful, build your widget tree using the retrieved data
+            // Access the retrieved data through snapshot.data
+            return Scaffold(
+              body: SingleChildScrollView(
+                child: Container(
+                  width: screenSize.width,
+                  color: AppColors.backGroundColor,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: screenSize.width,
+                        height: screenSize.height * 0.1,
+                        child: Card(
+                          elevation: 8,
+                          shadowColor: Colors.white30,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                top: 25.0, bottom: 2.0, left: 24.0, right: 24.0),
+                            child: Stack(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 55.0),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: SvgPicture.asset(
+                                        AppImages.back_arrow_icon,
+                                        width: 20,
+                                        height: 20,
+                                        fit: BoxFit.fill,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(
-                                width: screenSize.width,
-                                child: const Center(
-                                  child: Text(
-                                    'Account information',
-                                    style: TextStyle(
-                                        fontFamily: 'Metropolis',
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 18.0),
+                                SizedBox(
+                                  width: screenSize.width,
+                                  child: const Center(
+                                    child: Text(
+                                      'Account information',
+                                      style: TextStyle(
+                                          fontFamily: 'Metropolis',
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 18.0),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Card(
-                          margin: const EdgeInsets.only(
-                              top: 10, bottom: 5, left: 15, right: 15),
-                          elevation: 5,
-                          shadowColor: Colors.white30,
-                          shape: const RoundedRectangleBorder(
-                              side: BorderSide(color: Colors.white, width: 3),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12))),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 12.0, horizontal: 15.0),
-                            alignment: Alignment.centerLeft,
-                            color: AppColors.whiteColor,
-                            width: screenSize.width,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Name',
-                                  style: TextStyle(
-                                      color: Colors.grey,
-                                      fontFamily: 'Metropolis',
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14),
-                                ),
-                                const SizedBox(
-                                  height: 2,
-                                ),
-                                Text(
-                                  controller.accountInfoResponse.value.data?.name ?? '---',
-                                  style: const TextStyle(
-                                      color: Colors.grey,
-                                      fontFamily: 'Metropolis',
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 16),
-                                ),
-                              ],
+                      const SizedBox(height: 5,),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Card(
+                            margin: const EdgeInsets.only(
+                                top: 10, bottom: 5, left: 15, right: 15),
+                            elevation: 5,
+                            shadowColor: Colors.white30,
+                            shape: const RoundedRectangleBorder(
+                                side: BorderSide(color: Colors.white, width: 3),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12))),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 12.0, horizontal: 15.0),
+                              alignment: Alignment.centerLeft,
+                              color: AppColors.whiteColor,
+                              width: screenSize.width,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Name',
+                                    style: TextStyle(
+                                        color: Colors.grey,
+                                        fontFamily: 'Metropolis',
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14),
+                                  ),
+                                  const SizedBox(
+                                    height: 2,
+                                  ),
+                                  Text(
+                                    controller.accountInfoResponse.value.data
+                                            ?.name ??
+                                        '---',
+                                    style: const TextStyle(
+                                        color: Colors.grey,
+                                        fontFamily: 'Metropolis',
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 16),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Card(
-                          margin: const EdgeInsets.only(
-                              top: 5, bottom: 5, left: 15, right: 15),
-                          elevation: 5,
-                          shadowColor: Colors.white30,
-                          shape: const RoundedRectangleBorder(
-                              side: BorderSide(color: Colors.white, width: 3),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12))),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 12.0, horizontal: 15.0),
-                            alignment: Alignment.centerLeft,
-                            color: AppColors.whiteColor,
-                            width: screenSize.width,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Phone',
-                                  style: TextStyle(
-                                      color: Colors.grey,
-                                      fontFamily: 'Metropolis',
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14),
-                                ),
-                                const SizedBox(
-                                  height: 2,
-                                ),
-                                Text(
-                                  controller.accountInfoResponse.value.data?.phone ?? '',
-                                  style: const TextStyle(
-                                      color: Colors.grey,
-                                      fontFamily: 'Metropolis',
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 16),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Card(
-                          margin: const EdgeInsets.only(
-                              top: 5, bottom: 5, left: 15, right: 15),
-                          elevation: 5,
-                          shadowColor: Colors.white30,
-                          shape: const RoundedRectangleBorder(
-                              side: BorderSide(color: Colors.white, width: 3),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12))),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 12.0, horizontal: 15.0),
-                            alignment: Alignment.centerLeft,
-                            color: AppColors.whiteColor,
-                            width: screenSize.width,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Email',
-                                  style: TextStyle(
-                                      color: Colors.grey,
-                                      fontFamily: 'Metropolis',
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14),
-                                ),
-                                const SizedBox(
-                                  height: 2,
-                                ),
-                                Text(
-                                  controller.accountInfoResponse.value.data?.email ?? '',
-                                  style: const TextStyle(
-                                      color: Colors.grey,
-                                      fontFamily: 'Metropolis',
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 16),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Visibility(
-                          visible: controller.accountInfoResponse.value.data?.workEmail != null,
-                          child: Card(
+                          Card(
                             margin: const EdgeInsets.only(
                                 top: 5, bottom: 5, left: 15, right: 15),
                             elevation: 5,
@@ -273,7 +188,7 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text(
-                                    'Work email',
+                                    'Phone',
                                     style: TextStyle(
                                         color: Colors.grey,
                                         fontFamily: 'Metropolis',
@@ -283,222 +198,322 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                   const SizedBox(
                                     height: 2,
                                   ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        controller.accountInfoResponse.value.data?.workEmail ?? '',
-                                        style: const TextStyle(
-                                            color: Colors.grey,
-                                            fontFamily: 'Metropolis',
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 16),
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          _showRemoveEmailBottomSheet(
-                                              context, screenSize);
-                                        },
-                                        child: Card(
-                                          elevation: 1,
-                                          color: Colors.red.shade100,
-                                          shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(4))),
-                                          child: Container(
-                                              padding: const EdgeInsets.all(2.0),
-                                              child: SvgPicture.asset(
-                                                AppImages.delete_icon,
-                                                color: Colors.red,
-                                              )),
-                                        ),
-                                      ),
-                                    ],
+                                  Text(
+                                    controller.accountInfoResponse.value.data
+                                            ?.phone ??
+                                        '',
+                                    style: const TextStyle(
+                                        color: Colors.grey,
+                                        fontFamily: 'Metropolis',
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 16),
                                   ),
                                 ],
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 5.0,
-                        ),
-                        Visibility(
-                          visible: controller.accountInfoResponse.value.data?.workEmail == null,
-                          child: Container(
-                            color: AppColors.transparentColor,
-                            width: screenSize.width * 0.55,
-                            height: screenSize.height * .055,
-                            child: GestureDetector(
-                              onTap: () {
-                                _showAddWorkEmailBottomSheet(context, screenSize);
-                              },
-                              child: Card(
-                                color: AppColors.activeColorPrimary,
-                                margin: const EdgeInsets.symmetric(
-                                    vertical: 0, horizontal: 15),
-                                elevation: 5.0,
-                                shadowColor: Colors.white30,
-                                shape: const RoundedRectangleBorder(
-                                    side:
-                                        BorderSide(color: Colors.white, width: 1),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(45))),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 4.0),
-                                      child: Icon(
-                                        Icons.add,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    Center(
-                                        child: Text(
+                          Card(
+                            margin: const EdgeInsets.only(
+                                top: 5, bottom: 5, left: 15, right: 15),
+                            elevation: 5,
+                            shadowColor: Colors.white30,
+                            shape: const RoundedRectangleBorder(
+                                side: BorderSide(color: Colors.white, width: 3),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12))),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 12.0, horizontal: 15.0),
+                              alignment: Alignment.centerLeft,
+                              color: AppColors.whiteColor,
+                              width: screenSize.width,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Email',
+                                    style: TextStyle(
+                                        color: Colors.grey,
+                                        fontFamily: 'Metropolis',
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14),
+                                  ),
+                                  const SizedBox(
+                                    height: 2,
+                                  ),
+                                  Text(
+                                    controller.accountInfoResponse.value.data
+                                            ?.email ??
+                                        '',
+                                    style: const TextStyle(
+                                        color: Colors.grey,
+                                        fontFamily: 'Metropolis',
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 16),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Visibility(
+                            visible: controller
+                                    .accountInfoResponse.value.data?.workEmail !=
+                                null,
+                            child: Card(
+                              margin: const EdgeInsets.only(
+                                  top: 5, bottom: 5, left: 15, right: 15),
+                              elevation: 5,
+                              shadowColor: Colors.white30,
+                              shape: const RoundedRectangleBorder(
+                                  side: BorderSide(color: Colors.white, width: 3),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12))),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 12.0, horizontal: 15.0),
+                                alignment: Alignment.centerLeft,
+                                color: AppColors.whiteColor,
+                                width: screenSize.width,
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
                                       'Work email',
-                                      style: TextStyle(color: Colors.white),
-                                    )),
+                                      style: TextStyle(
+                                          color: Colors.grey,
+                                          fontFamily: 'Metropolis',
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 14),
+                                    ),
+                                    const SizedBox(
+                                      height: 2,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          controller.accountInfoResponse.value
+                                                  .data?.workEmail ??
+                                              '',
+                                          style: const TextStyle(
+                                              color: Colors.grey,
+                                              fontFamily: 'Metropolis',
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 16),
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            _showRemoveEmailBottomSheet(
+                                                context, screenSize);
+                                          },
+                                          child: Card(
+                                            elevation: 1,
+                                            color: Colors.red.shade100,
+                                            shape: const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(4))),
+                                            child: Container(
+                                                padding:
+                                                    const EdgeInsets.all(2.0),
+                                                child: SvgPicture.asset(
+                                                  AppImages.delete_icon,
+                                                  color: Colors.red,
+                                                )),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 25.0, top: 25.0),
-                          child: Text(
-                            'Account control',
-                            style: TextStyle(
-                                fontFamily: 'Metropolis',
-                                fontWeight: FontWeight.normal,
-                                fontSize: 15,
-                                color: Colors.grey),
+                          const SizedBox(
+                            height: 5.0,
                           ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            openDeleteMyAccountPage(context);
-                          },
-                          child: Card(
-                            margin: const EdgeInsets.only(
-                                top: 10, bottom: 5, left: 20, right: 20),
-                            elevation: 8,
-                            shadowColor: Colors.white30,
-                            shape: const RoundedRectangleBorder(
-                                side: BorderSide(color: Colors.white, width: 3),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15))),
-                            child: Column(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.all(10),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 10),
-                                  alignment: Alignment.center,
-                                  color: AppColors.whiteColor,
-                                  width: screenSize.width,
+                          Visibility(
+                            visible: controller
+                                    .accountInfoResponse.value.data?.workEmail ==
+                                null,
+                            child: Container(
+                              color: AppColors.transparentColor,
+                              width: screenSize.width * 0.55,
+                              height: screenSize.height * .055,
+                              child: GestureDetector(
+                                onTap: () {
+                                  _showAddWorkEmailBottomSheet(
+                                      context, screenSize);
+                                },
+                                child: Card(
+                                  color: AppColors.activeColorPrimary,
+                                  margin: const EdgeInsets.symmetric(
+                                      vertical: 0, horizontal: 15),
+                                  elevation: 5.0,
+                                  shadowColor: Colors.white30,
+                                  shape: const RoundedRectangleBorder(
+                                      side: BorderSide(
+                                          color: Colors.white, width: 1),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(45))),
                                   child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(children: [
-                                        SvgPicture.asset(AppImages.delete_icon),
-                                        const Padding(
-                                          padding: EdgeInsets.only(left: 16.0),
-                                          child: Text(
-                                            'Delete my account',
-                                            style: TextStyle(
-                                                fontFamily: 'Metropolis',
-                                                fontWeight: FontWeight.normal,
-                                                fontSize: 14,
-                                                color: Colors.red),
-                                          ),
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Padding(
+                                        padding: EdgeInsets.only(right: 4.0),
+                                        child: Icon(
+                                          Icons.add,
+                                          color: Colors.white,
                                         ),
-                                      ]),
-                                      const Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: AppColors.inActiveColorPrimary,
-                                        size: 18.0,
-                                      )
+                                      ),
+                                      Center(
+                                          child: Text(
+                                        'Work email',
+                                        style: TextStyle(color: Colors.white),
+                                      )),
                                     ],
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
                           ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            openDownloadMyAccountPage(context);
-                          },
-                          child: Card(
-                            margin: const EdgeInsets.only(
-                                top: 8, bottom: 5, left: 20, right: 20),
-                            elevation: 8,
-                            shadowColor: Colors.white30,
-                            shape: const RoundedRectangleBorder(
-                                side: BorderSide(color: Colors.white, width: 3),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15))),
-                            child: Column(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.all(10),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 10),
-                                  alignment: Alignment.center,
-                                  color: AppColors.whiteColor,
-                                  width: screenSize.width,
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(children: [
-                                        SvgPicture.asset(
-                                            AppImages.download_my_data_icon),
-                                        const Padding(
-                                          padding: EdgeInsets.only(left: 16.0),
-                                          child: Text(
-                                            'Download my data',
-                                            style: TextStyle(
-                                                fontFamily: 'Metropolis',
-                                                fontWeight: FontWeight.normal,
-                                                fontSize: 14,
-                                                color: Colors.black),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(left: 25.0, top: 25.0),
+                            child: Text(
+                              'Account control',
+                              style: TextStyle(
+                                  fontFamily: 'Metropolis',
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 15,
+                                  color: Colors.grey),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              openDeleteMyAccountPage(context);
+                            },
+                            child: Card(
+                              margin: const EdgeInsets.only(
+                                  top: 10, bottom: 5, left: 20, right: 20),
+                              elevation: 8,
+                              shadowColor: Colors.white30,
+                              shape: const RoundedRectangleBorder(
+                                  side: BorderSide(color: Colors.white, width: 3),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15))),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.all(10),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 10),
+                                    alignment: Alignment.center,
+                                    color: AppColors.whiteColor,
+                                    width: screenSize.width,
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(children: [
+                                          SvgPicture.asset(AppImages.delete_icon),
+                                          const Padding(
+                                            padding: EdgeInsets.only(left: 16.0),
+                                            child: Text(
+                                              'Delete my account',
+                                              style: TextStyle(
+                                                  fontFamily: 'Metropolis',
+                                                  fontWeight: FontWeight.normal,
+                                                  fontSize: 14,
+                                                  color: Colors.red),
+                                            ),
                                           ),
-                                        ),
-                                      ]),
-                                      const Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: AppColors.inActiveColorPrimary,
-                                        size: 18.0,
-                                      )
-                                    ],
+                                        ]),
+                                        const Icon(
+                                          Icons.arrow_forward_ios,
+                                          color: AppColors.inActiveColorPrimary,
+                                          size: 18.0,
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          InkWell(
+                            onTap: () {
+                              openDownloadMyAccountPage(context);
+                            },
+                            child: Card(
+                              margin: const EdgeInsets.only(
+                                  top: 8, bottom: 5, left: 20, right: 20),
+                              elevation: 8,
+                              shadowColor: Colors.white30,
+                              shape: const RoundedRectangleBorder(
+                                  side: BorderSide(color: Colors.white, width: 3),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15))),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.all(10),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 10),
+                                    alignment: Alignment.center,
+                                    color: AppColors.whiteColor,
+                                    width: screenSize.width,
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(children: [
+                                          SvgPicture.asset(
+                                              AppImages.download_my_data_icon),
+                                          const Padding(
+                                            padding: EdgeInsets.only(left: 16.0),
+                                            child: Text(
+                                              'Download my data',
+                                              style: TextStyle(
+                                                  fontFamily: 'Metropolis',
+                                                  fontWeight: FontWeight.normal,
+                                                  fontSize: 14,
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                        ]),
+                                        const Icon(
+                                          Icons.arrow_forward_ios,
+                                          color: AppColors.inActiveColorPrimary,
+                                          size: 18.0,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ); // Replace YourWidget with your own widget
-        }
-      },
+            ); // Replace YourWidget with your own widget
+          }
+        },
+      ),
     );
   }
 
@@ -554,26 +569,21 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 16),
                       ),
-                      GestureDetector(
+                      InkWell(
                         onTap: () {
-                          // moveBack(context);
+                          Navigator.pop(context);
                         },
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Card(
-                            color: AppColors.whiteColor,
-                            elevation: 5.0,
-                            shadowColor: AppColors.lightGreyColor,
-                            shape: const RoundedRectangleBorder(
-                                side: BorderSide(color: Colors.white, width: 1),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(45))),
-                            child: Padding(
-                                padding: const EdgeInsets.all(6.0),
-                                child: SvgPicture.asset(AppImages.cross_icon)),
-                          ),
+                        child: Card(
+                          color: AppColors.whiteColor,
+                          elevation: 5.0,
+                          shadowColor: AppColors.lightGreyColor,
+                          shape: const RoundedRectangleBorder(
+                              side: BorderSide(color: Colors.white, width: 1),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(45))),
+                          child: Padding(
+                              padding: const EdgeInsets.all(6.0),
+                              child: SvgPicture.asset(AppImages.cross_icon)),
                         ),
                       ),
                     ],
@@ -588,25 +598,24 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                         shape: const RoundedRectangleBorder(
                             side: BorderSide(color: Colors.white, width: 3),
                             borderRadius:
-                                BorderRadius.all(Radius.circular(15))),
+                                BorderRadius.all(Radius.circular(12))),
                         child: Row(
                           children: [
                             Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                width: screenSize.width * 0.9,
-                                child: TextField(
-                                    controller: emailController,
-                                    style: const TextStyle(
-                                        decoration: TextDecoration.none),
-                                    decoration: const InputDecoration(
-                                        focusedBorder: InputBorder.none,
-                                        enabledBorder: InputBorder.none,
-                                        contentPadding:
-                                            EdgeInsetsDirectional.only(
-                                                start: 10.0),
-                                        labelText: "ahmed.rehman@gmail.com",
-                                        hintText: "Email")))
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              width: screenSize.width * 0.9,
+                              child: TextField(
+                                controller: emailController,
+                                style: const TextStyle(
+                                    decoration: TextDecoration.none),
+                                decoration: const InputDecoration(
+                                    focusedBorder: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    contentPadding:
+                                        EdgeInsetsDirectional.only(start: 10.0),
+                                    labelText: "Email",),
+                              ),
+                            ),
                           ],
                         ),
                       ),

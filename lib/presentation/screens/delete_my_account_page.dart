@@ -64,8 +64,8 @@ class _DeleteMyAccountPageState extends State<DeleteMyAccountPage> {
         } else {
           // If data fetching is successful, build your widget tree using the retrieved data
           // Access the retrieved data through snapshot.data
-          return Scaffold(
-            body: SingleChildScrollView(
+          return SafeArea(
+            child: SingleChildScrollView(
               child: Container(
                 width: screenSize.width,
                 color: AppColors.backGroundColor,

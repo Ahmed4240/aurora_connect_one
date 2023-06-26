@@ -81,7 +81,7 @@ class PlansScreen extends StatelessWidget {
                                 child: Column(
                                   children: [
                                     const SizedBox(
-                                      height: 50,
+                                      height: 100,
                                     ),
                                     Expanded(
                                       child: SvgPicture.asset(

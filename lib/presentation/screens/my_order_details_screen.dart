@@ -37,9 +37,8 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
 
-    return Scaffold(
-      backgroundColor: AppColors.backGroundColor,
-      body: Column(
+    return SafeArea(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
