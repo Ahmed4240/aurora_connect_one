@@ -156,7 +156,7 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                   ),
                                   Text(
                                     controller.accountInfoResponse.value.data
-                                            ?.name ??
+                                            ?.username ??
                                         '---',
                                     style: const TextStyle(
                                         color: Colors.grey,
@@ -201,7 +201,7 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                   Text(
                                     controller.accountInfoResponse.value.data
                                             ?.phone ??
-                                        '',
+                                        '---',
                                     style: const TextStyle(
                                         color: Colors.grey,
                                         fontFamily: 'Metropolis',
@@ -308,7 +308,8 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                         InkWell(
                                           onTap: () {
                                             _showRemoveEmailBottomSheet(
-                                                context, screenSize);
+                                                context, screenSize, controller.accountInfoResponse.value
+                                                .data?.workEmail ?? '');
                                           },
                                           child: Card(
                                             elevation: 1,
@@ -676,8 +677,13 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                   height: screenSize.height * .075,
                   child: GestureDetector(
                     onTap: () {
-                      prepareRequestForUpdateEmail(
-                          context, emailController.text);
+                      if(emailController.text != null && emailController.text != "")
+                        {
+                          prepareRequestForUpdateEmail(
+                              context, emailController.text);
+                        }else{
+                        Utils.snackBar("Please add work email...", context);
+                      }
                     },
                     child: const Card(
                       color: AppColors.activeColorPrimary,
@@ -703,7 +709,7 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
     );
   }
 
-  void _showRemoveEmailBottomSheet(BuildContext context, Size screenSize) {
+  void _showRemoveEmailBottomSheet(BuildContext context, Size screenSize, String workEmail) {
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -757,12 +763,23 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Row(
-                        children: const [
+                        children: [
                           Center(
-                              child: Text(
-                            "Are you sure you want to remove your work \nemail yourmail@yourdomain.com ?",
-                            style: TextStyle(fontWeight: FontWeight.w400),
-                          ))
+                              child: RichText(
+                                text: TextSpan(
+                                  text:
+                                  'Are you sure you want to remove your work \nemail ',
+                                  style: const TextStyle(
+                                      color: Colors.grey, fontSize: 15.0),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: ' ${workEmail.toString()}.',
+                                      style: const TextStyle(color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                          ),
                         ],
                       ),
                     )
@@ -812,6 +829,7 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
             userId: userIdString!),
         userTokenString!);
     if (await requestStatus) {
+      Utils.snackBar("Work email added successfully!", context);
       Navigator.pop(context);
     } else {
       Utils.snackBar("Something went wrong", context);
@@ -822,7 +840,9 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
     Future<bool> requestStatus = controller.removeWorkEmail(
         RemoveWorkEmailRequest(userId: userIdString!), userTokenString!);
     if (await requestStatus) {
+      Utils.snackBar("Work email removed successfully!", context);
       Navigator.pop(context);
+      getData();
     } else {
       Utils.snackBar("Something went wrong", context);
     }

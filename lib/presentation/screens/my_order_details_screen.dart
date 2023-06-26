@@ -18,7 +18,7 @@ class MyOrderDetailsScreen extends StatefulWidget {
 class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
   var loadingPercentage = 0;
 
-  String getCoverage(PlanDetail? model) {
+  String getCoverage(OrderDetail? model) {
     String countries = "";
     if (model?.countryList != null) {
       int? length = 0;

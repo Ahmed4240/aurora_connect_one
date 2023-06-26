@@ -13,7 +13,7 @@ class PlanDetail {
   String? validity;
   String? id;
   String? title;
-  List<CountryList?>? countryList;
+  List<CountryList>? countryList;
 
   PlanDetail({
     required this.slug,
@@ -90,7 +90,7 @@ class NetworkList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['name'] = name;
     data['types'] = types;
     return data;
@@ -111,7 +111,7 @@ class CountryList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['countryName'] = countryName;
     data['countryImage'] = countryImage;
     data['countryCode'] = countryCode;

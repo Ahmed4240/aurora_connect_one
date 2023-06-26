@@ -25,7 +25,7 @@ class AccountInformationController extends GetxController {
     final map = {
       "userId": request.userId,
     };
-    String url = 'https://auroraconnect.absoluit.com/api/api/User/AccountInformation';
+    String url = 'https://auroraconnect.absoluit.com/api/api/User/AccountInformation?userId=${request.userId.toString()}';
     var response_1 = await http.post(Uri.parse(url),
         headers: {
           "Accept": "text/plain",
@@ -95,7 +95,10 @@ class AccountInformationController extends GetxController {
       "workEmail": request.workEmail,
       "userId": request.userId,
     };
-    const url = 'https://auroraconnect.absoluit.com/api/api/User/UpdateWorkEmail';
+    var url = 'https://auroraconnect.absoluit.com/api/api/User/UpdateWorkEmail?'
+        'isReceiptOnWorkEmail=${request.isReceiptOnWorkEmail}'
+        'workEmail=${request.workEmail}'
+        'userId=${request.userId}';
     var response_1 = await http.post(Uri.parse(url),
         headers: {
           "Accept": "text/plain",
@@ -116,8 +119,6 @@ class AccountInformationController extends GetxController {
       printError(info: "Response Error: ${response_1.statusCode}");
       return false;
     }
-
-    loading(false);
   }
 
   Future<bool> removeWorkEmail(RemoveWorkEmailRequest request, String clientToken) async {
@@ -127,7 +128,7 @@ class AccountInformationController extends GetxController {
     final map = {
       "userId": request.userId,
     };
-    const url = 'https://auroraconnect.absoluit.com/api/api/User/RemoveWorkEmail';
+    var url = 'https://auroraconnect.absoluit.com/api/api/User/RemoveWorkEmail?userId=${request.userId.toString()}';
     var response_1 = await http.post(Uri.parse(url),
         headers: {
           "Accept": "text/plain",

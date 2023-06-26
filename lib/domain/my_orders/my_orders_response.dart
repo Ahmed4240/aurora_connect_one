@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import '../confirm_order/confirm_order_response.dart';
 import '../plans/PlanDetail.dart';
 import '../error.dart';
 
@@ -44,7 +45,7 @@ class MyOrdersDataResponse {
   String? price;
   String? paymentMethod;
   num? discount;
-  PlanDetail? orderDetail;
+  OrderDetail? orderDetail;
 
   MyOrdersDataResponse({
     this.orderId,
@@ -65,7 +66,7 @@ class MyOrdersDataResponse {
     price = json['price'];
     paymentMethod = json['paymentMethod'];
     discount = json['discount'];
-    orderDetail = json['orderDetail'];
+    orderDetail = OrderDetail.fromJson((json['orderDetail']));
   }
 
   Map<String, dynamic> toJson() {
@@ -80,4 +81,119 @@ class MyOrdersDataResponse {
     data['orderDetail'] = orderDetail;
     return data;
   }
+}
+
+class OrderDetail {
+  String? slug;
+  String? providerName;
+  String? providerImage;
+  String? planType;
+  List<Network>? network;
+  String? information;
+  String? data1;
+  num? price;
+  num? discountPrice;
+  num? discount;
+  String? validity;
+  String? id;
+  String? title;
+  List<CountryList>? countryList;
+
+  OrderDetail({
+    this.slug,
+    this.providerName,
+    this.providerImage,
+    this.planType,
+    this.network,
+    this.information,
+    this.data1,
+    this.price,
+    this.discountPrice,
+    this.discount,
+    this.validity,
+    this.id,
+    this.title,
+    this.countryList,
+  });
+
+  OrderDetail.fromJson(Map<String, dynamic> json) {
+    slug = json['slug'];
+    providerName = json['providerName'];
+    providerImage = json['providerImage'];
+    planType = json['planType'];
+    if (json['network'] != null) {
+      network = <Network>[];
+      json['network'].forEach((v) {
+        network!.add(Network.fromJson(v));
+      });
+    }
+    information = json['information'];
+    data1 = json['data'];
+    price = json['price'];
+    discountPrice = json['discountPrice'];
+    discount = json['discount'];
+    validity = json['validity'];
+    id = json['id'];
+    title = json['title'];
+    if (json['countryList'] != null) {
+      countryList = <CountryList>[];
+      json['countryList'].forEach((v) {
+        countryList!.add(CountryList.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['slug'] = slug;
+    data['providerName'] = providerName;
+    data['providerImage'] = providerImage;
+    data['planType'] = planType;
+    data['network'] = network;
+    data['information'] = information;
+    data['data'] = data1;
+    data['price'] = price;
+    data['discountPrice'] = discountPrice;
+    data['discount'] = discount;
+    data['validity'] = validity;
+    data['id'] = id;
+    data['title'] = title;
+    data['countryList'] =countryList != null ? countryList!.map((v) => v?.toJson()).toList() : null;
+    return data;
+  }
+}
+
+class CountryList {
+  String ?countryName;
+  String ?countryImage;
+  String ?countryCode;
+
+  CountryList({
+    this.countryName,
+    this.countryImage,
+    this.countryCode,
+  });
+
+  CountryList copyWith({
+    String? countryName,
+    String? countryImage,
+    String? countryCode,
+  }) =>
+      CountryList(
+        countryName: countryName ?? this.countryName,
+        countryImage: countryImage ?? this.countryImage,
+        countryCode: countryCode ?? this.countryCode,
+      );
+
+  factory CountryList.fromJson(Map<String, dynamic> json) => CountryList(
+    countryName: json["countryName"],
+    countryImage: json["countryImage"],
+    countryCode: json["countryCode"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "countryName": countryName,
+    "countryImage": countryImage,
+    "countryCode": countryCode,
+  };
 }

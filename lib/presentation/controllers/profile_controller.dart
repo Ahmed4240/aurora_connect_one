@@ -1,31 +1,53 @@
-// ignore_for_file: unnecessary_overrides, unused_import, unused_field
-
-import 'package:aurora_connect_one/presentation/provider/plans_provider.dart';
+import 'dart:convert';
 import 'package:get/get.dart';
-
-import '../../domain/plans/PlansInCountryResponse.dart';
-import '../../domain/packages/local/LocalPlansResponse.dart';
-import '../commons/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../domain/signup/SignUpResponse.dart';
+import 'package:http/http.dart' as http;
+import '../widgets/constants.dart';
 
 class ProfileController extends GetxController {
+  late SharedPreferences prefs;
+
   @override
   void onReady() {
     super.onReady();
+    initSharedPreference();
   }
 
-  var localProfileResponse = PlansInCountryResponse();
-  var loading = false.obs;
+  Future<void> initSharedPreference() async {
+    prefs = await SharedPreferences.getInstance();
+  }
 
-  final PlansProvider _provider = PlansProvider();
+  var signUpResponse = SignUpResponse().obs;
 
-  // createUser(String apiToken, LocalPlan model) async {
-  //   loading(true);
-  //   var response = await _provider.getPlansByCountry(apiToken, model.slug);
-  //   if (!response.status.hasError) {
-  //     localProfileResponse =
-  //         getPlansInCountryResponseFromJson(response.bodyString.toString());
-  //     print('localPlansResponse => ${PlansInCountryResponse}');
-  //   }
-  //   loading(false);
-  // }
+  Future<bool> signUpUserRequest() async {
+      print('calling for signUpUserRequest ');
+      // loading(true);
+      final map = {
+        "email": 'ahmedrehman123@gmail.com',
+        "username": 'ahmedrehman123',
+        "phone": '+923127113699'
+      };
+      const url = 'https://auroraconnect.absoluit.com/api/api/UserSignup';
+      var response_1 = await http.post(Uri.parse(url),
+          headers: {
+            "Accept": "application/json",
+            "content-type": "application/json"
+          },
+          body: jsonEncode(map));
+
+      print("Request: ${jsonEncode(map)}");
+      if (response_1.statusCode == 200) {
+        String responseString = response_1.body;
+        if (prefs != null) {
+          prefs.setString(USER_ID, signUpResponse.value.data?.userId ?? "");
+          prefs.setString(USER_TOKEN, signUpResponse.value.data?.token ?? "");
+          return true;
+        }
+        return true;
+      } else {
+        printError(info: "Response Error: ${response_1.body}");
+        return false;
+      }
+  }
 }

@@ -1,9 +1,15 @@
+import 'dart:math';
+
+import 'package:aurora_connect_one/presentation/controllers/profile_controller.dart';
+import 'package:aurora_connect_one/presentation/screens/home_page.dart';
 import 'package:aurora_connect_one/presentation/screens/my_orders_page.dart';
 import 'package:aurora_connect_one/presentation/screens/privacy_policy_page.dart';
 import 'package:aurora_connect_one/presentation/screens/terms_and_conditions_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../commons/AppStyles.dart';
@@ -24,15 +30,16 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
 
   String? userNameString, userEmailString, userPhoneString, userIdString, userTokenString;
-
+  SharedPreferences? prefs;
+  final controller = Get.put(ProfileController());
   Future<void> getData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance();
     if(prefs != null){
-      userNameString = prefs.getString(USER_NAME);
-      userEmailString = prefs.getString(USER_EMAIL);
-      userPhoneString = prefs.getString(USER_PHONE);
-      userIdString = prefs.getString(USER_ID);
-      userTokenString = prefs.getString(USER_TOKEN);
+      userNameString = prefs?.getString(USER_NAME);
+      userEmailString = prefs?.getString(USER_EMAIL);
+      userPhoneString = prefs?.getString(USER_PHONE);
+      userIdString = prefs?.getString(USER_ID);
+      userTokenString = prefs?.getString(USER_TOKEN);
 
       print('user information : \n');
       print('user name : ${userNameString!} \n'
@@ -53,10 +60,7 @@ class _ProfilePageState extends State<ProfilePage> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // While waiting for data, display a loading spinner or any other loading indicator
           return const CircularProgressIndicator();
-        } else if (snapshot.hasError) {
-          // If an error occurred during data fetching, display an error message
-          return Text('Error: ${snapshot.error}');
-        } else {
+        }else {
           // If data fetching is successful, build your widget tree using the retrieved data
           // Access the retrieved data through snapshot.data
           return SafeArea(
@@ -113,8 +117,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       visible: userIdString == null,
                       child: InkWell(
                         onTap: () {
-                          // openVippsApp(context);
-                          // callForCreateOrder(context);
+                          _showLoginBottomSheet(context, screenSize, controller);
                         },
                         child: Card(
                           margin: const EdgeInsets.only(
@@ -660,11 +663,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         style: AppStyles.largeTextStyle,
                       ),
                       GestureDetector(
-                        onTap: () {
-                          print("this is");
-                          // clearSecureStorageData();
-                          print( "username is$userNameString");
-                          Navigator.pop(context);
+                        onTap: () async {
+                          bool? logoutStatus = await prefs?.clear();
+                          if(logoutStatus != null){
+                            Navigator.pop(context);
+                          }
                         },
                         child: Card(
                           color: AppColors.whiteColor,
@@ -722,6 +725,114 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Center(
                           child: Text(
                         'Logout',
+                        style: AppStyles.smallTextStyleOnError,
+                      )),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showLoginBottomSheet(BuildContext context, Size screenSize, ProfileController controller) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(25.0),
+        ),
+      ),
+      backgroundColor: Colors.white,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: screenSize.height * 0.25,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 12.0, horizontal: 20.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Login',
+                        style: AppStyles.largeTextStyle,
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          bool? logoutStatus = await prefs?.clear();
+                          if(logoutStatus != null){
+                            Navigator.pop(context);
+                          }
+                        },
+                        child: Card(
+                          color: AppColors.whiteColor,
+                          elevation: 2.0,
+                          shadowColor: Colors.white54,
+                          shape: const RoundedRectangleBorder(
+                              side: BorderSide(color: Colors.white, width: 1),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(45))),
+                          child: Padding(
+                              padding: const EdgeInsets.all(6.0),
+                              child: SvgPicture.asset(AppImages.cross_icon)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text(
+                              "Are you sure you want to Login with \n${userEmailString}?",
+                              style: AppStyles.smallTextStyle,
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 15.0,
+                ),
+                Container(
+                  color: AppColors.transparentColor,
+                  width: screenSize.width,
+                  height: screenSize.height * .075,
+                  child: GestureDetector(
+                    onTap: () async {
+                      // bool loginStatus = await userSignUpWithDummy(controller);
+                      // if(loginStatus){
+                      //   Navigator.pop(context);
+                      // }
+                    },
+                    child: const Card(
+                      color: AppColors.activeColorPrimary,
+                      margin: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                      elevation: 5.0,
+                      shadowColor: Colors.white30,
+                      shape: RoundedRectangleBorder(
+                          side: BorderSide(color: Colors.white, width: 1),
+                          borderRadius: BorderRadius.all(Radius.circular(45))),
+                      child: Center(
+                          child: Text(
+                        'Login',
                         style: AppStyles.smallTextStyleOnError,
                       )),
                     ),
@@ -962,5 +1073,10 @@ class _ProfilePageState extends State<ProfilePage> {
         );
       },
     );
+  }
+
+  Future<bool> userSignUpWithDummy(ProfileController controller) async {
+    bool loginStatus = await controller.signUpUserRequest();
+    return loginStatus;
   }
 }

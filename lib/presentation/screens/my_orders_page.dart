@@ -3,6 +3,7 @@ import 'package:aurora_connect_one/presentation/screens/my_order_details_screen.
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../commons/app_colors.dart';
@@ -195,14 +196,13 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                                               .spaceBetween,
                                                       children: [
                                                         Text(
-                                                            (controller
+                                                            controller
                                                                         .myOrdersResponse
                                                                         .value
                                                                         .data?[
                                                                             index]
                                                                         .providerName
-                                                                    as String) ??
-                                                                "unknown",
+                                                                    as String ?? "unknown",
                                                             // 'Marhaba',
                                                             style: const TextStyle(
                                                                 color: Colors
@@ -241,14 +241,8 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
-                                                            Text(
-                                                                controller
-                                                                        .myOrdersResponse
-                                                                        .value
-                                                                        .data?[
-                                                                            index]
-                                                                        .orderDate
-                                                                    as String,
+                                                            Text(getFormattedDate(controller.myOrdersResponse
+                                                                .value.data?[index].orderDate as String),
                                                                 // '20.02.2022  16:36',
                                                                 style: const TextStyle(
                                                                     color: Colors
@@ -297,14 +291,14 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                                             const SizedBox(
                                                                 height: 2.0),
                                                             Text(
-                                                                controller
+                                                                '${controller
                                                                         .myOrdersResponse
                                                                         .value
                                                                         .data?[
                                                                             index]
                                                                         .orderDetail
                                                                         ?.validity
-                                                                    as String,
+                                                                    as String} days',
                                                                 // '10 days',
                                                                 style: const TextStyle(
                                                                     color: Colors
@@ -383,5 +377,13 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
           builder: (context) =>
               MyOrderDetailsScreen(ordersDataResponse: ordersDataResponse)),
     );
+  }
+
+  String getFormattedDate(String orderDate) {
+    DateTime now = DateTime.now();
+    String formattedDateTime = DateFormat('dd-MM-yyyy kk:mm').format(now);
+    print('Formatted date and time: $formattedDateTime'); // Output: Formatted date and time: 2023-06-26 15:30:45
+
+    return formattedDateTime;
   }
 }
