@@ -368,14 +368,13 @@ class _MyE_SimsPageState extends State<MyE_SimsPage>
                             width: 120.0,
                             decoration: const BoxDecoration(
                                 color: AppColors.mainColor,
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(80.0))),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(80.0))),
                             child: const Center(
                                 child: Text('Browse plans',
                                     style: TextStyle(
                                         color: Colors.white,
-                                        fontWeight:
-                                        FontWeight.normal))),
+                                        fontWeight: FontWeight.normal))),
                           ),
                         ),
                       ],

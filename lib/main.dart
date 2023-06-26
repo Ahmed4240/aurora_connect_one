@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of application.
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIOverlays([]);
+    // SystemChrome.setEnabledSystemUIOverlays([]);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -32,10 +32,13 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => UserViewModel()),
       ],
       child: KeyboardDismisser(
-        gestures: const [GestureType.onTap, GestureType.onPanUpdateDownDirection],
+        gestures: const [
+          GestureType.onTap,
+          GestureType.onPanUpdateDownDirection
+        ],
         child: ResponsiveSizer(builder: (context, orientation, deviceType) {
           return GetMaterialApp(
-              navigatorKey: navigatorKey,
+            navigatorKey: navigatorKey,
             builder: EasyLoading.init(),
             debugShowCheckedModeBanner: false,
             title: 'Aurora Connect',
@@ -51,4 +54,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

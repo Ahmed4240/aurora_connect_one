@@ -51,7 +51,7 @@ dependencies:
   percent_indicator: 4.2.3
   custom_bottom_sheet: ^1.1.2
   external_app_launcher: ^2.0.2
-  url_launcher: ^5.2.5
+  url_launcher: ^6.1.11
   shimmer: ^2.0.0
 
 

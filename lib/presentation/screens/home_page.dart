@@ -21,7 +21,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
-
   final _controller = PageController();
   late TabController _tabController;
 
@@ -73,9 +72,7 @@ class _HomePageState extends State<HomePage>
                 borderRadius: BorderRadius.all(Radius.circular(50.0))),
             child: TextFormField(
               textAlign: TextAlign.left,
-              onChanged: (value) {
-    },
-
+              onChanged: (value) {},
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.only(left: 16.0, top: 15),
                 prefixIcon: const Icon(
@@ -94,7 +91,6 @@ class _HomePageState extends State<HomePage>
                 ),
                 hintText: 'Search country',
               ),
-
             ),
           ),
         ),
@@ -731,5 +727,3 @@ class _MaterialDesignPainter extends BoxPainter {
     );
   }
 }
-
-
