@@ -5,26 +5,30 @@ import 'package:aurora_connect_one/domain/signup/SignUpResponse.dart';
 import 'package:aurora_connect_one/presentation/widgets/progressIndicator_mixins.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../application/services/secure_storage.dart';
 import '../../domain/confirm_order/ConfirmOrderRequest.dart';
 import '../../domain/create_order/create_order_request.dart';
 import '../../domain/create_order/create_order_response.dart';
 import '../../domain/signup/SignUpRequest.dart';
-import '../provider/plans_provider.dart';
 import '../screens/main_screen.dart';
 import '../widgets/constants.dart';
 
 class PlanDetailsController extends GetxController
     with CustomProgressIndicator {
+  late SharedPreferences prefs;
+
   @override
   void onReady() {
     super.onReady();
+    initSharedPreference();
   }
 
-  final SecureStorage secureStorage = SecureStorage();
+  Future<void> initSharedPreference() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
   var createOrderResponse = CreateOrderResponse().obs;
   var signUpResponse = SignUpResponse().obs;
   var confirmOrderResponse = ConfirmOrderResponse().obs;
@@ -41,7 +45,7 @@ class PlanDetailsController extends GetxController
         "userId": "",
         "planDetail": request.planDetail
       };
-      print("${request.quantity} ${request.packageId} + ${request.planDetail}");
+      print("Request: ${jsonEncode(map)}");
       const url =
           'https://auroraconnect.absoluit.com/api/api/Order/CreateOrder';
       var response_1 = await http.post(Uri.parse(url),
@@ -51,15 +55,9 @@ class PlanDetailsController extends GetxController
           },
           body: jsonEncode(map));
       print(response_1.body);
-      print("Request: ${jsonEncode(map)}");
       if (response_1.statusCode == 200) {
-        print("Create Apiu Response");
-
-        print("printing after 200");
         createOrderResponse.value =
             createOrderResponseFromJson(response_1.body);
-        print("printing after resfonse ");
-        print("printing after resfonse ");
         String responseString = response_1.body;
         print("Response Data: $responseString");
         print("=====================================================");
@@ -69,52 +67,34 @@ class PlanDetailsController extends GetxController
         signUpRequest.username = "Ahmed Rehman";
         signUpRequest.email = "ahmedrehman123@gmail.com";
         signUpRequest.phone = "+923127113699";
-        secureStorage.writeSecureData(
-            "requestUserName", signUpRequest.username.toString());
-        secureStorage.writeSecureData(
-            "requestUserEmail", signUpRequest.email.toString());
-        secureStorage.writeSecureData(
-            "requestUserPhone", signUpRequest.phone.toString());
-        // print("testing1" + signUpRequest.phone.toString());
+        if (prefs != null) {
+          prefs.setString(USER_NAME, signUpRequest.username.toString());
+          prefs.setString(USER_EMAIL, signUpRequest.email.toString());
+          prefs.setString(USER_PHONE, signUpRequest.phone.toString());
+          prefs.setString(ORDER_ID, createOrderResponse.value.data?.orderId ?? "");
 
+          String? userNameString = prefs.getString(USER_NAME);
+          String? userEmailString = prefs.getString(USER_EMAIL);
+          String? userPhoneString = prefs.getString(USER_PHONE.toString());
 
+          String? userIdString = prefs.getString(USER_ID);
+          String? userOrderIdString = prefs.getString(ORDER_ID);
+          String? userTokenString = prefs.getString(USER_TOKEN);
 
-        print("Storage Data");
-        // print(flutterSecureLoginUserName.toString() +
-        //     flutterSecureClientEmail.toString() +
-        //     flutterSecureClientPhone.toString());
+          if (userIdString == null) {
+            print("User is not available in local storage so we are going to signup first");
+            signUpUserRequest(
+                signUpRequest, createOrderResponse.value.data?.orderId ?? "");
+          } else {
+            print("User information is available in local storage so we are going to confirm order directly");
+            ConfirmOrderRequest confirmOrderRequest = ConfirmOrderRequest();
+            confirmOrderRequest.userId = userIdString;
+            confirmOrderRequest.orderId = userOrderIdString;
 
-        // if (flutterSecureLoginUserName == null) {
-        //   /// Assigning Storage data to variable to use checks
-        //   print("Stored Data for api$flutterSecureLoginUserName");
-        //   print(flutterSecureLoginUserName.toString());
-        //   signUpRequest.username = flutterSecureLoginUserName.toString();
-        //   signUpRequest.email = flutterSecureClientEmail.toString();
-        //   signUpRequest.phone = flutterSecureClientPhone.toString();
-        //
-        //   ///  if Data Available in Secure Storage then Directly move to Order Confirmation
-        //   // await orderConfirmationRequest(
-        //   //     confirmOrderRequest, signUpResponse.value.data?.token ?? "");
-        // } else {
-        //   await secureStorage
-        //       .readSecureData('requestUserName')
-        //       .then((value) => {flutterSecureLoginUserName = value});
-        //   await secureStorage
-        //       .readSecureData('requestUserEmail')
-        //       .then((value) => {flutterSecureClientEmail = value});
-        //   await secureStorage
-        //       .readSecureData('requestUserPhone')
-        //       .then((value) => {flutterSecureClientPhone = value});
-        //
-        //
-        //   print("first time calling");
-          /// hitting api for the first time api Call
-           signUpUserRequest(
-              signUpRequest, createOrderResponse.value.data?.orderId ?? "");
+            await orderConfirmationRequest(confirmOrderRequest, userTokenString ?? "");
+          }
         }
-      // } else {
-      //   printError(info: "Response Error: ${response_1.body}");
-      // }
+      }
     } catch (e) {
       rethrow;
     }
@@ -150,13 +130,12 @@ class PlanDetailsController extends GetxController
         confirmOrderRequest.userId = signUpResponse.value.data?.userId;
         confirmOrderRequest.orderId = "${orderId}";
 
-        // user id and token stored into db
+        if (prefs != null) {
+          prefs.setString(USER_ID, signUpResponse.value.data?.userId ?? "");
+          prefs.setString(USER_TOKEN, signUpResponse.value.data?.token ?? "");
+        }
 
-        secureStorage.writeSecureData("requestUserId", signUpResponse.value.data?.userId ?? "");
-        secureStorage.writeSecureData("requestUserToken", signUpResponse.value.data?.token ?? "");
-
-        await orderConfirmationRequest(
-            confirmOrderRequest, signUpResponse.value.data?.token ?? "");
+        await orderConfirmationRequest(confirmOrderRequest, signUpResponse.value.data?.token ?? "");
       } else {
         printError(info: "Response Error: ${response_1.body}");
       }
@@ -172,6 +151,8 @@ class PlanDetailsController extends GetxController
     try {
       print('calling for orderConfirmationRequest ');
       final map = {"userId": request.userId, "orderId": request.orderId};
+      print("Request: ${jsonEncode(map)}");
+      print("Request Bearer-token : ${token}");
       var url = "https://auroraconnect.absoluit.com/api/api/Order/ConfirmOrder?userId=${request.userId}&orderId=${request.orderId}";
       var response_1 = await http.post(Uri.parse(url),
           headers: {
@@ -180,17 +161,13 @@ class PlanDetailsController extends GetxController
             'Authorization': 'Bearer $token'
           },
           body: jsonEncode(map));
-
-      print("Request: ${jsonEncode(map)}");
-      print("Request Bearer-token : ${token}");
       if (response_1.statusCode == 200) {
-        print("success msg  ${response_1.statusCode}");
-        confirmOrderResponse.value =
-            confirmOrderResponseFromJson(response_1.body);
+        confirmOrderResponse.value = confirmOrderResponseFromJson(response_1.body);
         String responseString = response_1.body;
         print("Response Data1: $responseString");
         stopCircularProgressIndicator(context);
-        Get.to(const MainScreen());
+        print("Your order is confirmed from server side");
+        Get.to(() => const MainScreen());
       } else {
         printError(info: "Response Error: ${response_1.statusCode}");
       }

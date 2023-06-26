@@ -47,14 +47,12 @@ dependencies:
   another_flushbar: ^1.12.29
   http: ^0.13.5
   provider: ^6.0.3
-  shared_preferences: ^2.0.15
+  shared_preferences: ^2.1.2
   percent_indicator: 4.2.3
   custom_bottom_sheet: ^1.1.2
   external_app_launcher: ^2.0.2
   url_launcher: ^5.2.5
   shimmer: ^2.0.0
-#  floor: ^1.4.2
-  flutter_secure_storage: ^8.0.0
 
 
   # The following adds the Cupertino Icons font to your application.

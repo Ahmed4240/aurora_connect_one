@@ -12,8 +12,7 @@ class MyOrdersController extends GetxController {
 
   // getMyOrders(MyOrdersRequest request) async {
   getMyOrders(String clientUserId, String clientToken) async {
-    print('calling for createOrderRequest clientUserId $clientUserId ');
-    print('calling for createOrderRequest clientToken $clientToken ');
+    print('calling for createOrderRequest');
 
     loading(true);
     final map = {

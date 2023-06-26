@@ -148,7 +148,7 @@ class _MyE_SimsPageState extends State<MyE_SimsPage>
                                                     fontWeight:
                                                         FontWeight.bold)),
                                             const SizedBox(height: 2.0),
-                                            Text(currentList[index].country,
+                                            Text(currentList[0].country,
                                                 style: const TextStyle(
                                                     color: Colors.grey,
                                                     fontWeight:

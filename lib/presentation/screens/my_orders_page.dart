@@ -3,8 +3,8 @@ import 'package:aurora_connect_one/presentation/screens/my_order_details_screen.
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../application/services/secure_storage.dart';
 import '../commons/app_colors.dart';
 import '../commons/app_images.dart';
 import '../controllers/my_orders_controller.dart';
@@ -20,19 +20,6 @@ class MyOrdersPage extends StatefulWidget {
 class _MyOrdersPageState extends State<MyOrdersPage> {
   final controller = Get.put(MyOrdersController());
 
-  final SecureStorage localDb = SecureStorage();
-
-
-  @override
-  void didChangeDependencies() async {
-    if(flutterSecureClientUserId != null && flutterSecureClientToken != null){
-      await controller.getMyOrders(flutterSecureClientUserId!, flutterSecureClientToken!);
-    }
-    setState(() {});
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-  }
-
   @override
   void initState() {
     // TODO: implement initState
@@ -40,16 +27,23 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
     super.initState();
     getData();
   }
-  void getData() async {
-    await localDb.readSecureData('requestUserName')
-        .then((value) => {flutterSecureLoginUserName = value});
-    await localDb.readSecureData('requestUserId')
-        .then((value) => {flutterSecureClientUserId = value});
-    await localDb.readSecureData('requestUserToken')
-        .then((value) => {flutterSecureClientToken = value});
-    // print('order requestUserName : $flutterSecureLoginUserName');
-    // print('order requestUserId : $flutterSecureClientUserId');
-    // print('order requestUserToken : $flutterSecureClientToken');
+  String? userNameString, userEmailString, userPhoneString, userIdString, userTokenString;
+
+  Future<void> getData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if(prefs != null){
+      userNameString = prefs.getString(USER_NAME);
+      userEmailString = prefs.getString(USER_EMAIL);
+      userPhoneString = prefs.getString(USER_PHONE);
+      userIdString = prefs.getString(USER_ID);
+      userTokenString = prefs.getString(USER_TOKEN);
+
+      print('user information : \n'
+          'user id : ${userIdString!} \n'
+          'user token : ${userTokenString!} \n');
+
+      await controller.getMyOrders(userIdString!, userTokenString!);
+    }
   }
 
   @override
@@ -57,10 +51,22 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
     Size screenSize = MediaQuery.of(context).size;
     double height = screenSize.height;
 
-    return SafeArea(
-      child: controller.loading.value
-          ? const Center(child: CircularProgressIndicator())
-          : Column(
+    return FutureBuilder(
+      future: getData(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // While waiting for data, display a loading spinner or any other loading indicator
+          return const Center(child: SizedBox(height: 50.0, width: 50.0, child: CircularProgressIndicator()));
+        } else if (snapshot.hasError) {
+          // If an error occurred during data fetching, display an error message
+          return Text('Error: ${snapshot.error}');
+        } else {
+          // If data fetching is successful, build your widget tree using the retrieved data
+          // Access the retrieved data through snapshot.data
+          return SafeArea(
+            child: controller.loading.value
+                ? const Center(child: CircularProgressIndicator())
+                : Column(
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,12 +103,12 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                 width: screenSize.width,
                                 child: const Center(
                                   child: Text(
-                                      'My orders',
-                                      style: TextStyle(
-                                          fontFamily: 'Metropolis',
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 18.0),
-                                    ),
+                                    'My orders',
+                                    style: TextStyle(
+                                        fontFamily: 'Metropolis',
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 18.0),
+                                  ),
                                 ),
                               ),
                             ],
@@ -117,7 +123,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                       padding: const EdgeInsets.only(top: 10.0),
                       color: AppColors.backGroundColor,
                       height: screenSize.height * .87,
-                      child: ListView.builder(
+                      child: controller.myOrdersResponse.value.data != null ? ListView.builder(
                           shrinkWrap: true,
                           itemCount: controller.myOrdersResponse.value.data?.length,
                           scrollDirection: Axis.vertical,
@@ -156,7 +162,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                                 style: const TextStyle(
                                                     color: Colors.black,
                                                     fontWeight:
-                                                        FontWeight.bold)),
+                                                    FontWeight.bold)),
                                             const SizedBox(height: 2.0),
                                             Text(
                                                 controller.myOrdersResponse.value.data?[index].orderDetail?.id as String,
@@ -164,7 +170,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                                 style: const TextStyle(
                                                     color: Colors.grey,
                                                     fontWeight:
-                                                        FontWeight.normal)),
+                                                    FontWeight.normal)),
                                           ],
                                         ),
                                         const SizedBox(height: 14.0,),
@@ -173,7 +179,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                           children: [
                                             Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                     controller.myOrdersResponse.value.data?[index].orderDate as String,
@@ -181,32 +187,32 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                                     style: const TextStyle(
                                                         color: Colors.grey,
                                                         fontWeight:
-                                                            FontWeight.normal)),
+                                                        FontWeight.normal)),
                                               ],
                                             ),
                                             Padding(
                                               padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 16.0),
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 16.0),
                                               child: SizedBox(
                                                 height: 45.0,
                                                 width: 1.0,
                                                 child: Container(
                                                   width: 1.0,
                                                   color:
-                                                      AppColors.lightGreyColor,
+                                                  AppColors.lightGreyColor,
                                                 ),
                                               ),
                                             ),
                                             Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                               children: [
                                                 Text(controller.myOrdersResponse.value.data?[index].orderDetail?.data1 as String,
                                                     style: const TextStyle(
                                                         color: Colors.black,
                                                         fontWeight:
-                                                            FontWeight.bold)),
+                                                        FontWeight.bold)),
                                                 const SizedBox(height: 2.0),
                                                 Text(
                                                     controller.myOrdersResponse.value.data?[index].orderDetail?.validity as String,
@@ -214,26 +220,26 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                                     style: const TextStyle(
                                                         color: Colors.grey,
                                                         fontWeight:
-                                                            FontWeight.normal)),
+                                                        FontWeight.normal)),
                                               ],
                                             ),
                                             Padding(
                                               padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 16.0),
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 16.0),
                                               child: SizedBox(
                                                 height: 45.0,
                                                 width: 1.0,
                                                 child: Container(
                                                   width: 1.0,
                                                   color:
-                                                      AppColors.lightGreyColor,
+                                                  AppColors.lightGreyColor,
                                                 ),
                                               ),
                                             ),
                                             Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                     "${controller.myOrdersResponse.value.data?[index].orderDetail?.price} \$",
@@ -242,7 +248,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                                         color: Colors.black,
                                                         fontSize: 18.0,
                                                         fontWeight:
-                                                            FontWeight.bold)),
+                                                        FontWeight.bold)),
                                               ],
                                             ),
                                           ],
@@ -253,12 +259,15 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                 ),
                               ),
                             );
-                          }),
+                          }) : const Center(child: Text('Error: Data not found')),
                     ),
                   ],
                 )
               ],
             ),
+          ); // Replace YourWidget with your own widget
+        }
+      },
     );
   }
 
