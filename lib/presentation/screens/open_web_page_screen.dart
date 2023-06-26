@@ -13,9 +13,6 @@ class WebViewScreen extends StatefulWidget {
 class _WebViewScreenState extends State<WebViewScreen> {
 
   var loadingPercentage = 0;
-  final _key = UniqueKey();
-  final String _url = 'https://www.hostinger.com/tutorials/what-is-a-url';
-
   @override
   Widget build(BuildContext context) {
 

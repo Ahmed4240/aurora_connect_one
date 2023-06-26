@@ -125,7 +125,7 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen>
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  '${widget.model.providerName as String}',
+                                  widget.model.providerName as String,
                                   style: const TextStyle(
                                       fontSize: 20.0,
                                       fontWeight: FontWeight.w600,

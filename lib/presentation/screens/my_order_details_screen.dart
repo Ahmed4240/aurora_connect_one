@@ -29,7 +29,6 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
         countries = model?.countryList![0]?.countryName as String;
       }
     }
-
     return countries;
   }
 
