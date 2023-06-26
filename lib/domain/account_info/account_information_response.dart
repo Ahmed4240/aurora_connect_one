@@ -1,4 +1,5 @@
 import 'dart:convert';
+import '../error.dart';
 
 AccountInformationResponse getAccountInformationResponse(String str) => AccountInformationResponse.fromJson(json.decode(str));
 String getAccountInformationResponseString(AccountInformationResponse data) => json.encode(data.toJson());

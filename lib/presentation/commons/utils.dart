@@ -3,6 +3,7 @@ import 'package:another_flushbar/flushbar_route.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../domain/account_info/account_information_response.dart';
 import '../../domain/my_orders/my_orders_response.dart';
 import '../../domain/plans/PlanDetail.dart';
 
@@ -58,5 +59,22 @@ class Utils {
   static var terms_and_condition1 = "Before completing this order, please confirm that your device is eSIM compatible and network-unlocked.";
   static var reasons_info = "You can delete your account permanently after choosing a reason a giving more details to tell us why you’re deleting your account. (optional).";
   static var requesting_personal_data = "We will send an email to your registered email address with a file containing your personal data stored in Aurora Connect app.\n\nTap button to continue.";
-  
+
+
+  static AccountInformationResponse getDummyAccountInformation(){
+    AccountInformationResponse res = AccountInformationResponse();
+    AccountInformationData data = AccountInformationData();
+    data.userId = "1234567890";
+    data.username = "Ahmed";
+    data.name = "Ahmed Rehman";
+    data.email = "ahmedrehman921@gmail.com";
+    data.phone = "1234567890";
+    // data.workEmail = "ahmedrehman123@gmail.com";
+    data.isReceiptOnWorkEmail = true;
+
+    res.isSuccess = true;
+    res.data = data;
+
+    return res;
+  }
 }
