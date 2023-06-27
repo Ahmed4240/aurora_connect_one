@@ -1,6 +1,7 @@
 import 'package:aurora_connect_one/domain/my_orders/my_orders_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 
 import '../../domain/plans/PlanDetail.dart';
 import '../commons/app_colors.dart';
@@ -89,7 +90,7 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
           Card(
             elevation: 0,
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -102,7 +103,7 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                         color: Colors.black),
                   ),
                   Text(
-                    widget.ordersDataResponse.orderDate as String,
+                    getFormattedDate(widget.ordersDataResponse.orderDate as String),
                     style: const TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.normal,
@@ -113,10 +114,9 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
             ),
           ),
           Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 10.0, horizontal: 24.0),
+            padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 24.0, right: 24.0),
             child: SizedBox(
-              height: screenSize.height * .783,
+              height: screenSize.height * .773,
               child: ListView(
                 shrinkWrap: true,
                 children: <Widget>[
@@ -209,8 +209,7 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                                 color: Colors.black),
                           ),
                           Text(
-                            widget.ordersDataResponse.orderDetail?.data1
-                                as String,
+                            (widget.ordersDataResponse.orderDetail?.validity as String) + 'days',
                             style: const TextStyle(
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.normal,
@@ -219,7 +218,7 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                         ],
                       ),
                       const SizedBox(
-                        height: 10.0,
+                        height: 5.0,
                       ),
                     ],
                   ),
@@ -410,6 +409,15 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
         ],
       ),
     );
+  }
+
+
+  String getFormattedDate(String orderDate) {
+    DateTime now = DateTime.now();
+    String formattedDateTime = DateFormat('dd-MM-yyyy kk:mm').format(now);
+    print('Formatted date and time: $formattedDateTime'); // Output: Formatted date and time: 2023-06-26 15:30:45
+
+    return formattedDateTime;
   }
 
   moveBack(BuildContext context) {

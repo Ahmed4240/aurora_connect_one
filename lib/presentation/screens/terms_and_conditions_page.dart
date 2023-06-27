@@ -72,7 +72,7 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
           ),
           SizedBox(
             width: screenSize.width,
-            height: screenSize.height * 0.9,
+            height: screenSize.height * 0.85,
             child: Center(
                 child: WebViewWidget(
               key: _key,
@@ -102,5 +102,5 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
         },
       ),
     )
-    ..loadRequest(Uri.parse("https://www.kindacode.com"));
+    ..loadRequest(Uri.parse("https://www.termsfeed.com/blog/terms-conditions-url/"));
 }

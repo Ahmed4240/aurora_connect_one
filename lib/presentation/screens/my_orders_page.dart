@@ -69,7 +69,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                   child: CircularProgressIndicator()));
         } else if (snapshot.hasError) {
           // If an error occurred during data fetching, display an error message
-          return Text('Error: ${snapshot.error}');
+          return Center(child: Text('Error: Something went wrong'));
         } else {
           // If data fetching is successful, build your widget tree using the retrieved data
           // Access the retrieved data through snapshot.data

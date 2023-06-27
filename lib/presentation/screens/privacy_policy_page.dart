@@ -74,7 +74,7 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
           ),
           SizedBox(
             width: screenSize.width,
-            height: screenSize.height * 0.9,
+            height: screenSize.height * 0.85,
             child: Center(
               child:  WebViewWidget(
                 key: _key,
@@ -105,5 +105,5 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
         },
       ),
     )
-    ..loadRequest(Uri.parse("https://www.kindacode.com"));
+    ..loadRequest(Uri.parse("https://www.freeprivacypolicy.com/blog/privacy-policy-url/"));
 }

@@ -669,6 +669,7 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen>
     request.quantity = 1;
     request.packageId = model.id.toString();
     request.planDetail = model;
+    Navigator.pop(context);
     getCircularProgressIndicator(context);
     await controller.createOrderRequest(request, context);
     print("Stoping circuller bar");

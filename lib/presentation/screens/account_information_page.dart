@@ -64,7 +64,7 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                     child: CircularProgressIndicator()));
           } else if (snapshot.hasError) {
             // If an error occurred during data fetching, display an error message
-            return Text('Error: ${snapshot.error}');
+            return Center(child: Text('Error: ${snapshot.error}'));
           } else {
             // If data fetching is successful, build your widget tree using the retrieved data
             // Access the retrieved data through snapshot.data
