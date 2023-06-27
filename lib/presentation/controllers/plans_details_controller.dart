@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:aurora_connect_one/domain/confirm_order/confirm_order_response.dart';
 import 'package:aurora_connect_one/domain/signup/SignUpResponse.dart';
 import 'package:aurora_connect_one/presentation/commons/utils.dart';
+import 'package:aurora_connect_one/presentation/screens/my_orders_page.dart';
 import 'package:aurora_connect_one/presentation/widgets/progressIndicator_mixins.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,10 +35,9 @@ class PlanDetailsController extends GetxController
   var createOrderResponse = CreateOrderResponse().obs;
   var signUpResponse = SignUpResponse().obs;
   var confirmOrderResponse = ConfirmOrderResponse().obs;
-
   var loading = false.obs;
 
-  createOrderRequest(CreateOrderRequest request) async {
+  createOrderRequest(CreateOrderRequest request, BuildContext context) async {
     try {
       print('calling for createOrderRequest ');
       // loading(true);
@@ -87,7 +88,7 @@ class PlanDetailsController extends GetxController
             print(
                 "User is not available in local storage so we are going to signup first");
             signUpUserRequest(
-                signUpRequest, createOrderResponse.value.data?.orderId ?? "");
+                signUpRequest, createOrderResponse.value.data?.orderId ?? "", context);
           } else {
             print(
                 "User information is available in local storage so we are going to confirm order directly");
@@ -96,7 +97,7 @@ class PlanDetailsController extends GetxController
             confirmOrderRequest.orderId = userOrderIdString;
 
             await orderConfirmationRequest(
-                confirmOrderRequest, userTokenString ?? "");
+                confirmOrderRequest, userTokenString ?? "", context);
           }
         }
       }
@@ -106,7 +107,7 @@ class PlanDetailsController extends GetxController
     }
   }
 
-  signUpUserRequest(SignUpRequest request, String orderId) async {
+  signUpUserRequest(SignUpRequest request, String orderId, BuildContext context) async {
     try {
       print('calling for signUpUserRequest ');
       // loading(true);
@@ -141,8 +142,8 @@ class PlanDetailsController extends GetxController
           prefs.setString(USER_TOKEN, signUpResponse.value.data?.token ?? "");
         }
 
-        await orderConfirmationRequest(
-            confirmOrderRequest, signUpResponse.value.data?.token ?? "");
+        await orderConfirmationRequest(confirmOrderRequest, signUpResponse.value.data?.token ?? "", context);
+
       } else {
         printError(info: "Response Error: ${response_1.body}");
       }
@@ -154,8 +155,7 @@ class PlanDetailsController extends GetxController
     // loading(false);
   }
 
-  orderConfirmationRequest(ConfirmOrderRequest request, String token,
-      {BuildContext? context}) async {
+  orderConfirmationRequest(ConfirmOrderRequest request, String token, BuildContext context) async {
     try {
       print('calling for orderConfirmationRequest ');
       final map = {"userId": request.userId, "orderId": request.orderId};
@@ -177,9 +177,8 @@ class PlanDetailsController extends GetxController
         print("Response Data1: $responseString");
         stopCircularProgressIndicator(context);
         print("Your order is confirmed from server side");
-        Get.to(() => MainScreen(
-              defaultIndex: 0,
-            ));
+        Get.to(() => MyOrdersPage());
+        // Navigator.push(context, MaterialPageRoute(builder: (context) => MyOrdersPage()));
       } else {
         printError(info: "Response Error: ${response_1.statusCode}");
       }

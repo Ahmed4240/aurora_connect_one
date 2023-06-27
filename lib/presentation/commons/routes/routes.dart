@@ -1,5 +1,6 @@
 import 'package:aurora_connect_one/presentation/commons/routes/routes_name.dart';
 import 'package:aurora_connect_one/presentation/screens/my_esim_details_screen.dart';
+import 'package:aurora_connect_one/presentation/screens/my_orders_page.dart';
 import 'package:flutter/material.dart';
 
 import '../../screens/main_screen.dart';
@@ -37,6 +38,9 @@ class Routes {
       case RoutesName.my_esim_details:
         return MaterialPageRoute(
             builder: (BuildContext context) => const MyESIMDetailsScreen());
+      case RoutesName.my_orders:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const MyOrdersPage());
       case RoutesName.plan_details:
       // return MaterialPageRoute(
       //     builder: (BuildContext context) =>  const PlanDetailsScreen());

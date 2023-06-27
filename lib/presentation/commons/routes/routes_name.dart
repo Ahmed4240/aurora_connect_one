@@ -12,4 +12,5 @@ class RoutesName {
   static const String plan_details = "plan_details_Screen";
   static const String sample_screen = "sample_Screen";
   static const String main_screen = "main_Screen";
+  static const String my_orders = "my_orders";
 }

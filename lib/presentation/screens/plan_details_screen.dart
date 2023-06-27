@@ -670,11 +670,10 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen>
     request.packageId = model.id.toString();
     request.planDetail = model;
     getCircularProgressIndicator(context);
-    await controller.createOrderRequest(request);
+    await controller.createOrderRequest(request, context);
     print("Stoping circuller bar");
     stopCircularProgressIndicator(context);
-
-    await Get.toNamed(RoutesName.home);
+    await Get.toNamed(RoutesName.my_orders);
   }
 
   void openPlanDetails(BuildContext context, int index) async {
