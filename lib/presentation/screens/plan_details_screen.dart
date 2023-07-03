@@ -701,7 +701,7 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen>
               children: [
                 SizedBox(
                   width: screenSize.width,
-                  height: screenSize.height * .05,
+                  height: screenSize.height * .03,
                   child: Padding(
                     padding: const EdgeInsets.only(
                         top: 0.0, bottom: 0.0, left: 18.0, right: 8.0),

@@ -21,7 +21,7 @@ class AccountInformationController extends GetxController {
   getAccountInformation(AccountInformationRequest request, String clientToken) async {
     print('calling for getAccountInformation');
 
-    loading(true);
+    // loading(true);
     final map = {
       "userId": request.userId,
     };
@@ -51,7 +51,7 @@ class AccountInformationController extends GetxController {
       printError(info: "Response Error: ${response_1.statusCode}");
     }
 
-    loading(false);
+    // loading(false);
   }
 
   Future<bool> getDeleteMyUser(String clientUserId, String clientToken) async {
