@@ -24,66 +24,68 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    return SafeArea(
-      child: Column(
-        children: [
-          SizedBox(
-            width: screenSize.width,
-            height: screenSize.height * 0.1,
-            child: Card(
-              elevation: 8,
-              shadowColor: Colors.white30,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    top: 25.0, bottom: 2.0, left: 24.0, right: 24.0),
-                child: Stack(
-                  children: [
-                    InkWell(
-                      onTap: (){
-                        Navigator.pop(context);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 55.0),
-                        child: Container(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SvgPicture.asset(
-                            AppImages.back_arrow_icon,
-                            width: 20,
-                            height: 20,
-                            fit: BoxFit.fill,
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Column(
+          children: [
+            SizedBox(
+              width: screenSize.width,
+              height: screenSize.height * 0.1,
+              child: Card(
+                elevation: 8,
+                shadowColor: Colors.white30,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 25.0, bottom: 2.0, left: 24.0, right: 24.0),
+                  child: Stack(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 55.0),
+                          child: Container(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SvgPicture.asset(
+                              AppImages.back_arrow_icon,
+                              width: 20,
+                              height: 20,
+                              fit: BoxFit.fill,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: screenSize.width,
-                      child: const Center(
-                        child: Text(
-                          'Privacy policy',
-                          style: TextStyle(
-                              fontFamily: 'Metropolis',
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18.0),
+                      SizedBox(
+                        width: screenSize.width,
+                        child: const Center(
+                          child: Text(
+                            'Privacy policy',
+                            style: TextStyle(
+                                fontFamily: 'Metropolis',
+                                fontWeight: FontWeight.w600,
+                                fontSize: 18.0),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            width: screenSize.width,
-            height: screenSize.height * 0.85,
-            child: Center(
-              child:  WebViewWidget(
+            SizedBox(
+              width: screenSize.width,
+              height: screenSize.height * 0.85,
+              child: Center(
+                  child: WebViewWidget(
                 key: _key,
                 gestureRecognizers: gestureRecognizers,
                 controller: _controller,
-              )
+              )),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -105,5 +107,6 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
         },
       ),
     )
-    ..loadRequest(Uri.parse("https://www.freeprivacypolicy.com/blog/privacy-policy-url/"));
+    ..loadRequest(Uri.parse(
+        "https://www.freeprivacypolicy.com/blog/privacy-policy-url/"));
 }
