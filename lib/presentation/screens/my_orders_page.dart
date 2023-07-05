@@ -34,8 +34,6 @@ class _MyOrdersPageState extends State<MyOrdersPage> with CustomToast,CustomProg
 
   @override
   void initState() {
-    // TODO: implement initState
-    // checkESIMCapability();
     super.initState();
     getData();
   }
@@ -73,7 +71,6 @@ class _MyOrdersPageState extends State<MyOrdersPage> with CustomToast,CustomProg
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    double height = screenSize.height;
 
     return Scaffold(
       backgroundColor: Colors.white,

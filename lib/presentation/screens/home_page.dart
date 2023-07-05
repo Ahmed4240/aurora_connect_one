@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import '../../domain/packages/local/LocalPlansResponse.dart';
 import '../commons/app_colors.dart';
 import '../commons/app_images.dart';
+import '../commons/routes/routes_name.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -60,91 +61,210 @@ class _HomePageState extends State<HomePage>
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
-    return SafeArea(
-      child: ListView(physics: const NeverScrollableScrollPhysics(), children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 48, left: 26, right: 26),
-          child: Container(
-            width: width,
-            height: height * 0.065,
-            decoration: const BoxDecoration(
-                color: AppColors.backGroundColor,
-                borderRadius: BorderRadius.all(Radius.circular(50.0))),
-            child: TextFormField(
-              textAlign: TextAlign.left,
-              onChanged: (value) {},
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.only(left: 16.0, top: 15),
-                prefixIcon: const Icon(
-                  Icons.search,
-                  color: AppColors.inActiveColorPrimary,
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: ListView(physics: const NeverScrollableScrollPhysics(), children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 48, left: 26, right: 26),
+            child: Container(
+              width: width,
+              height: height * 0.065,
+              decoration: const BoxDecoration(
+                  color: AppColors.backGroundColor,
+                  borderRadius: BorderRadius.all(Radius.circular(50.0))),
+              child: TextFormField(
+                textAlign: TextAlign.left,
+                onChanged: (value) {},
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.only(left: 16.0, top: 15),
+                  prefixIcon: const Icon(
+                    Icons.search,
+                    color: AppColors.inActiveColorPrimary,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50.0),
+                    borderSide: const BorderSide(
+                        color: AppColors.lightGreyColor, width: 2.0),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50.0),
+                    borderSide: const BorderSide(
+                        color: AppColors.lightGreyColor, width: 1.0),
+                  ),
+                  hintText: 'Search country',
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50.0),
-                  borderSide: const BorderSide(
-                      color: AppColors.lightGreyColor, width: 2.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50.0),
-                  borderSide: const BorderSide(
-                      color: AppColors.lightGreyColor, width: 1.0),
-                ),
-                hintText: 'Search country',
               ),
             ),
           ),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(
-            top: 45,
-            left: 26,
-            right: 26,
-          ),
-          child: Text(
-            "eSIM plans",
-            style: TextStyle(
-              fontSize: 25,
-              color: AppColors.lightBlackColor,
-              fontWeight: FontWeight.w600,
-              fontFamily: 'Manrope',
+          const Padding(
+            padding: EdgeInsets.only(
+              top: 45,
+              left: 26,
+              right: 26,
+            ),
+            child: Text(
+              "eSIM plans",
+              style: TextStyle(
+                fontSize: 25,
+                color: AppColors.lightBlackColor,
+                fontWeight: FontWeight.w600,
+                fontFamily: 'Manrope',
+              ),
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 18.0),
-          child: TabBar(
-            onTap: (int index) {
-              setState(() {
-                _controller.animateToPage(index,
-                    duration: const Duration(seconds: 1),
-                    curve: Curves.easeOut);
-              });
-            },
-            controller: _tabController,
-            labelColor: AppColors.activeColorPrimary,
-            unselectedLabelColor: AppColors.inActiveColorPrimary,
-            indicatorSize: TabBarIndicatorSize.label,
-            indicator: const MaterialDesignIndicator(
-                indicatorHeight: 4,
-                indicatorColor: AppColors.activeColorPrimary),
-            tabs: _tabs,
+          Padding(
+            padding: const EdgeInsets.only(top: 18.0),
+            child: TabBar(
+              onTap: (int index) {
+                setState(() {
+                  _controller.animateToPage(index,
+                      duration: const Duration(seconds: 1),
+                      curve: Curves.easeOut);
+                });
+              },
+              controller: _tabController,
+              labelColor: AppColors.activeColorPrimary,
+              unselectedLabelColor: AppColors.inActiveColorPrimary,
+              indicatorSize: TabBarIndicatorSize.label,
+              indicator: const MaterialDesignIndicator(
+                  indicatorHeight: 4,
+                  indicatorColor: AppColors.activeColorPrimary),
+              tabs: _tabs,
+            ),
           ),
-        ),
-        Container(
-          padding: const EdgeInsets.only(top: 10.0, bottom: 30),
-          color: AppColors.backGroundColor,
-          height: MediaQuery.of(context).size.height,
-          child: PageView(
-            onPageChanged: (int pageIndex) {
-              _tabController.index = pageIndex;
-            },
-            controller: _controller, // assign it to PageView
-            children: [
-              ///Local List Screen
-              Container(
-                height: MediaQuery.of(context).size.height,
-                color: AppColors.backGroundColor,
-                child: controller.loadingLocalData.isTrue
+          Container(
+            padding: const EdgeInsets.only(top: 10.0, bottom: 30),
+            color: AppColors.backGroundColor,
+            height: MediaQuery.of(context).size.height,
+            child: PageView(
+              onPageChanged: (int pageIndex) {
+                _tabController.index = pageIndex;
+              },
+              controller: _controller, // assign it to PageView
+              children: [
+                ///Local List Screen
+                Container(
+                  height: MediaQuery.of(context).size.height,
+                  color: AppColors.backGroundColor,
+                  child: controller.loadingLocalData.isTrue
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: const [
+                            SizedBox(
+                              height: 150,
+                            ),
+                            Center(child: CircularProgressIndicator()),
+                          ],
+                        )
+                      : Obx(() => Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: controller.model.value.data != null
+                                    ? ListView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: controller
+                                            .model.value.data![0].plans!.length,
+                                        itemBuilder:
+                                            (BuildContext ctx, int index) {
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 12, vertical: 6),
+                                            child: Card(
+                                              margin: const EdgeInsets.symmetric(
+                                                  vertical: 3, horizontal: 10),
+                                              shadowColor: Colors.transparent,
+                                              shape: const RoundedRectangleBorder(
+                                                  side: BorderSide(
+                                                      color: Colors.white,
+                                                      width: 3),
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(15))),
+                                              child: ListTile(
+                                                onTap: () {
+                                                  openPlansScreen(
+                                                      context,
+                                                      controller
+                                                          .model
+                                                          .value
+                                                          .data?[0]
+                                                          .plans?[index] as Plan);
+                                                },
+                                                leading: CircleAvatar(
+                                                    radius: 20,
+                                                    backgroundImage: NetworkImage(
+                                                      controller
+                                                          .model
+                                                          .value
+                                                          .data![0]
+                                                          .plans![index]
+                                                          .countryImage!,
+                                                    )),
+                                                title: Text(controller
+                                                    .model
+                                                    .value
+                                                    .data![0]
+                                                    .plans![index]
+                                                    .countryName!),
+                                                subtitle: Text(
+                                                    "${controller.model.value.data![0].plans![index].totalPlans!} Plans"),
+                                                trailing: const Icon(
+                                                    Icons.arrow_forward_ios),
+                                              ),
+                                            ),
+                                          );
+                                        })
+                                    : Column(
+                                        children: [
+                                          const SizedBox(
+                                            height: 50,
+                                          ),
+                                          SvgPicture.asset(
+                                            AppImages.empty_data_icon,
+                                            width: width * 0.5,
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          const Text(
+                                            "No Data found please try again!",
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+                                          InkWell(
+                                            onTap: () async {
+                                              await controller.getPackages();
+                                            },
+                                            child: Container(
+                                              height: 35.0,
+                                              width: 120.0,
+                                              decoration: const BoxDecoration(
+                                                  color: AppColors.mainColor,
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(80.0))),
+                                              child: const Center(
+                                                  child: Text('Try again',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight: FontWeight
+                                                              .normal))),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                              ),
+                            ],
+                          ),
+                        ),
+                ),
+
+                ///Regional List Screen
+                controller.loadingLocalData.isTrue
                     ? Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: const [
@@ -163,12 +283,11 @@ class _HomePageState extends State<HomePage>
                                   ? ListView.builder(
                                       shrinkWrap: true,
                                       itemCount: controller
-                                          .model.value.data![0].plans!.length,
-                                      itemBuilder:
-                                          (BuildContext ctx, int index) {
+                                          .model.value.data![1].plans!.length,
+                                      itemBuilder: (BuildContext ctx, int index) {
                                         return Padding(
                                           padding: const EdgeInsets.symmetric(
-                                              horizontal: 12, vertical: 6),
+                                              horizontal: 12, vertical: 8),
                                           child: Card(
                                             margin: const EdgeInsets.symmetric(
                                                 vertical: 3, horizontal: 10),
@@ -186,7 +305,7 @@ class _HomePageState extends State<HomePage>
                                                     controller
                                                         .model
                                                         .value
-                                                        .data?[0]
+                                                        .data?[1]
                                                         .plans?[index] as Plan);
                                               },
                                               leading: CircleAvatar(
@@ -195,18 +314,18 @@ class _HomePageState extends State<HomePage>
                                                     controller
                                                         .model
                                                         .value
-                                                        .data![0]
+                                                        .data![1]
                                                         .plans![index]
                                                         .countryImage!,
                                                   )),
                                               title: Text(controller
                                                   .model
                                                   .value
-                                                  .data![0]
+                                                  .data![1]
                                                   .plans![index]
                                                   .countryName!),
                                               subtitle: Text(
-                                                  "${controller.model.value.data![0].plans![index].totalPlans!} Plans"),
+                                                  "${controller.model.value.data![1].plans![index].totalPlans!} Plans"),
                                               trailing: const Icon(
                                                   Icons.arrow_forward_ios),
                                             ),
@@ -249,8 +368,8 @@ class _HomePageState extends State<HomePage>
                                                 child: Text('Try again',
                                                     style: TextStyle(
                                                         color: Colors.white,
-                                                        fontWeight: FontWeight
-                                                            .normal))),
+                                                        fontWeight:
+                                                            FontWeight.normal))),
                                           ),
                                         ),
                                       ],
@@ -259,402 +378,286 @@ class _HomePageState extends State<HomePage>
                           ],
                         ),
                       ),
-              ),
 
-              ///Regional List Screen
-              controller.loadingLocalData.isTrue
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: const [
-                        SizedBox(
-                          height: 150,
-                        ),
-                        Center(child: CircularProgressIndicator()),
-                      ],
-                    )
-                  : Obx(
-                      () => Column(
+                ///Global List Screen
+                controller.loadingGlobalData.isTrue
+                    ? Column(
                         mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: controller.model.value.data != null
-                                ? ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: controller
-                                        .model.value.data![1].plans!.length,
-                                    itemBuilder: (BuildContext ctx, int index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 12, vertical: 8),
-                                        child: Card(
-                                          margin: const EdgeInsets.symmetric(
-                                              vertical: 3, horizontal: 10),
-                                          shadowColor: Colors.transparent,
-                                          shape: const RoundedRectangleBorder(
-                                              side: BorderSide(
-                                                  color: Colors.white,
-                                                  width: 3),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(15))),
-                                          child: ListTile(
-                                            onTap: () {
-                                              openPlansScreen(
-                                                  context,
-                                                  controller
-                                                      .model
-                                                      .value
-                                                      .data?[1]
-                                                      .plans?[index] as Plan);
-                                            },
-                                            leading: CircleAvatar(
-                                                radius: 20,
-                                                backgroundImage: NetworkImage(
-                                                  controller
-                                                      .model
-                                                      .value
-                                                      .data![1]
-                                                      .plans![index]
-                                                      .countryImage!,
-                                                )),
-                                            title: Text(controller
-                                                .model
-                                                .value
-                                                .data![1]
-                                                .plans![index]
-                                                .countryName!),
-                                            subtitle: Text(
-                                                "${controller.model.value.data![1].plans![index].totalPlans!} Plans"),
-                                            trailing: const Icon(
-                                                Icons.arrow_forward_ios),
-                                          ),
-                                        ),
-                                      );
-                                    })
-                                : Column(
-                                    children: [
-                                      const SizedBox(
-                                        height: 50,
-                                      ),
-                                      SvgPicture.asset(
-                                        AppImages.empty_data_icon,
-                                        width: width * 0.5,
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      const Text(
-                                        "No Data found please try again!",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                      InkWell(
-                                        onTap: () async {
-                                          await controller.getPackages();
-                                        },
-                                        child: Container(
-                                          height: 35.0,
-                                          width: 120.0,
-                                          decoration: const BoxDecoration(
-                                              color: AppColors.mainColor,
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(80.0))),
-                                          child: const Center(
-                                              child: Text('Try again',
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.normal))),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-              ///Global List Screen
-              controller.loadingGlobalData.isTrue
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: const [
-                        SizedBox(
-                          height: 150,
-                        ),
-                        Center(child: CircularProgressIndicator()),
-                      ],
-                    )
-                  : Obx(
-                      () => Column(
-                        children: [
+                        children: const [
                           SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.711,
-                            child: controller.globalModel.value.data != null
-                                ? ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: controller
-                                            .globalModel.value.data!.length ??
-                                        0,
-                                    scrollDirection: Axis.vertical,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          openPlansDetailsScreen(
-                                              context,
-                                              controller.globalModel.value
-                                                  .data![index]);
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 0.0),
-                                          child: Stack(children: [
-                                            Card(
-                                              margin: const EdgeInsets.only(
-                                                  top: 30,
-                                                  bottom: 5,
-                                                  left: 20,
-                                                  right: 20),
-                                              shadowColor: Colors.white30,
-                                              elevation: 8.0,
-                                              color: Colors.white,
-                                              shape:
-                                                  const RoundedRectangleBorder(
-                                                      side: BorderSide(
-                                                          color: Colors.white,
-                                                          width: 3),
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  15))),
-                                              child: Container(
-                                                margin:
-                                                    const EdgeInsets.all(10),
-                                                padding:
-                                                    const EdgeInsets.all(10),
-                                                alignment: Alignment.center,
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceAround,
-                                                      children: [
-                                                        Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            const SizedBox(
-                                                                height: 10.0),
-                                                            Text(
-                                                                controller
-                                                                    .globalModel
-                                                                    .value
-                                                                    .data![
-                                                                        index]
-                                                                    .providerName
-                                                                    .toString(),
-                                                                style: const TextStyle(
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold)),
-                                                            const SizedBox(
-                                                                height: 4.0),
-                                                            Text(
-                                                                "${controller.globalModel.value.data![0].countryList!.length.toString()}  Countries",
-                                                                style: const TextStyle(
-                                                                    color: Colors
-                                                                        .grey,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal)),
-                                                            const SizedBox(
-                                                                height: 10.0),
-                                                          ],
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .symmetric(
-                                                                  horizontal:
-                                                                      24.0),
-                                                          child: SizedBox(
-                                                            height: 45.0,
-                                                            width: 1.0,
-                                                            child: Container(
+                            height: 150,
+                          ),
+                          Center(child: CircularProgressIndicator()),
+                        ],
+                      )
+                    : Obx(
+                        () => Column(
+                          children: [
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.711,
+                              child: controller.globalModel.value.data != null
+                                  ? ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: controller
+                                              .globalModel.value.data!.length ??
+                                          0,
+                                      scrollDirection: Axis.vertical,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            openPlansDetailsScreen(
+                                                context,
+                                                controller.globalModel.value
+                                                    .data![index]);
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 0.0),
+                                            child: Stack(children: [
+                                              Card(
+                                                margin: const EdgeInsets.only(
+                                                    top: 30,
+                                                    bottom: 5,
+                                                    left: 20,
+                                                    right: 20),
+                                                shadowColor: Colors.white30,
+                                                elevation: 8.0,
+                                                color: Colors.white,
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                        side: BorderSide(
+                                                            color: Colors.white,
+                                                            width: 3),
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    15))),
+                                                child: Container(
+                                                  margin:
+                                                      const EdgeInsets.all(10),
+                                                  padding:
+                                                      const EdgeInsets.all(10),
+                                                  alignment: Alignment.center,
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceAround,
+                                                        children: [
+                                                          Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              const SizedBox(
+                                                                  height: 10.0),
+                                                              Text(
+                                                                  controller
+                                                                      .globalModel
+                                                                      .value
+                                                                      .data![
+                                                                          index]
+                                                                      .providerName
+                                                                      .toString(),
+                                                                  style: const TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold)),
+                                                              const SizedBox(
+                                                                  height: 4.0),
+                                                              Text(
+                                                                  "${controller.globalModel.value.data![0].countryList!.length.toString()}  Countries",
+                                                                  style: const TextStyle(
+                                                                      color: Colors
+                                                                          .grey,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal)),
+                                                              const SizedBox(
+                                                                  height: 10.0),
+                                                            ],
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        24.0),
+                                                            child: SizedBox(
+                                                              height: 45.0,
                                                               width: 1.0,
-                                                              color: AppColors
-                                                                  .lightGreyColor,
+                                                              child: Container(
+                                                                width: 1.0,
+                                                                color: AppColors
+                                                                    .lightGreyColor,
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
-                                                        Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                                controller
-                                                                    .globalModel
-                                                                    .value
-                                                                    .data![
-                                                                        index]
-                                                                    .data1
-                                                                    .toString(),
-                                                                style: const TextStyle(
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold)),
-                                                            const SizedBox(
-                                                                height: 4.0),
-                                                            Text(
-                                                                controller
-                                                                    .globalModel
-                                                                    .value
-                                                                    .data![
-                                                                        index]
-                                                                    .validity
-                                                                    .toString(),
-                                                                style: const TextStyle(
-                                                                    color: Colors
-                                                                        .grey,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal)),
-                                                          ],
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .symmetric(
-                                                                  horizontal:
-                                                                      24.0),
-                                                          child: SizedBox(
-                                                            height: 45.0,
-                                                            width: 1.0,
-                                                            child: Container(
+                                                          Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                  controller
+                                                                      .globalModel
+                                                                      .value
+                                                                      .data![
+                                                                          index]
+                                                                      .data1
+                                                                      .toString(),
+                                                                  style: const TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold)),
+                                                              const SizedBox(
+                                                                  height: 4.0),
+                                                              Text(
+                                                                  controller
+                                                                      .globalModel
+                                                                      .value
+                                                                      .data![
+                                                                          index]
+                                                                      .validity
+                                                                      .toString(),
+                                                                  style: const TextStyle(
+                                                                      color: Colors
+                                                                          .grey,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal)),
+                                                            ],
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        24.0),
+                                                            child: SizedBox(
+                                                              height: 45.0,
                                                               width: 1.0,
-                                                              color: AppColors
-                                                                  .lightGreyColor,
+                                                              child: Container(
+                                                                width: 1.0,
+                                                                color: AppColors
+                                                                    .lightGreyColor,
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
-                                                        Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                                "\$ ${controller.globalModel.value.data![index].price}",
-                                                                style: const TextStyle(
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontSize:
-                                                                        18.0,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold)),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
+                                                          Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                  "\$ ${controller.globalModel.value.data![index].price}",
+                                                                  style: const TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontSize:
+                                                                          18.0,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold)),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            Positioned(
-                                                top: 6,
-                                                left: 35,
-                                                child: SizedBox(
-                                                  height: 40,
-                                                  width: 40,
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                            color:
-                                                                Colors.black38),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10)),
-                                                    child: Image.network(
-                                                      controller
-                                                          .globalModel
-                                                          .value
-                                                          .data![index]
-                                                          .providerImage
-                                                          .toString(),
-                                                      fit: BoxFit.contain,
+                                              Positioned(
+                                                  top: 6,
+                                                  left: 35,
+                                                  child: SizedBox(
+                                                    height: 40,
+                                                    width: 40,
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                              color:
+                                                                  Colors.black38),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10)),
+                                                      child: Image.network(
+                                                        controller
+                                                            .globalModel
+                                                            .value
+                                                            .data![index]
+                                                            .providerImage
+                                                            .toString(),
+                                                        fit: BoxFit.contain,
+                                                      ),
                                                     ),
-                                                  ),
-                                                ))
-                                          ]),
+                                                  ))
+                                            ]),
+                                          ),
+                                        );
+                                      })
+                                  : Column(
+                                      children: [
+                                        const SizedBox(
+                                          height: 50,
                                         ),
-                                      );
-                                    })
-                                : Column(
-                                    children: [
-                                      const SizedBox(
-                                        height: 50,
-                                      ),
-                                      SvgPicture.asset(
-                                        AppImages.empty_data_icon,
-                                        width: width * 0.5,
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      const Text(
-                                        "No Data found please try again!",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                      InkWell(
-                                        onTap: () async {
-                                          controller.loadingGlobalData(true);
-                                          await controller.getPackageGlobal();
-                                        },
-                                        child: Container(
-                                          height: 35.0,
-                                          width: 120.0,
-                                          decoration: const BoxDecoration(
-                                              color: AppColors.mainColor,
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(80.0))),
-                                          child: const Center(
-                                              child: Text('Try again',
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.normal))),
+                                        SvgPicture.asset(
+                                          AppImages.empty_data_icon,
+                                          width: width * 0.5,
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                          )
-                        ],
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        const Text(
+                                          "No Data found please try again!",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        InkWell(
+                                          onTap: () async {
+                                            controller.loadingGlobalData(true);
+                                            await controller.getPackageGlobal();
+                                          },
+                                          child: Container(
+                                            height: 35.0,
+                                            width: 120.0,
+                                            decoration: const BoxDecoration(
+                                                color: AppColors.mainColor,
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(80.0))),
+                                            child: const Center(
+                                                child: Text('Try again',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.normal))),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-            ],
+              ],
+            ),
           ),
-        ),
-        // ),
-      ]),
+          // ),
+        ]),
+      ),
     );
 
     // else {

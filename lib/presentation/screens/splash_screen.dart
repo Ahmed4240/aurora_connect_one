@@ -28,8 +28,6 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> navigateToHome(BuildContext context) async {
     await Future.delayed(const Duration(seconds: 3));
     Navigator.pushNamed(context, RoutesName.home);
-
-    // Navigator.pushNamed(context, RoutesName.sample_screen);
   }
 
   @override

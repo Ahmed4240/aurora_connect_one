@@ -16,8 +16,6 @@ class PlansScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    double height = screenSize.height;
-    Orientation orientation = MediaQuery.of(context).orientation;
 
     return GetX<PlansController>(
         init: PlansController(model),

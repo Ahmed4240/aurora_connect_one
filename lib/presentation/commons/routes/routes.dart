@@ -29,9 +29,6 @@ class Routes {
       case RoutesName.my_esim:
         return MaterialPageRoute(
             builder: (BuildContext context) => const MyE_SimsPage());
-      // case RoutesName.plans:
-      //   return MaterialPageRoute(
-      //       builder: (BuildContext context) =>  const PlansScreen());
       case RoutesName.webview:
         return MaterialPageRoute(
             builder: (BuildContext context) => const WebViewScreen());
@@ -41,12 +38,9 @@ class Routes {
       case RoutesName.my_orders:
         return MaterialPageRoute(
             builder: (BuildContext context) => const MyOrdersPage());
-      case RoutesName.plan_details:
-      // return MaterialPageRoute(
-      //     builder: (BuildContext context) =>  const PlanDetailsScreen());
-      // case RoutesName.sample_screen:
+      // case RoutesName.plans:
       //   return MaterialPageRoute(
-      //       builder: (BuildContext context) =>  SampleScreen());
+      //       builder: (BuildContext context) => const PlansScreen());
       default:
         return MaterialPageRoute(
             builder: (BuildContext context) => const Scaffold(
