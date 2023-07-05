@@ -20,7 +20,6 @@ class MyE_SimsPage extends StatefulWidget {
 
 class _MyE_SimsPageState extends State<MyE_SimsPage>
     with SingleTickerProviderStateMixin {
-  var controller = Get.put(PlanDetailsController());
   final _controller = PageController();
   late TabController _tabController;
   final _tabs = [
@@ -101,11 +100,10 @@ class _MyE_SimsPageState extends State<MyE_SimsPage>
             child: PageView(
               controller: _controller, // assign it to PageView
               children: <Widget>[
-                controller.confirmOrderResponse.value.data != null
+                currentList.length == 5
                     ? ListView.builder(
                         shrinkWrap: true,
-                        itemCount: controller.confirmOrderResponse.value.data
-                            ?.userPackageList?.length,
+                        itemCount: 2,
                         scrollDirection: Axis.vertical,
                         itemBuilder: (BuildContext context, int index) {
                           return Padding(
@@ -137,15 +135,9 @@ class _MyE_SimsPageState extends State<MyE_SimsPage>
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text(
-                                                  controller
-                                                      .confirmOrderResponse
-                                                      .value
-                                                      .data
-                                                      ?.userPackageList?[0]
-                                                      .slug
-                                                      .toString() as String,
-                                                  style: const TextStyle(
+                                              const Text(
+                                                  '',
+                                                  style: TextStyle(
                                                       color: Colors.black,
                                                       fontWeight:
                                                           FontWeight.bold)),
