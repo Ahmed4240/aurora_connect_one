@@ -23,8 +23,6 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    // checkESIMCapability();
     super.initState();
     getData();
   }
@@ -55,7 +53,6 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    double height = screenSize.height;
 
     return FutureBuilder(
       future: getData(),
