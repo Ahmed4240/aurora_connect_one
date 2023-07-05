@@ -154,7 +154,8 @@ class _HomePageState extends State<HomePage>
                           Center(child: CircularProgressIndicator()),
                         ],
                       )
-                    : Obx(() => Column(
+                    : Obx(
+                        () => Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Expanded(

@@ -11,6 +11,8 @@ import '../commons/app_colors.dart';
 import '../commons/app_images.dart';
 import '../controllers/my_orders_controller.dart';
 import '../widgets/constants.dart';
+import '../widgets/customToast.dart';
+import '../widgets/progressIndicator_mixins.dart';
 import 'main_screen.dart';
 
 class MyOrdersPage extends StatefulWidget {
@@ -20,8 +22,15 @@ class MyOrdersPage extends StatefulWidget {
   State<MyOrdersPage> createState() => _MyOrdersPageState();
 }
 
-class _MyOrdersPageState extends State<MyOrdersPage> {
+class _MyOrdersPageState extends State<MyOrdersPage> with CustomToast,CustomProgressIndicator{
   final controller = Get.put(MyOrdersController());
+
+  handleError(e) {
+    print("this is runnnig");
+    // stopCircularProgressIndicator(context);
+    errorToast(e.toString());
+  }
+
 
   @override
   void initState() {
@@ -38,20 +47,27 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
       userTokenString;
 
   Future<void> getData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs != null) {
-      userNameString = prefs.getString(USER_NAME);
-      userEmailString = prefs.getString(USER_EMAIL);
-      userPhoneString = prefs.getString(USER_PHONE);
-      userIdString = prefs.getString(USER_ID);
-      userTokenString = prefs.getString(USER_TOKEN);
+    try{
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      if (prefs != null) {
+        userNameString = prefs.getString(USER_NAME);
+        userEmailString = prefs.getString(USER_EMAIL);
+        userPhoneString = prefs.getString(USER_PHONE);
+        userIdString = prefs.getString(USER_ID);
+        userTokenString = prefs.getString(USER_TOKEN);
 
-      print('user information : \n'
-          'user id : ${userIdString!} \n'
-          'user token : ${userTokenString!} \n');
+        print('user information : \n'
+            'user id : ${userIdString!} \n'
+            'user token : ${userTokenString!} \n');
 
-      await controller.getMyOrders(userIdString!, userTokenString!);
+        await controller.getMyOrders(userIdString!, userTokenString!);
+      }
+    }catch(e){
+      print("error printing");
+      print(e);
+      handleError(e);
     }
+
   }
 
   @override

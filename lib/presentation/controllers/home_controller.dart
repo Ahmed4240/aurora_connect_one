@@ -1,18 +1,25 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:aurora_connect_one/presentation/widgets/customToast.dart';
 import 'package:get/get.dart';
 import '../../domain/packages/global/GlobalPackagesResponse.dart';
 import '../../domain/packages/local/LocalPlansResponse.dart';
 import '../provider/plans_provider.dart';
 import '../widgets/appException.dart';
 
-class HomeController extends GetxController {
+class HomeController extends GetxController with CustomToast {
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+  }
+
+  handleError(e) {
+    print("this is runnnig");
+    // stopCircularProgressIndicator(context);
+    errorToast(e.toString());
   }
 
   var model = GetPackagesModel().obs;
@@ -30,10 +37,12 @@ class HomeController extends GetxController {
       var response = await _provider.getCountryAndRegional();
       print("get all packages ${response.body}");
       if (!response.status.hasError) {
+        // handleError(response.body);
         print("get all packages 1 ${response.body}");
         model.value = getPackagesModelFromJson(response.bodyString.toString());
       }
     }catch(e){
+      handleError(e);
       customExceptionHandler(e);
     }
 
@@ -48,10 +57,12 @@ class HomeController extends GetxController {
       var response =  await _provider.getGlobalPlans();
       print(("get all packages globaly ${response.body}"));
       if (!response.status.hasError) {
+        // handleError(response.body);
         print("get all packages 1 ${response.body}");
         globalModel.value = getPackagesGlobalFromJson(response.bodyString.toString());
       }
     }catch(e){
+      handleError(e);
       customExceptionHandler(e);
     }
 

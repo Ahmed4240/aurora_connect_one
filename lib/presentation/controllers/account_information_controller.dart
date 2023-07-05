@@ -15,13 +15,20 @@ import '../../domain/account_info/account_information_request.dart';
 import '../../domain/account_info/account_information_response.dart';
 import '../commons/utils.dart';
 import '../widgets/appException.dart';
+import '../widgets/customToast.dart';
 
-class AccountInformationController extends GetxController {
+class AccountInformationController extends GetxController with CustomToast{
   var accountInfoResponse = AccountInformationResponse().obs;
   var deleteMyAccountResponse = DeleteMyAccountResponse().obs;
   var updateWorkResponse = UpdateWorkEmailResponse().obs;
   var removeWorkEmailResponse = RemoveWorkEmailResponse().obs;
   var loading = false.obs;
+
+  handleError(e) {
+    print("this is runnnig");
+    // stopCircularProgressIndicator(context);
+    errorToast(e.toString());
+  }
 
   getAccountInformation(
       AccountInformationRequest request, String clientToken) async {
@@ -32,6 +39,7 @@ class AccountInformationController extends GetxController {
       final map = {
         "userId": request.userId,
       };
+
       String url =
           'https://auroraconnect.absoluit.com/api/api/User/AccountInformation?userId=${request.userId.toString()}';
       var response_1 = await http.post(Uri.parse(url),
@@ -51,11 +59,14 @@ class AccountInformationController extends GetxController {
         print("Response Data: $responseString");
         print("=====================================================");
       } else if (response_1.statusCode == 400) {
+        handleError(response_1.statusCode);
         accountInfoResponse.value = Utils.getDummyAccountInformation();
       } else {
+        handleError(response_1.statusCode);
         printError(info: "Response Error: ${response_1.statusCode}");
       }
     } catch (e) {
+      handleError(e);
       customExceptionHandler(e);
     }
 
@@ -88,10 +99,12 @@ class AccountInformationController extends GetxController {
         print("=====================================================");
         return true;
       } else {
+        handleError(response_1.statusCode);
         printError(info: "Response Error: ${response_1.statusCode}");
         return false;
       }
     } catch (e) {
+      handleError(e);
       return false;
     }
   }
@@ -128,10 +141,12 @@ class AccountInformationController extends GetxController {
         print("=====================================================");
         return true;
       } else {
+        handleError(response_1.statusCode);
         printError(info: "Response Error: ${response_1.statusCode}");
         return false;
       }
     } catch (e) {
+      handleError(e);
       customExceptionHandler(e);
       return false;
     }
@@ -164,10 +179,12 @@ class AccountInformationController extends GetxController {
         print("=====================================================");
         return true;
       } else {
+        handleError(response_1.statusCode);
         printError(info: "Response Error: ${response_1.statusCode}");
         return false;
       }
     } catch (e) {
+      handleError(e);
       customExceptionHandler(e);
       return false;
     }

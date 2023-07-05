@@ -2,6 +2,8 @@ import 'package:aurora_connect_one/domain/account_info/account_information_reque
 import 'package:aurora_connect_one/domain/remove_work_email/remove_work_email_request.dart';
 import 'package:aurora_connect_one/domain/update_work_email/update_work_email_request.dart';
 import 'package:aurora_connect_one/presentation/commons/utils.dart';
+import 'package:aurora_connect_one/presentation/widgets/customToast.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -21,20 +23,283 @@ class AccountInformationPage extends StatefulWidget {
   State<AccountInformationPage> createState() => _AccountInformationPageState();
 }
 
-class _AccountInformationPageState extends State<AccountInformationPage> {
+class _AccountInformationPageState extends State<AccountInformationPage>
+    with CustomToast {
   final TextEditingController emailController = TextEditingController();
   final AsyncMemoizer _memorizer = AsyncMemoizer();
   final controller = Get.put(AccountInformationController());
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _value = false;
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
+  bool dataLoading = true;
+
+
+  @override
+  void didChangeDependencies() async{
+    print("testing1");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs != null) {
+      print("testing2");
+      userNameString = prefs.getString(USER_NAME);
+      userEmailString = prefs.getString(USER_EMAIL);
+      userPhoneString = prefs.getString(USER_PHONE);
+      userIdString = prefs.getString(USER_ID);
+      userTokenString = prefs.getString(USER_TOKEN);
+      print("testing3");
+      print('user information : \n'
+          'user id : ${userIdString!} \n'
+          'user token : ${userTokenString!} \n');
+      print("testing4");
+      await controller.getAccountInformation(
+          AccountInformationRequest(userId: userIdString), userTokenString!);
+    };
+    print("testing5");
+    // TODO: implement didChangeDependencies
+   setState(() {
+     print("testing5");
+     dataLoading = false;
+   });
+    super.didChangeDependencies();
+  }
+  bool _value = true;
   String? userNameString,
       userEmailString,
       userPhoneString,
       userIdString,
       userTokenString;
 
-  Future<void> getData() {
-    return this._memorizer.runOnce(() async {
+
+  Future<void> getData() async {
+    setState(() {
+      dataLoading = true;
+    });
+    // return this._memorizer.runOnce(() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs != null) {
+      userNameString = prefs.getString(USER_NAME);
+      userEmailString = prefs.getString(USER_EMAIL);
+      userPhoneString = prefs.getString(USER_PHONE);
+      userIdString = prefs.getString(USER_ID);
+      userTokenString = prefs.getString(USER_TOKEN);
+
+      print('user information : \n'
+          'user id : ${userIdString!} \n'
+          'user token : ${userTokenString!} \n');
+
+      await controller.getAccountInformation(
+          AccountInformationRequest(userId: userIdString), userTokenString!);
+    };
+    setState(() {
+      dataLoading = false;
+    });
+    // });
+  }
+  _showAddWorkEmailBottomSheet( Size screenSize) {
+    return showModalBottomSheet(
+      isScrollControlled: true,
+       context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(25.0),
+        ),
+      ),
+      backgroundColor: Colors.white,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Padding(
+              padding:
+              EdgeInsets.only(bottom: MediaQuery
+                  .of(context)
+                  .viewInsets
+                  .bottom),
+              child: SizedBox(
+                height: screenSize.height * 0.35,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'Add work email',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500, fontSize: 16),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                                setState(() {
+                                  getData();
+                                });
+                              },
+                              child: Card(
+                                color: AppColors.whiteColor,
+                                elevation: 5.0,
+                                shadowColor: AppColors.lightGreyColor,
+                                shape: const RoundedRectangleBorder(
+                                    side: BorderSide(
+                                        color: Colors.white, width: 1),
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(45))),
+                                child: Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: SvgPicture.asset(
+                                        AppImages.cross_icon)),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Column(
+                        children: [
+                          SizedBox(
+                            child: Card(
+                              elevation: 8,
+                              shadowColor: Colors.white54,
+                              shape: const RoundedRectangleBorder(
+                                  side: BorderSide(
+                                      color: Colors.white, width: 3),
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(12))),
+                              child: Form(
+                                key: _formKey,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      width: screenSize.width * 0.9,
+                                      child: TextFormField(
+                                        controller: emailController,
+                                        style: const TextStyle(
+                                            decoration: TextDecoration.none),
+                                        decoration: const InputDecoration(
+                                          hintText: 'Enter Email',
+                                          focusedBorder: InputBorder.none,
+                                          enabledBorder: InputBorder.none,
+                                          contentPadding:
+                                          EdgeInsetsDirectional.only(
+                                              start: 10.0),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 8.0,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Center(
+                                  child: InkWell(
+                                    onTap: () {
+                                      if (kDebugMode) {
+                                        print("test");
+                                      }
+                                      setState(() {
+                                        _value = !_value;
+                                      });
+                                    },
+                                    child: Container(
+                                      decoration:
+                                      BoxDecoration(
+                                          shape: BoxShape.rectangle,
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              color: Colors.black)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(2.0),
+                                        child: _value
+                                            ? const Icon(
+                                          Icons.check,
+                                          size: 20.0,
+                                          color: Colors.blue,
+                                        )
+                                            : const Icon(
+                                          Icons.check_box_outline_blank,
+                                          size: 20.0,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: Text(
+                                    "Send receipts on work email.",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w300),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20.0,
+                      ),
+                      Container(
+                        color: AppColors.transparentColor,
+                        width: screenSize.width,
+                        height: screenSize.height * .075,
+                        child: GestureDetector(
+                          onTap: () {
+                            if (emailController.text != null &&
+                                emailController.text != "") {
+                              prepareRequestForUpdateEmail(
+                                  context, emailController.text);
+                              setState(() {
+                                print("running now");
+                                getData();
+                              });
+                            } else {
+                              errorToast("please add work email");
+                            }
+                          },
+                          child: const Card(
+                            color: AppColors.activeColorPrimary,
+                            margin:
+                            EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                            elevation: 5.0,
+                            shadowColor: Colors.white30,
+                            shape: RoundedRectangleBorder(
+                                side: BorderSide(color: Colors.white, width: 1),
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(45))),
+                            child: Center(
+                                child: Text(
+                                  'Add email',
+                                  style: TextStyle(color: Colors.white),
+                                )),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          });
+      },
+    );
+  }
+
+  Future<void> getDataOnRefresh() async{
       SharedPreferences prefs = await SharedPreferences.getInstance();
       if (prefs != null) {
         userNameString = prefs.getString(USER_NAME);
@@ -49,9 +314,13 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
 
         await controller.getAccountInformation(
             AccountInformationRequest(userId: userIdString), userTokenString!);
-      }
-    });
+      };
   }
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -59,24 +328,37 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: FutureBuilder(
-          future: getData(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              // While waiting for data, display a loading spinner or any other loading indicator
-              return const Center(
-                  child: SizedBox(
-                      height: 50.0,
-                      width: 50.0,
-                      child: CircularProgressIndicator()));
-            } else if (snapshot.hasError) {
-              // If an error occurred during data fetching, display an error message
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else {
+        child:
+        // FutureBuilder(
+        //   future: getData(),
+        //   builder: (BuildContext context, AsyncSnapshot snapshot) {
+        //     if (snapshot.connectionState == ConnectionState.waiting) {
+        //       // While waiting for data, display a loading spinner or any other loading indicator
+        //       return const Center(
+        //           child: SizedBox(
+        //               height: 30.0,
+        //               width: 30.0,
+        //               child: CircularProgressIndicator()));
+        //     } else if (snapshot.hasError) {
+        //       // If an error occurred during data fetching, display an error message
+        //       return Center(child: Text('Error: ${snapshot.error}'));
+        //     } else {
+
+
               // If data fetching is successful, build your widget tree using the retrieved data
               // Access the retrieved data through snapshot.data
-              return Scaffold(
-                body: SingleChildScrollView(
+
+
+              // return
+        Scaffold(
+                body:
+                dataLoading ? const Center(
+                  child: SizedBox(
+                      height: 30,
+                      width: 30,
+                      child: CircularProgressIndicator()),
+                ) :
+                SingleChildScrollView(
                   child: Container(
                     width: screenSize.width,
                     color: AppColors.backGroundColor,
@@ -101,7 +383,8 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                       Navigator.pop(context);
                                     },
                                     child: Padding(
-                                      padding: const EdgeInsets.only(right: 55.0),
+                                      padding:
+                                          const EdgeInsets.only(right: 55.0),
                                       child: Container(
                                         padding: const EdgeInsets.all(8.0),
                                         child: SvgPicture.asset(
@@ -142,7 +425,8 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                               elevation: 5,
                               shadowColor: Colors.white30,
                               shape: const RoundedRectangleBorder(
-                                  side: BorderSide(color: Colors.white, width: 3),
+                                  side: BorderSide(
+                                      color: Colors.white, width: 3),
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(12))),
                               child: Container(
@@ -154,7 +438,8 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                 child: Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
                                   children: [
                                     const Text(
                                       'Name',
@@ -168,8 +453,8 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                       height: 2,
                                     ),
                                     Text(
-                                      controller.accountInfoResponse.value.data
-                                              ?.username ??
+                                      controller.accountInfoResponse.value
+                                              .data?.username ??
                                           '---',
                                       style: const TextStyle(
                                           color: Colors.grey,
@@ -187,7 +472,8 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                               elevation: 5,
                               shadowColor: Colors.white30,
                               shape: const RoundedRectangleBorder(
-                                  side: BorderSide(color: Colors.white, width: 3),
+                                  side: BorderSide(
+                                      color: Colors.white, width: 3),
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(12))),
                               child: Container(
@@ -199,7 +485,8 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                 child: Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
                                   children: [
                                     const Text(
                                       'Phone',
@@ -213,8 +500,8 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                       height: 2,
                                     ),
                                     Text(
-                                      controller.accountInfoResponse.value.data
-                                              ?.phone ??
+                                      controller.accountInfoResponse.value
+                                              .data?.phone ??
                                           '---',
                                       style: const TextStyle(
                                           color: Colors.grey,
@@ -232,7 +519,8 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                               elevation: 5,
                               shadowColor: Colors.white30,
                               shape: const RoundedRectangleBorder(
-                                  side: BorderSide(color: Colors.white, width: 3),
+                                  side: BorderSide(
+                                      color: Colors.white, width: 3),
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(12))),
                               child: Container(
@@ -244,7 +532,8 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                 child: Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
                                   children: [
                                     const Text(
                                       'Email',
@@ -258,8 +547,8 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                       height: 2,
                                     ),
                                     Text(
-                                      controller.accountInfoResponse.value.data
-                                              ?.email ??
+                                      controller.accountInfoResponse.value
+                                              .data?.email ??
                                           '',
                                       style: const TextStyle(
                                           color: Colors.grey,
@@ -272,8 +561,8 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                               ),
                             ),
                             Visibility(
-                              visible: controller.accountInfoResponse.value.data
-                                      ?.workEmail !=
+                              visible: controller.accountInfoResponse.value
+                                      .data?.workEmail !=
                                   null,
                               child: Card(
                                 margin: const EdgeInsets.only(
@@ -281,10 +570,10 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                 elevation: 5,
                                 shadowColor: Colors.white30,
                                 shape: const RoundedRectangleBorder(
-                                    side:
-                                        BorderSide(color: Colors.white, width: 3),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(12))),
+                                    side: BorderSide(
+                                        color: Colors.white, width: 3),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(12))),
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 12.0, horizontal: 15.0),
@@ -294,7 +583,8 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                   child: Column(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       const Text(
                                         'Work email',
@@ -312,8 +602,8 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            controller.accountInfoResponse.value
-                                                    .data?.workEmail ??
+                                            controller.accountInfoResponse
+                                                    .value.data?.workEmail ??
                                                 '',
                                             style: const TextStyle(
                                                 color: Colors.grey,
@@ -336,12 +626,16 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                             child: Card(
                                               elevation: 1,
                                               color: Colors.red.shade100,
-                                              shape: const RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(4))),
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  4))),
                                               child: Container(
                                                   padding:
-                                                      const EdgeInsets.all(2.0),
+                                                      const EdgeInsets.all(
+                                                          2.0),
                                                   child: SvgPicture.asset(
                                                     AppImages.delete_icon,
                                                     color: Colors.red,
@@ -359,8 +653,8 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                               height: 5.0,
                             ),
                             Visibility(
-                              visible: controller.accountInfoResponse.value.data
-                                      ?.workEmail ==
+                              visible: controller.accountInfoResponse.value
+                                      .data?.workEmail ==
                                   null,
                               child: Container(
                                 color: AppColors.transparentColor,
@@ -369,7 +663,7 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                 child: GestureDetector(
                                   onTap: () {
                                     _showAddWorkEmailBottomSheet(
-                                        context, screenSize);
+                                        screenSize);
                                   },
                                   child: Card(
                                     color: AppColors.activeColorPrimary,
@@ -385,10 +679,12 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                     child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: const [
                                         Padding(
-                                          padding: EdgeInsets.only(right: 4.0),
+                                          padding:
+                                              EdgeInsets.only(right: 4.0),
                                           child: Icon(
                                             Icons.add,
                                             color: Colors.white,
@@ -397,7 +693,8 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                         Center(
                                             child: Text(
                                           'Work email',
-                                          style: TextStyle(color: Colors.white),
+                                          style:
+                                              TextStyle(color: Colors.white),
                                         )),
                                       ],
                                     ),
@@ -429,10 +726,10 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                 elevation: 8,
                                 shadowColor: Colors.white30,
                                 shape: const RoundedRectangleBorder(
-                                    side:
-                                        BorderSide(color: Colors.white, width: 3),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(15))),
+                                    side: BorderSide(
+                                        color: Colors.white, width: 3),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(15))),
                                 child: Column(
                                   children: [
                                     Container(
@@ -458,7 +755,8 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                                 'Delete my account',
                                                 style: TextStyle(
                                                     fontFamily: 'Metropolis',
-                                                    fontWeight: FontWeight.normal,
+                                                    fontWeight:
+                                                        FontWeight.normal,
                                                     fontSize: 14,
                                                     color: Colors.red),
                                               ),
@@ -466,7 +764,8 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                           ]),
                                           const Icon(
                                             Icons.arrow_forward_ios,
-                                            color: AppColors.inActiveColorPrimary,
+                                            color: AppColors
+                                                .inActiveColorPrimary,
                                             size: 18.0,
                                           )
                                         ],
@@ -486,10 +785,10 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                 elevation: 8,
                                 shadowColor: Colors.white30,
                                 shape: const RoundedRectangleBorder(
-                                    side:
-                                        BorderSide(color: Colors.white, width: 3),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(15))),
+                                    side: BorderSide(
+                                        color: Colors.white, width: 3),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(15))),
                                 child: Column(
                                   children: [
                                     Container(
@@ -506,8 +805,8 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Row(children: [
-                                            SvgPicture.asset(
-                                                AppImages.download_my_data_icon),
+                                            SvgPicture.asset(AppImages
+                                                .download_my_data_icon),
                                             const Padding(
                                               padding:
                                                   EdgeInsets.only(left: 16.0),
@@ -515,7 +814,8 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                                 'Download my data',
                                                 style: TextStyle(
                                                     fontFamily: 'Metropolis',
-                                                    fontWeight: FontWeight.normal,
+                                                    fontWeight:
+                                                        FontWeight.normal,
                                                     fontSize: 14,
                                                     color: Colors.black),
                                               ),
@@ -523,7 +823,8 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                                           ]),
                                           const Icon(
                                             Icons.arrow_forward_ios,
-                                            color: AppColors.inActiveColorPrimary,
+                                            color: AppColors
+                                                .inActiveColorPrimary,
                                             size: 18.0,
                                           )
                                         ],
@@ -538,15 +839,17 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                       ],
                     ),
                   ),
-                ),
-              ); // Replace YourWidget with your own widget
-            }
-          },
-        ),
-      ),
-    );
-  }
+            //     ),
+            //   ); // Replace YourWidget with your own widget
+            // }
+          // },
 
+      ),
+    )));
+
+
+  }
+///ending class
   void openDeleteMyAccountPage(BuildContext context) {
     // Navigator.pushNamed(context, RoutesName.plan_details);
     Navigator.push(
@@ -567,189 +870,7 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
     );
   }
 
-  _showAddWorkEmailBottomSheet(BuildContext context, Size screenSize) {
-    return showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(25.0),
-        ),
-      ),
-      backgroundColor: Colors.white,
-      builder: (BuildContext context) {
-        return Padding(
-          padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: SizedBox(
-            height: screenSize.height * 0.35,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Add work email',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 16),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                            setState(() {
-                              getData();
-                            });
-                          },
-                          child: Card(
-                            color: AppColors.whiteColor,
-                            elevation: 5.0,
-                            shadowColor: AppColors.lightGreyColor,
-                            shape: const RoundedRectangleBorder(
-                                side: BorderSide(color: Colors.white, width: 1),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(45))),
-                            child: Padding(
-                                padding: const EdgeInsets.all(6.0),
-                                child: SvgPicture.asset(AppImages.cross_icon)),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Column(
-                    children: [
-                      SizedBox(
-                        child: Card(
-                          elevation: 8,
-                          shadowColor: Colors.white54,
-                          shape: const RoundedRectangleBorder(
-                              side: BorderSide(color: Colors.white, width: 3),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12))),
-                          child: Form(
-                            key: _formKey,
-                            child: Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  width: screenSize.width * 0.9,
-                                  child: TextFormField(
-                                    controller: emailController,
-                                    style: const TextStyle(
-                                        decoration: TextDecoration.none),
-                                    decoration: const InputDecoration(
-                                      hintText: 'Enter Email',
-                                      focusedBorder: InputBorder.none,
-                                      enabledBorder: InputBorder.none,
-                                      contentPadding:
-                                          EdgeInsetsDirectional.only(
-                                              start: 10.0),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 8.0,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            Center(
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    _value = !_value;
-                                  });
-                                },
-                                child: Container(
-                                  decoration: const BoxDecoration(
-                                      shape: BoxShape.rectangle,
-                                      color: Colors.blue),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(2.0),
-                                    child: _value
-                                        ? const Icon(
-                                            Icons.check,
-                                            size: 20.0,
-                                            color: Colors.white,
-                                          )
-                                        : const Icon(
-                                            Icons.check_box_outline_blank,
-                                            size: 20.0,
-                                            color: Colors.blue,
-                                          ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Text(
-                                "Send receipts on work email.",
-                                style: TextStyle(fontWeight: FontWeight.w300),
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  Container(
-                    color: AppColors.transparentColor,
-                    width: screenSize.width,
-                    height: screenSize.height * .075,
-                    child: GestureDetector(
-                      onTap: () {
-                        if (emailController.text != null &&
-                            emailController.text != "") {
-                          prepareRequestForUpdateEmail(
-                              context, emailController.text);
-                        } else {
-                          Utils.snackBar("Please add work email...", context);
-                        }
-                      },
-                      child: const Card(
-                        color: AppColors.activeColorPrimary,
-                        margin:
-                            EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-                        elevation: 5.0,
-                        shadowColor: Colors.white30,
-                        shape: RoundedRectangleBorder(
-                            side: BorderSide(color: Colors.white, width: 1),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(45))),
-                        child: Center(
-                            child: Text(
-                          'Add email',
-                          style: TextStyle(color: Colors.white),
-                        )),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
+
 
   void _showRemoveEmailBottomSheet(
       BuildContext context, Size screenSize, String workEmail) {
@@ -784,6 +905,9 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                       GestureDetector(
                         onTap: () {
                           Navigator.pop(context);
+                          setState(() {
+                            getData();
+                          });
                         },
                         child: Card(
                           color: AppColors.whiteColor,
@@ -873,10 +997,12 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
             userId: userIdString!),
         userTokenString!);
     if (await requestStatus) {
-      Utils.snackBar("Work email added successfully!", context);
+      generalToast("Work email added successfully!");
+     // Utils.snackBar("Work email added successfully!", context);
       Navigator.pop(context);
     } else {
-      Utils.snackBar("Something went wrong", context);
+      generalToast("Something went wrong.");
+     // Utils.snackBar("Something went wrong", context);
     }
   }
 
@@ -884,10 +1010,12 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
     Future<bool> requestStatus = controller.removeWorkEmail(
         RemoveWorkEmailRequest(userId: userIdString!), userTokenString!);
     if (await requestStatus) {
-      Utils.snackBar("Work email removed successfully!", context);
+      generalToast("Work email removed successfully!");
+     // Utils.snackBar("Work email removed successfully!", context);
       Navigator.pop(context);
     } else {
-      Utils.snackBar("Something went wrong", context);
+      generalToast("Something went wrong.");
+     // Utils.snackBar("Something went wrong", context);
     }
   }
 }

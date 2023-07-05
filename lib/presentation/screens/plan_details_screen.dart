@@ -42,8 +42,8 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen>
     return countries;
   }
 
-  bool value2 = true;
-  bool value1 = true;
+  bool value2 = false;
+  bool value1 = false;
   var _isLoading = false;
 
   @override
@@ -681,6 +681,7 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen>
       stopCircularProgressIndicator(context);
       await Get.toNamed(RoutesName.my_orders);
     }catch(e){
+      print("this is printing");
       handleError(e);
     }
 
@@ -689,7 +690,7 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen>
   handleError(e) {
     print("this is runnnig");
     stopCircularProgressIndicator(context);
-    errorToast(e.toString());
+    // errorToast(e.toString());
   }
 
 
@@ -708,164 +709,172 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen>
       ),
       backgroundColor: Colors.white,
       builder: (BuildContext context) {
-        return SizedBox(
-          height: screenSize.height * 0.35,
-          child: Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 18.0, horizontal: 8.0),
-            child: Column(
-              children: [
-                SizedBox(
-                  width: screenSize.width,
-                  height: screenSize.height * .03,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 0.0, bottom: 0.0, left: 18.0, right: 8.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Pay with Vipps',
-                          style: AppStyles.largeTextStyle,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            moveBack(context);
-                          },
-                          child: Card(
-                            color: AppColors.whiteColor,
-                            elevation: 5.0,
-                            shadowColor: AppColors.lightGreyColor,
-                            shape: const RoundedRectangleBorder(
-                                side: BorderSide(color: Colors.white, width: 1),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(45))),
-                            child: Padding(
-                                padding: const EdgeInsets.all(6.0),
-                                child: SvgPicture.asset(AppImages.cross_icon)),
+        return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+    return  SizedBox(
+            height: screenSize.height * 0.35,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 18.0, horizontal: 8.0),
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: screenSize.width,
+                    height: screenSize.height * .03,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 0.0, bottom: 0.0, left: 18.0, right: 8.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Pay with Vipps',
+                            style: AppStyles.largeTextStyle,
                           ),
-                        ),
-                      ],
+                          GestureDetector(
+                            onTap: () {
+                              moveBack(context);
+                            },
+                            child: Card(
+                              color: AppColors.whiteColor,
+                              elevation: 5.0,
+                              shadowColor: AppColors.lightGreyColor,
+                              shape: const RoundedRectangleBorder(
+                                  side: BorderSide(color: Colors.white, width: 1),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(45))),
+                              child: Padding(
+                                  padding: const EdgeInsets.all(6.0),
+                                  child: SvgPicture.asset(AppImages.cross_icon)),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Column(
-                  children: [
-                    SizedBox(
-                      width: screenSize.width,
-                      child: Row(
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Column(
+                    children: [
+                      SizedBox(
+                        width: screenSize.width,
+                        child: Row(
+                          children: [
+                            Checkbox(
+                              value: value1,
+                              onChanged: (value) {
+                                setState(() {
+                                  value1 = !value1;
+                                });
+                              },
+                            ),
+                            SizedBox(
+                              width: screenSize.width * .8,
+                              child: RichText(
+                                text: const TextSpan(
+                                  text:
+                                      'By completing the order, you agree to our',
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 15.0),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: ' terms & conditions',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    TextSpan(
+                                      text: ' and ',
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                    TextSpan(
+                                      text: 'Privacy policy.',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      Row(
                         children: [
                           Checkbox(
-                            value: value1,
+                            value: value2,
                             onChanged: (bool? value) {
                               setState(() {
-                                value1 = !value1;
+                                value2 = !value2;
                               });
                             },
                           ),
                           SizedBox(
                             width: screenSize.width * .8,
                             child: RichText(
-                              text: const TextSpan(
-                                text:
-                                    'By completing the order, you agree to our',
-                                style: TextStyle(
+                              text: TextSpan(
+                                text: Utils.terms_and_condition1,
+                                style: const TextStyle(
                                     color: Colors.grey, fontSize: 15.0),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: ' terms & conditions',
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                  TextSpan(
-                                    text: ' and ',
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                  TextSpan(
-                                    text: 'Privacy policy.',
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                ],
+                                children: const <TextSpan>[],
                               ),
                             ),
                           ),
                         ],
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  Container(
+                    color: AppColors.transparentColor,
+                    width: screenSize.width,
+                    height: screenSize.height * .06,
+                    child: GestureDetector(
+                      onTap: () async {
+                        print("this working");
+                        value1== true && value2 == true ?
+                        generalToast("PLease enable conditions")
+                            :
+                        await callForCreateOrder(
+                            context, controller, widget.model);
+                        // Future.delayed(
+                        //   const Duration(seconds: 5),
+                        //       () => setState(() => _isLoading = false),
+                        // );
+                        // moveBack(context);
+                      },
+                      child: Card(
+                        color: value1== true && value2 == true ?
+
+                        AppColors.activeColorPrimary : Colors.grey,
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 0, horizontal: 10),
+                        elevation: 5.0,
+                        shadowColor: Colors.white30,
+                        shape: const RoundedRectangleBorder(
+                            side: BorderSide(color: Colors.white, width: 1),
+                            borderRadius: BorderRadius.all(Radius.circular(45))),
+                        child: Center(
+                            child: _isLoading == true
+                                ? const Text(
+                                    'creating order...',
+                                    style: TextStyle(color: Colors.white),
+                                  )
+                                : const Text(
+                                    '\$ 20.00 - Pay with vipps',
+                                    style: TextStyle(color: Colors.white),
+                                  )),
                       ),
                     ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: value2,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              value2 = !value2;
-                            });
-                          },
-                        ),
-                        SizedBox(
-                          width: screenSize.width * .8,
-                          child: RichText(
-                            text: TextSpan(
-                              text: Utils.terms_and_condition1,
-                              style: const TextStyle(
-                                  color: Colors.grey, fontSize: 15.0),
-                              children: const <TextSpan>[],
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                Container(
-                  color: AppColors.transparentColor,
-                  width: screenSize.width,
-                  height: screenSize.height * .06,
-                  child: GestureDetector(
-                    onTap: () async {
-                      print("this working");
-                      await callForCreateOrder(
-                          context, controller, widget.model);
-                      // Future.delayed(
-                      //   const Duration(seconds: 5),
-                      //       () => setState(() => _isLoading = false),
-                      // );
-                      // moveBack(context);
-                    },
-                    child: Card(
-                      color: AppColors.activeColorPrimary,
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 0, horizontal: 10),
-                      elevation: 5.0,
-                      shadowColor: Colors.white30,
-                      shape: const RoundedRectangleBorder(
-                          side: BorderSide(color: Colors.white, width: 1),
-                          borderRadius: BorderRadius.all(Radius.circular(45))),
-                      child: Center(
-                          child: _isLoading == true
-                              ? const Text(
-                                  'creating order...',
-                                  style: TextStyle(color: Colors.white),
-                                )
-                              : const Text(
-                                  '\$ 20.00 - Pay with vipps',
-                                  style: TextStyle(color: Colors.white),
-                                )),
-                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
+         );}
         );
       },
     );

@@ -2,15 +2,23 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:aurora_connect_one/presentation/widgets/customToast.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../../domain/my_orders/my_orders_response.dart';
 import '../widgets/appException.dart';
 
-class MyOrdersController extends GetxController {
+class MyOrdersController extends GetxController with CustomToast {
   var myOrdersResponse = MyOrdersResponse().obs;
   var loading = false.obs;
+
+
+  handleError(e) {
+    print("this is runnnig");
+    // stopCircularProgressIndicator(context);
+    errorToast(e.toString());
+  }
 
   getMyOrders(String clientUserId, String clientToken) async {
     print('calling for getMyOrders');
@@ -33,11 +41,14 @@ class MyOrdersController extends GetxController {
         myOrdersResponse.value = getMyOrdersFromJson(response_1.body);
         print("=====================================================");
       } else {
+        handleError(response_1.body);
         printError(info: "Response Error: ${response_1.body}");
       }
     } catch (e) {
       print(e);
+      print("error printing");
       customExceptionHandler(e);
+      handleError(e);
     }
 
     // loading(false);

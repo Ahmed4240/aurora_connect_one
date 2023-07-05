@@ -38,6 +38,7 @@ class PlansController extends GetxController with CustomToast, CustomProgressInd
     try{
       var response = await _provider.getPlansByCountry(apiToken, model.slug);
       if (!response.status.hasError) {
+
         localPlansResponse =
             getPlansInCountryResponseFromJson(response.bodyString.toString());
         print('localPlansResponse => ${PlansInCountryResponse}');
