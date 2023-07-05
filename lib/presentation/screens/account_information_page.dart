@@ -135,9 +135,9 @@ class _AccountInformationPageState extends State<AccountInformationPage>
                             InkWell(
                               onTap: () {
                                 Navigator.pop(context);
-                                setState(() {
-                                  getData();
-                                });
+                                // setState(() {
+                                //   getData();
+                                // });
                               },
                               child: Card(
                                 color: AppColors.whiteColor,
