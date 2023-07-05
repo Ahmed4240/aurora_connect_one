@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../../domain/my_orders/my_orders_response.dart';
+import '../widgets/appException.dart';
 
 class MyOrdersController extends GetxController {
   var myOrdersResponse = MyOrdersResponse().obs;
@@ -12,7 +15,7 @@ class MyOrdersController extends GetxController {
   getMyOrders(String clientUserId, String clientToken) async {
     print('calling for getMyOrders');
 
-    loading(true);
+    // loading(true);
     try {
       final map = {
         "userId": clientUserId.toString(),
@@ -34,8 +37,34 @@ class MyOrdersController extends GetxController {
       }
     } catch (e) {
       print(e);
+      customExceptionHandler(e);
     }
 
-    loading(false);
+    // loading(false);
   }
+  void customExceptionHandler(dynamic e) {
+    switch (e.runtimeType) {
+      case SocketException:
+        throw AppException('Internet Connection is Not Available', 'Try Again');
+      case TimeoutException:
+        throw AppException('Request Time Out', 'Try Again');
+      case int:
+        throw getAppExceptionWRTCode(e);
+      case AppException: // called when exception is thrown from _returnResponse Function.
+        throw e;
+      default:
+        throw AppException('Oops! Something Went Wrong', "");
+    }
+  }
+
+  AppException getAppExceptionWRTCode(dynamic code) {
+    switch (code) {
+      case 401:
+        return AppException('Unauthorized Access', '');
+      default:
+        return AppException('Oops! Something Went Wrong', "");
+    }
+  }
+
+
 }

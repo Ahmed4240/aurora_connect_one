@@ -2,6 +2,7 @@
 
 import 'package:aurora_connect_one/domain/create_order/create_order_request.dart';
 import 'package:aurora_connect_one/presentation/commons/routes/routes_name.dart';
+import 'package:aurora_connect_one/presentation/widgets/customToast.dart';
 import 'package:aurora_connect_one/presentation/widgets/progressIndicator_mixins.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,7 +26,7 @@ class PlanDetailsScreen extends StatefulWidget {
 }
 
 class _PlanDetailsScreenState extends State<PlanDetailsScreen>
-    with CustomProgressIndicator {
+    with CustomProgressIndicator,CustomToast {
   var loadingPercentage = 0;
 
   String getCoverage(PlanDetail model) {
@@ -54,593 +55,596 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen>
         builder: (controller) {
           var localData = controller.createOrderResponse.value;
           if (localData != null) {
-            return SafeArea(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    color: AppColors.backGroundColor,
-                    width: screenSize.width,
-                    height: screenSize.height * .11,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 4.0, bottom: 0.0, left: 18.0, right: 18.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              moveBack(context);
-                            },
-                            child: Card(
-                              color: AppColors.whiteColor,
-                              margin: const EdgeInsets.only(
-                                  top: 10, left: 10.0, right: 10.0),
-                              elevation: 5.0,
-                              shadowColor: AppColors.lightGreyColor,
-                              shape: const RoundedRectangleBorder(
-                                  side:
-                                      BorderSide(color: Colors.white, width: 1),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(45))),
-                              child: Padding(
-                                  padding: const EdgeInsets.all(6.0),
-                                  child:
-                                      SvgPicture.asset(AppImages.cross_icon)),
+            return Scaffold(
+              backgroundColor: Colors.white,
+              body: SafeArea(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      color: AppColors.backGroundColor,
+                      width: screenSize.width,
+                      height: screenSize.height * .11,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 4.0, bottom: 0.0, left: 18.0, right: 18.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                moveBack(context);
+                              },
+                              child: Card(
+                                color: AppColors.whiteColor,
+                                margin: const EdgeInsets.only(
+                                    top: 10, left: 10.0, right: 10.0),
+                                elevation: 5.0,
+                                shadowColor: AppColors.lightGreyColor,
+                                shape: const RoundedRectangleBorder(
+                                    side:
+                                        BorderSide(color: Colors.white, width: 1),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(45))),
+                                child: Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child:
+                                        SvgPicture.asset(AppImages.cross_icon)),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 10.0, left: 24.0, right: 24.0),
-                    child: SizedBox(
-                      height: screenSize.height * .76,
-                      child: ListView(
-                        children: <Widget>[
-                          Container(
-                            width: screenSize.width,
-                            height: screenSize.height * 0.25,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              borderRadius: BorderRadius.circular(12.0),
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                      (widget.model.providerImage as String)),
-                                  fit: BoxFit.fill),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 10.0, left: 24.0, right: 24.0),
+                      child: SizedBox(
+                        height: screenSize.height * .76,
+                        child: ListView(
+                          children: <Widget>[
+                            Container(
+                              width: screenSize.width,
+                              height: screenSize.height * 0.25,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.circular(12.0),
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        (widget.model.providerImage as String)),
+                                    fit: BoxFit.fill),
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  widget.model.providerName as String,
-                                  style: const TextStyle(
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black),
-                                ),
-                                Text(
-                                  '\$ ${widget.model.price}',
-                                  style: const TextStyle(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.normal,
-                                      color: AppColors.blackColor),
-                                ),
-                              ],
+                            const SizedBox(
+                              height: 20,
                             ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Column(
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text(
-                                      'Coverage',
-                                      style: TextStyle(
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.normal,
-                                          color: Colors.black),
-                                    ),
-                                    Text(
-                                      getCoverage(widget.model).toString(),
-                                      style: const TextStyle(
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.normal,
-                                          color:
-                                              AppColors.inActiveColorPrimary),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 20.0,
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text(
-                                      'Data',
-                                      style: TextStyle(
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.normal,
-                                          color: Colors.black),
-                                    ),
-                                    Text(
-                                      widget.model.data1.toString(),
-                                      style: const TextStyle(
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.normal,
-                                          color:
-                                              AppColors.inActiveColorPrimary),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 20.0,
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text(
-                                      'Validity',
-                                      style: TextStyle(
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.normal,
-                                          color: Colors.black),
-                                    ),
-                                    Text(
-                                      widget.model.validity.toString(),
-                                      style: const TextStyle(
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.normal,
-                                          color:
-                                              AppColors.inActiveColorPrimary),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 10.0,
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          const Text(
-                            'Buy top up packages',
-                            style: TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.inActiveColorPrimary),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          SizedBox(
-                            height: 100.0,
-                            width: 300.0,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children: <Widget>[
-                                SizedBox(
-                                  width: 180.0,
-                                  child: Card(
-                                    color: AppColors.whiteColor,
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 5, horizontal: 0),
-                                    shadowColor: Colors.white30,
-                                    elevation: 5.0,
-                                    shape: const RoundedRectangleBorder(
-                                        side: BorderSide(
-                                            color: Colors.white, width: 1),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(15))),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 20.0, horizontal: 35.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: const [
-                                              Text(
-                                                "1 GB",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    fontSize: 18.0),
-                                              ),
-                                              Text(
-                                                '7 days',
-                                                style: TextStyle(
-                                                    fontSize: 14.0,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: AppColors
-                                                        .inActiveColorPrimary),
-                                              )
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 60.0,
-                                            width: 1,
-                                            child: Container(
-                                              color: AppColors.lightGreyColor,
-                                            ),
-                                          ),
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: const [
-                                              Text(
-                                                "7\$",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    fontSize: 16.0),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                                SizedBox(
-                                  width: 180.0,
-                                  child: Card(
-                                    color: AppColors.whiteColor,
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 5, horizontal: 0),
-                                    shadowColor: Colors.white30,
-                                    elevation: 5.0,
-                                    shape: const RoundedRectangleBorder(
-                                        side: BorderSide(
-                                            color: Colors.white, width: 1),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(15))),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 20.0, horizontal: 35.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: const [
-                                              Text(
-                                                "2 GB",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    fontSize: 18.0),
-                                              ),
-                                              Text(
-                                                '15 days',
-                                                style: TextStyle(
-                                                    fontSize: 14.0,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: AppColors
-                                                        .inActiveColorPrimary),
-                                              )
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 60.0,
-                                            width: 1,
-                                            child: Container(
-                                              color: AppColors.lightGreyColor,
-                                            ),
-                                          ),
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: const [
-                                              Text(
-                                                "15\$",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    fontSize: 16.0),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                                SizedBox(
-                                  width: 180.0,
-                                  child: Card(
-                                    color: AppColors.whiteColor,
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 5, horizontal: 0),
-                                    shadowColor: Colors.white30,
-                                    elevation: 5.0,
-                                    shape: const RoundedRectangleBorder(
-                                        side: BorderSide(
-                                            color: Colors.white, width: 1),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(15))),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 20.0, horizontal: 35.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: const [
-                                              Text(
-                                                "4 GB",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    fontSize: 18.0),
-                                              ),
-                                              Text(
-                                                '30 days',
-                                                style: TextStyle(
-                                                    fontSize: 14.0,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: AppColors
-                                                        .inActiveColorPrimary),
-                                              )
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 60.0,
-                                            width: 1,
-                                            child: Container(
-                                              color: AppColors.lightGreyColor,
-                                            ),
-                                          ),
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "30\$",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    fontSize: 16.0),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          const Text(
-                            'Additional info',
-                            style: TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.inActiveColorPrimary),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Card(
-                            color: AppColors.whiteColor,
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 0),
-                            shadowColor: Colors.white30,
-                            elevation: 5.0,
-                            shape: const RoundedRectangleBorder(
-                                side: BorderSide(color: Colors.white, width: 1),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15))),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 14.0, horizontal: 25.0),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Row(
-                                    children: [
-                                      SvgPicture.asset(AppImages.netwok_icon),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 10.0, horizontal: 12.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: const [
-                                            Text(
-                                              'Network',
-                                              style: TextStyle(
-                                                  fontSize: 14.0,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: AppColors
-                                                      .inActiveColorPrimary),
-                                            ),
-                                            Text(
-                                              "",
-                                              style: TextStyle(
-                                                  fontSize: 16.0,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: AppColors.blackColor),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
+                                  Text(
+                                    widget.model.providerName as String,
+                                    style: const TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black),
                                   ),
-                                  Row(
-                                    children: [
-                                      SvgPicture.asset(
-                                          AppImages.plan_type_icon),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 10.0, horizontal: 12.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            const Text(
-                                              'Plan type',
-                                              style: TextStyle(
-                                                  fontSize: 14.0,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: AppColors
-                                                      .inActiveColorPrimary),
-                                            ),
-                                            Text(
-                                              widget.model.planType.toString(),
-                                              style: const TextStyle(
-                                                  fontSize: 16.0,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: AppColors.blackColor),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
+                                  Text(
+                                    '\$ ${widget.model.price}',
+                                    style: const TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.normal,
+                                        color: AppColors.blackColor),
                                   ),
-                                  Row(
-                                    children: [
-                                      SvgPicture.asset(
-                                          AppImages.information_icon),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 10.0, horizontal: 12.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            const Text(
-                                              'Information',
-                                              style: TextStyle(
-                                                  fontSize: 14.0,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: AppColors
-                                                      .inActiveColorPrimary),
-                                            ),
-                                            SizedBox(
-                                              width: screenSize.width * .6,
-                                              child: Text(
-                                                Utils.sampleInformation,
-                                                textDirection:
-                                                    TextDirection.ltr,
-                                                style: const TextStyle(
-                                                    fontSize: 15.0,
-                                                    fontWeight: FontWeight.w500,
-                                                    color:
-                                                        AppColors.blackColor),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  )
                                 ],
                               ),
                             ),
-                          ),
-                        ],
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        'Coverage',
+                                        style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.normal,
+                                            color: Colors.black),
+                                      ),
+                                      Text(
+                                        getCoverage(widget.model).toString(),
+                                        style: const TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.normal,
+                                            color:
+                                                AppColors.inActiveColorPrimary),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 20.0,
+                                  ),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        'Data',
+                                        style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.normal,
+                                            color: Colors.black),
+                                      ),
+                                      Text(
+                                        widget.model.data1.toString(),
+                                        style: const TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.normal,
+                                            color:
+                                                AppColors.inActiveColorPrimary),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 20.0,
+                                  ),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        'Validity',
+                                        style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.normal,
+                                            color: Colors.black),
+                                      ),
+                                      Text(
+                                        widget.model.validity.toString(),
+                                        style: const TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.normal,
+                                            color:
+                                                AppColors.inActiveColorPrimary),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 10.0,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const Text(
+                              'Buy top up packages',
+                              style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.inActiveColorPrimary),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            SizedBox(
+                              height: 100.0,
+                              width: 300.0,
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children: <Widget>[
+                                  SizedBox(
+                                    width: 180.0,
+                                    child: Card(
+                                      color: AppColors.whiteColor,
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 5, horizontal: 0),
+                                      shadowColor: Colors.white30,
+                                      elevation: 5.0,
+                                      shape: const RoundedRectangleBorder(
+                                          side: BorderSide(
+                                              color: Colors.white, width: 1),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(15))),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 20.0, horizontal: 35.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: const [
+                                                Text(
+                                                  "1 GB",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      fontSize: 18.0),
+                                                ),
+                                                Text(
+                                                  '7 days',
+                                                  style: TextStyle(
+                                                      fontSize: 14.0,
+                                                      fontWeight: FontWeight.w500,
+                                                      color: AppColors
+                                                          .inActiveColorPrimary),
+                                                )
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 60.0,
+                                              width: 1,
+                                              child: Container(
+                                                color: AppColors.lightGreyColor,
+                                              ),
+                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: const [
+                                                Text(
+                                                  "7\$",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      fontSize: 16.0),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  SizedBox(
+                                    width: 180.0,
+                                    child: Card(
+                                      color: AppColors.whiteColor,
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 5, horizontal: 0),
+                                      shadowColor: Colors.white30,
+                                      elevation: 5.0,
+                                      shape: const RoundedRectangleBorder(
+                                          side: BorderSide(
+                                              color: Colors.white, width: 1),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(15))),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 20.0, horizontal: 35.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: const [
+                                                Text(
+                                                  "2 GB",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      fontSize: 18.0),
+                                                ),
+                                                Text(
+                                                  '15 days',
+                                                  style: TextStyle(
+                                                      fontSize: 14.0,
+                                                      fontWeight: FontWeight.w500,
+                                                      color: AppColors
+                                                          .inActiveColorPrimary),
+                                                )
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 60.0,
+                                              width: 1,
+                                              child: Container(
+                                                color: AppColors.lightGreyColor,
+                                              ),
+                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: const [
+                                                Text(
+                                                  "15\$",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      fontSize: 16.0),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  SizedBox(
+                                    width: 180.0,
+                                    child: Card(
+                                      color: AppColors.whiteColor,
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 5, horizontal: 0),
+                                      shadowColor: Colors.white30,
+                                      elevation: 5.0,
+                                      shape: const RoundedRectangleBorder(
+                                          side: BorderSide(
+                                              color: Colors.white, width: 1),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(15))),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 20.0, horizontal: 35.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: const [
+                                                Text(
+                                                  "4 GB",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      fontSize: 18.0),
+                                                ),
+                                                Text(
+                                                  '30 days',
+                                                  style: TextStyle(
+                                                      fontSize: 14.0,
+                                                      fontWeight: FontWeight.w500,
+                                                      color: AppColors
+                                                          .inActiveColorPrimary),
+                                                )
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 60.0,
+                                              width: 1,
+                                              child: Container(
+                                                color: AppColors.lightGreyColor,
+                                              ),
+                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "30\$",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      fontSize: 16.0),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const Text(
+                              'Additional info',
+                              style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.inActiveColorPrimary),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Card(
+                              color: AppColors.whiteColor,
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 0),
+                              shadowColor: Colors.white30,
+                              elevation: 5.0,
+                              shape: const RoundedRectangleBorder(
+                                  side: BorderSide(color: Colors.white, width: 1),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15))),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 14.0, horizontal: 25.0),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(AppImages.netwok_icon),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 10.0, horizontal: 12.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: const [
+                                              Text(
+                                                'Network',
+                                                style: TextStyle(
+                                                    fontSize: 14.0,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: AppColors
+                                                        .inActiveColorPrimary),
+                                              ),
+                                              Text(
+                                                "",
+                                                style: TextStyle(
+                                                    fontSize: 16.0,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: AppColors.blackColor),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                            AppImages.plan_type_icon),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 10.0, horizontal: 12.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              const Text(
+                                                'Plan type',
+                                                style: TextStyle(
+                                                    fontSize: 14.0,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: AppColors
+                                                        .inActiveColorPrimary),
+                                              ),
+                                              Text(
+                                                widget.model.planType.toString(),
+                                                style: const TextStyle(
+                                                    fontSize: 16.0,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: AppColors.blackColor),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                            AppImages.information_icon),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 10.0, horizontal: 12.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              const Text(
+                                                'Information',
+                                                style: TextStyle(
+                                                    fontSize: 14.0,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: AppColors
+                                                        .inActiveColorPrimary),
+                                              ),
+                                              SizedBox(
+                                                width: screenSize.width * .6,
+                                                child: Text(
+                                                  Utils.sampleInformation,
+                                                  textDirection:
+                                                      TextDirection.ltr,
+                                                  style: const TextStyle(
+                                                      fontSize: 15.0,
+                                                      fontWeight: FontWeight.w500,
+                                                      color:
+                                                          AppColors.blackColor),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    color: AppColors.transparentColor,
-                    width: screenSize.width,
-                    height: screenSize.height * .06,
-                    child: GestureDetector(
-                      onTap: () {
-                        showPaymentBottomSheet(context, screenSize, controller);
-                      },
-                      child: const Card(
-                        color: AppColors.activeColorPrimary,
-                        margin:
-                            EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-                        elevation: 5.0,
-                        shadowColor: Colors.white30,
-                        shape: RoundedRectangleBorder(
-                            side: BorderSide(color: Colors.white, width: 1),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(45))),
-                        child: Center(
-                            child: Text(
-                          '\$ 20.00 - Pay',
-                          style: TextStyle(color: Colors.white),
-                        )),
+                    Container(
+                      color: AppColors.transparentColor,
+                      width: screenSize.width,
+                      height: screenSize.height * .06,
+                      child: GestureDetector(
+                        onTap: () {
+                          showPaymentBottomSheet(context, screenSize, controller);
+                        },
+                        child: const Card(
+                          color: AppColors.activeColorPrimary,
+                          margin:
+                              EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                          elevation: 5.0,
+                          shadowColor: Colors.white30,
+                          shape: RoundedRectangleBorder(
+                              side: BorderSide(color: Colors.white, width: 1),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(45))),
+                          child: Center(
+                              child: Text(
+                            '\$ 20.00 - Pay',
+                            style: TextStyle(color: Colors.white),
+                          )),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           } else {
@@ -665,17 +669,29 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen>
 
   Future<void> callForCreateOrder(BuildContext context,
       PlanDetailsController controller, PlanDetail model) async {
-    CreateOrderRequest request = CreateOrderRequest();
-    request.quantity = 1;
-    request.packageId = model.id.toString();
-    request.planDetail = model;
-    Navigator.pop(context);
-    getCircularProgressIndicator(context);
-    await controller.createOrderRequest(request, context);
-    print("Stoping circuller bar");
-    stopCircularProgressIndicator(context);
-    await Get.toNamed(RoutesName.my_orders);
+    try{
+      CreateOrderRequest request = CreateOrderRequest();
+      request.quantity = 1;
+      request.packageId = model.id.toString();
+      request.planDetail = model;
+      Navigator.pop(context);
+      getCircularProgressIndicator(context);
+      await controller.createOrderRequest(request, context);
+      print("Stoping circuller bar");
+      stopCircularProgressIndicator(context);
+      await Get.toNamed(RoutesName.my_orders);
+    }catch(e){
+      handleError(e);
+    }
+
   }
+
+  handleError(e) {
+    print("this is runnnig");
+    stopCircularProgressIndicator(context);
+    errorToast(e.toString());
+  }
+
 
   void openPlanDetails(BuildContext context, int index) async {
     await Get.toNamed(RoutesName.home);
@@ -701,7 +717,7 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen>
               children: [
                 SizedBox(
                   width: screenSize.width,
-                  height: screenSize.height * .05,
+                  height: screenSize.height * .03,
                   child: Padding(
                     padding: const EdgeInsets.only(
                         top: 0.0, bottom: 0.0, left: 18.0, right: 8.0),

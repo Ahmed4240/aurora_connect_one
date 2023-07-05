@@ -1,4 +1,5 @@
 import 'package:aurora_connect_one/domain/my_orders/my_orders_response.dart';
+import 'package:aurora_connect_one/presentation/screens/home_page.dart';
 import 'package:aurora_connect_one/presentation/screens/my_order_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,6 +11,7 @@ import '../commons/app_colors.dart';
 import '../commons/app_images.dart';
 import '../controllers/my_orders_controller.dart';
 import '../widgets/constants.dart';
+import 'main_screen.dart';
 
 class MyOrdersPage extends StatefulWidget {
   const MyOrdersPage({super.key});
@@ -54,80 +56,73 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
 
-    return FutureBuilder(
-      future: getData(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          // While waiting for data, display a loading spinner or any other loading indicator
-          return const Center(
-              child: SizedBox(
-                  height: 50.0,
-                  width: 50.0,
-                  child: CircularProgressIndicator()));
-        } else if (snapshot.hasError) {
-          // If an error occurred during data fetching, display an error message
-          return Center(child: Text('Error: Something went wrong'));
-        } else {
-          // If data fetching is successful, build your widget tree using the retrieved data
-          // Access the retrieved data through snapshot.data
-          return SingleChildScrollView(
-            child: SafeArea(
-              child: controller.loading.value
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: FutureBuilder(
+        future: getData(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // Whiln e waiting for data, display a loading spinner or any other loading indicator
+            return const Center(
+                child: SizedBox(
+                    height: 50.0,
+                    width: 50.0,
+                    child: CircularProgressIndicator()));
+          } else if (snapshot.hasError) {
+            // If an error occurred during data fetching, display an error message
+            return const Center(child: Text('Error: Something went wrong'));
+          } else {
+            // If data fetching is successful, build your widget tree using the retrieved data
+            // Access the retrieved data through snapshot.data
+            return Scaffold(
+              appBar: AppBar(
+                centerTitle: true,
+                title: const Text("My Orders",style: TextStyle(color: Colors.black),),
+                backgroundColor: Colors.white,
+                leading: IconButton(icon: const Icon(Icons.arrow_back_ios,color: Colors.black,),onPressed: (){
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  MainScreen(defaultIndex: 0,)));
+                },),
+              ),
+              body: controller.loading.value
                   ? const Center(child: CircularProgressIndicator())
                   : Column(
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              width: screenSize.width,
-                              height: screenSize.height * 0.1,
-                              child: Card(
-                                elevation: 8,
-                                shadowColor: Colors.white30,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 25.0,
-                                      bottom: 2.0,
-                                      left: 24.0,
-                                      right: 24.0),
-                                  child: Stack(
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          moveBack(context);
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 55.0),
-                                          child: Container(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: SvgPicture.asset(
-                                              AppImages.back_arrow_icon,
-                                              width: 20,
-                                              height: 20,
-                                              fit: BoxFit.fill,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: screenSize.width,
-                                        child: const Center(
-                                          child: Text(
-                                            'My orders',
-                                            style: TextStyle(
-                                                fontFamily: 'Metropolis',
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 18.0),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
+                            // SizedBox(
+                            //   width: screenSize.width,
+                            //   height: screenSize.height * 0.1,
+                            //   child: Card(
+                            //     elevation: 8,
+                            //     shadowColor: Colors.white30,
+                            //     child: Padding(
+                            //       padding: const EdgeInsets.only(
+                            //           top: 25.0,
+                            //           bottom: 2.0,
+                            //           left: 24.0,
+                            //           right: 24.0),
+                            //       child: InkWell(
+                            //         onTap: () {
+                            //           moveBack(context);
+                            //         },
+                            //         child: Padding(
+                            //           padding: const EdgeInsets.only(
+                            //               right: 55.0),
+                            //           child: Container(
+                            //             padding: const EdgeInsets.all(8.0),
+                            //             child: SvgPicture.asset(
+                            //               AppImages.back_arrow_icon,
+                            //               width: 20,
+                            //               height: 20,
+                            //               fit: BoxFit.fill,
+                            //             ),
+                            //           ),
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
                             const SizedBox(
                               height: 5,
                             ),
@@ -355,10 +350,10 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                         )
                       ],
                     ),
-            ),
-          ); // Replace YourWidget with your own widget
-        }
-      },
+            ); // Replace YourWidget with your own widget
+          }
+        },
+      ),
     );
   }
 

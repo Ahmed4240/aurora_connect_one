@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:aurora_connect_one/domain/confirm_order/confirm_order_response.dart';
 import 'package:aurora_connect_one/domain/signup/SignUpResponse.dart';
@@ -16,6 +18,7 @@ import '../../domain/create_order/create_order_request.dart';
 import '../../domain/create_order/create_order_response.dart';
 import '../../domain/signup/SignUpRequest.dart';
 import '../screens/main_screen.dart';
+import '../widgets/appException.dart';
 import '../widgets/constants.dart';
 
 class PlanDetailsController extends GetxController
@@ -102,8 +105,8 @@ class PlanDetailsController extends GetxController
         }
       }
     } catch (e) {
-      Utils.toastMessage(e.toString());
-      rethrow;
+       Utils.toastMessage(e.toString());
+      customExceptionHandler(e);
     }
   }
 
@@ -149,7 +152,7 @@ class PlanDetailsController extends GetxController
       }
     } catch (e) {
       Utils.toastMessage(e.toString());
-      rethrow;
+      customExceptionHandler(e);
     }
 
     // loading(false);
@@ -179,12 +182,34 @@ class PlanDetailsController extends GetxController
         print("Your order is confirmed from server side");
         Get.to(() => MyOrdersPage());
         // Navigator.push(context, MaterialPageRoute(builder: (context) => MyOrdersPage()));
-      } else {
-        printError(info: "Response Error: ${response_1.statusCode}");
       }
     } catch (e) {
-      Utils.toastMessage(e.toString());
-      rethrow;
+      customExceptionHandler(e);
+    }
+  }
+  void customExceptionHandler(dynamic e) {
+    switch (e.runtimeType) {
+      case SocketException:
+        throw AppException('Internet Connection is Not Available', 'Try Again');
+      case TimeoutException:
+        throw AppException('Request Time Out', 'Try Again');
+      case int:
+        throw getAppExceptionWRTCode(e);
+      case AppException: // called when exception is thrown from _returnResponse Function.
+        throw e;
+      default:
+        throw AppException('Oops! Something Went Wrong', "");
+    }
+  }
+
+  AppException getAppExceptionWRTCode(dynamic code) {
+    switch (code) {
+      case 401:
+        return AppException('Unauthorized Access', '');
+      default:
+        return AppException('Oops! Something Went Wrong', "");
     }
   }
 }
+
+
