@@ -4,6 +4,7 @@ import 'package:aurora_connect_one/domain/plans/PlanDetail.dart';
 import 'package:aurora_connect_one/presentation/controllers/home_controller.dart';
 import 'package:aurora_connect_one/presentation/screens/plan_details_screen.dart';
 import 'package:aurora_connect_one/presentation/screens/plans_screen.dart';
+import 'package:aurora_connect_one/presentation/widgets/progressIndicator_mixins.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -21,7 +22,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin , CustomProgressIndicator{
   final _controller = PageController();
   late TabController _tabController;
 
@@ -238,7 +239,14 @@ class _HomePageState extends State<HomePage>
                                           ),
                                           InkWell(
                                             onTap: () async {
-                                              await controller.getPackages();
+                                              try{
+                                                getCircularProgressIndicator(context);
+                                                await controller.getPackages();
+                                                stopCircularProgressIndicator(context);
+                                              }catch(e){
+                                                stopCircularProgressIndicator(context);
+                                              }
+
                                             },
                                             child: Container(
                                               height: 35.0,
@@ -355,7 +363,15 @@ class _HomePageState extends State<HomePage>
                                         ),
                                         InkWell(
                                           onTap: () async {
-                                            await controller.getPackages();
+
+                                            try{
+                                              getCircularProgressIndicator(context);
+                                              await controller.getPackages();
+                                              stopCircularProgressIndicator(context);
+                                            }catch(e){
+                                              stopCircularProgressIndicator(context);
+                                            }
+
                                           },
                                           child: Container(
                                             height: 35.0,
@@ -628,8 +644,17 @@ class _HomePageState extends State<HomePage>
                                         ),
                                         InkWell(
                                           onTap: () async {
-                                            controller.loadingGlobalData(true);
-                                            await controller.getPackageGlobal();
+
+                                            try{
+                                              getCircularProgressIndicator(context);
+                                              controller.loadingGlobalData(true);
+                                              await controller.getPackageGlobal();
+                                              stopCircularProgressIndicator(context);
+                                            }catch(e){
+                                              stopCircularProgressIndicator(context);
+                                            }
+
+
                                           },
                                           child: Container(
                                             height: 35.0,

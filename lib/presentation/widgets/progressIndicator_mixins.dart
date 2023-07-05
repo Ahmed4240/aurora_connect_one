@@ -32,7 +32,7 @@ class CustomProgressIndicator {
 
   Widget getProgressWidget() {
     return const CircularProgressIndicator(
-      valueColor: AlwaysStoppedAnimation<Color>(AppColors.activeColorPrimary),
+      valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
     );
   }
 

@@ -837,10 +837,11 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen>
                       onTap: () async {
                         print("this working");
                         value1== true && value2 == true ?
-                        generalToast("PLease enable conditions")
-                            :
+
+
                         await callForCreateOrder(
-                            context, controller, widget.model);
+                            context, controller, widget.model)
+                        : generalToast("PLease enable conditions");
                         // Future.delayed(
                         //   const Duration(seconds: 5),
                         //       () => setState(() => _isLoading = false),
