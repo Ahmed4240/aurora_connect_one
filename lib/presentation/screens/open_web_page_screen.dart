@@ -18,45 +18,48 @@ class _WebViewScreenState extends State<WebViewScreen> {
 
     Size screenSize = MediaQuery.of(context).size;
 
-    return SafeArea(
-        child: Column(
-          children: [
-            Card(
-              elevation: 8,
-              shadowColor: Colors.white30,
-              child: Container(
-                color: AppColors.whiteColor,
-                width: screenSize.width,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 44.0, left: 18.0, right: 18.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: moveBack(context),
-                          child: const Icon(Icons.arrow_back_ios_new, color: Colors.black,)),
-                      const Text(
-                        "Terms of use",
-                        style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500, fontFamily: 'Metropolis'),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: AppColors.backGroundColor,
-                            borderRadius: BorderRadius.circular(80.0)),
-                        child: Image.asset(
-                          AppImages.femaleDoctor1,
-                          width: 40,
-                          height: 40,
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+          child: Column(
+            children: [
+              Card(
+                elevation: 8,
+                shadowColor: Colors.white30,
+                child: Container(
+                  color: AppColors.whiteColor,
+                  width: screenSize.width,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 44.0, left: 18.0, right: 18.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: moveBack(context),
+                            child: const Icon(Icons.arrow_back_ios_new, color: Colors.black,)),
+                        const Text(
+                          "Terms of use",
+                          style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500, fontFamily: 'Metropolis'),
                         ),
-                      ),
-                    ],
+                        Container(
+                          decoration: BoxDecoration(
+                              color: AppColors.backGroundColor,
+                              borderRadius: BorderRadius.circular(80.0)),
+                          child: Image.asset(
+                            AppImages.femaleDoctor1,
+                            width: 40,
+                            height: 40,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ));
+            ],
+          )),
+    );
   }
 
   moveBack(BuildContext context) {
