@@ -11,6 +11,7 @@ import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'data/view_models/user_view_model.dart';
+import 'package:flutter/services.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,4 +60,6 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+
+
 }

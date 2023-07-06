@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:aurora_connect_one/presentation/screens/home_page.dart';
 import 'package:aurora_connect_one/presentation/widgets/customToast.dart';
 import 'package:get/get.dart';
 import '../../domain/packages/global/GlobalPackagesResponse.dart';
@@ -32,6 +33,7 @@ class HomeController extends GetxController with CustomToast {
 
   getPackages() async {
     try{
+
       print('calling for get packages');
       // loadingLocalData(true);
       var response = await _provider.getCountryAndRegional();
@@ -40,6 +42,7 @@ class HomeController extends GetxController with CustomToast {
         // handleError(response.body);
         print("get all packages 1 ${response.body}");
         model.value = getPackagesModelFromJson(response.bodyString.toString());
+
       }
     }catch(e){
       handleError(e);

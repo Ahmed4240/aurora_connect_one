@@ -25,7 +25,8 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin , CustomProgressIndicator{
   final _controller = PageController();
   late TabController _tabController;
-
+ bool tryLoadingPackaging = true;
+ bool tryLoadingGlobal = true;
   final _tabs = [
     const Tab(text: 'Local'),
     const Tab(text: 'Regional'),
@@ -43,6 +44,7 @@ class _HomePageState extends State<HomePage>
     await controller.getPackages();
     await controller.getPackageGlobal();
     setState(() {
+      // tryLoadingPackaging = true;
       // localDataLoading = false;
       // regionalDataLoading = false;
       // globalDataLoading = false;
@@ -59,6 +61,7 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
+
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
@@ -216,7 +219,9 @@ class _HomePageState extends State<HomePage>
                                             ),
                                           );
                                         })
-                                    : Column(
+                                    :
+                                tryLoadingPackaging ?
+                                Column(
                                         children: [
                                           const SizedBox(
                                             height: 50,
@@ -240,11 +245,24 @@ class _HomePageState extends State<HomePage>
                                           InkWell(
                                             onTap: () async {
                                               try{
-                                                getCircularProgressIndicator(context);
-                                                await controller.getPackages();
-                                                stopCircularProgressIndicator(context);
+                                                setState(() {
+                                                  tryLoadingPackaging = false;
+                                                });
+
+                                              await  Future.delayed(Duration(seconds: 3), () async{
+                                                  print("running");
+                                                  // Your function code here
+                                                  await controller.getPackages();
+                                                });
+                                                // getCircularProgressIndicator(context);
+
+                                                setState(() {
+                                                  tryLoadingPackaging = true;
+                                                });
+                                                // stopCircularProgressIndicator(context);
                                               }catch(e){
-                                                stopCircularProgressIndicator(context);
+                                                print("Testing1");
+                                                // stopCircularProgressIndicator(context);
                                               }
 
                                             },
@@ -264,7 +282,7 @@ class _HomePageState extends State<HomePage>
                                             ),
                                           ),
                                         ],
-                                      ),
+                                      ) : const Center(child: CircularProgressIndicator(),)
                               ),
                             ],
                           ),
@@ -621,7 +639,10 @@ class _HomePageState extends State<HomePage>
                                           ),
                                         );
                                       })
-                                  : Column(
+                                  :
+
+                              tryLoadingGlobal ?
+                              Column(
                                       children: [
                                         const SizedBox(
                                           height: 50,
@@ -633,6 +654,8 @@ class _HomePageState extends State<HomePage>
                                         const SizedBox(
                                           height: 20,
                                         ),
+
+
                                         const Text(
                                           "No Data found please try again!",
                                           style: TextStyle(
@@ -646,17 +669,26 @@ class _HomePageState extends State<HomePage>
                                           onTap: () async {
 
                                             try{
-                                              getCircularProgressIndicator(context);
+
+                                              setState(() {
+
+                                                tryLoadingGlobal = false;
+                                              });
+
+                                              // getCircularProgressIndicator(context);
                                               controller.loadingGlobalData(true);
                                               await controller.getPackageGlobal();
-                                              stopCircularProgressIndicator(context);
+                                              // stopCircularProgressIndicator(context);
                                             }catch(e){
-                                              stopCircularProgressIndicator(context);
+                                              // stopCircularProgressIndicator(context);
                                             }
 
 
                                           },
-                                          child: Container(
+                                          child:
+
+
+                                          Container(
                                             height: 35.0,
                                             width: 120.0,
                                             decoration: const BoxDecoration(
@@ -672,7 +704,8 @@ class _HomePageState extends State<HomePage>
                                           ),
                                         ),
                                       ],
-                                    ),
+                                    ):
+                                  const Center(child: CircularProgressIndicator(),)
                             )
                           ],
                         ),
