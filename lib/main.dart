@@ -1,4 +1,3 @@
-import 'package:aurora_connect_one/presentation/commons/app_colors.dart';
 import 'package:aurora_connect_one/presentation/commons/routes/routes.dart';
 import 'package:aurora_connect_one/presentation/commons/routes/routes_name.dart';
 import 'package:aurora_connect_one/presentation/widgets/constants.dart';
@@ -7,9 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'data/view_models/user_view_model.dart';
-import 'package:flutter/services.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,34 +26,28 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
 
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => UserViewModel()),
+    return KeyboardDismisser(
+      gestures: const [
+        GestureType.onTap,
+        GestureType.onPanUpdateDownDirection
       ],
-      child: KeyboardDismisser(
-        gestures: const [
-          GestureType.onTap,
-          GestureType.onPanUpdateDownDirection
-        ],
-        child: ResponsiveSizer(builder: (context, orientation, deviceType) {
-          return GetMaterialApp(
-            builder: BotToastInit(),
-            navigatorKey: navigatorKey,
-            // builder: EasyLoading.init(),
-            debugShowCheckedModeBanner: false,
-            title: 'Aurora Connect',
-            theme: ThemeData(
-              primaryColor: const Color(0xff10CFA8),
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-              backgroundColor: Colors.white,
-              primarySwatch: Colors.blue,
-              fontFamily: 'SourceSansPro',
-            ),
-            initialRoute: RoutesName.splash,
-            onGenerateRoute: Routes.generateRoute,
-          );
-        }),
-      ),
+      child: ResponsiveSizer(builder: (context, orientation, deviceType) {
+        return GetMaterialApp(
+          builder: BotToastInit(),
+          navigatorKey: navigatorKey,
+          debugShowCheckedModeBanner: false,
+          title: 'Aurora Connect',
+          theme: ThemeData(
+            primaryColor: const Color(0xff10CFA8),
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+            backgroundColor: Colors.white,
+            primarySwatch: Colors.blue,
+            fontFamily: 'SourceSansPro',
+          ),
+          initialRoute: RoutesName.splash,
+          onGenerateRoute: Routes.generateRoute,
+        );
+      }),
     );
   }
 }
