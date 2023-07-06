@@ -3,10 +3,7 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../application/services/splash_services.dart';
-import '../../data/view_models/user_view_model.dart';
 import '../commons/app_images.dart';
-import '../commons/constants.dart';
 import '../commons/routes/routes_name.dart';
 import 'package:flutter/services.dart';
 // import 'package:device_info/device_info.dart';
@@ -19,14 +16,10 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  //Initializing the splash services
-  SplashServices splashServices = SplashServices();
+
   @override
   void initState() {
     super.initState();
-    UserViewModel().saveUser(K.appToken);
-    splashServices.checkAuthentication(context);
-
     navigateToHome(context);
   }
 
@@ -52,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> navigateToHome(BuildContext context) async {
     await Future.delayed(const Duration(seconds: 3));
-    Navigator.pushNamed(context, RoutesName.home);
+    Navigator.pushReplacementNamed(context, RoutesName.home);
   }
 
   @override

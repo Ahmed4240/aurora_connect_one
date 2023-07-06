@@ -5,10 +5,8 @@ import 'package:aurora_connect_one/presentation/widgets/constants.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
-import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'data/view_models/user_view_model.dart';
 import 'package:flutter/services.dart';
@@ -60,6 +58,4 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
-
-
 }

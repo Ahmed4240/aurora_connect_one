@@ -36,12 +36,10 @@ dependencies:
   responsive_sizer: ^3.1.0
   get: ^4.6.5
   get_storage: ^2.0.3
-  persistent_bottom_nav_bar: ^4.0.2
-#  iconify_flutter: ^0.0.4
+#  persistent_bottom_nav_bar: ^4.0.2
   cupertino_tabbar: ^2.0.0
   flutter_rating_bar: ^4.0.1
   flutter_svg: ^1.1.4
-  salomon_bottom_bar: ^3.3.2
   webview_flutter: ^4.2.2
   fluttertoast: ^8.0.9
   another_flushbar: ^1.12.29
